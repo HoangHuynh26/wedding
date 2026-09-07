@@ -1,0 +1,130 @@
+.countdownSection {
+  background: radial-gradient(ellipse at center, #ffffff 0%, #f1f5f9 100%);
+  color: var(--text-dark);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 5.5rem 0;
+}
+
+/* Animated ambient glow orbs */
+.ambientGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+  animation: glowPulse 6s ease infinite;
+}
+
+.countdownGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.35rem, 2vw, 1.5rem);
+  max-width: 820px;
+  width: 100%;
+  margin: 2.5rem auto 0;
+  padding: 0 0.5rem;
+}
+
+/* Floating frosted glass capsule time boxes */
+.timeBox {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1.5px solid rgba(148, 163, 184, 0.35);
+  border-radius: clamp(12px, 2.5vw, 22px);
+  padding: clamp(1.1rem, 3.5vw, 2rem) clamp(0.2rem, 1.5vw, 1rem);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06), 0 0 30px rgba(148, 163, 184, 0.15);
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s var(--ease-luxury);
+}
+
+/* Inner silver glow line at top */
+.timeBox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #64748b, transparent);
+  box-shadow: 0 0 15px var(--silver-glow);
+}
+
+/* Subtle rotating ring behind */
+.timeBox::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  animation: rotateRing 20s linear infinite;
+  pointer-events: none;
+}
+
+.timeBox:hover {
+  transform: translateY(-6px);
+  border-color: rgba(100, 116, 139, 0.6);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1), 0 0 45px rgba(148, 163, 184, 0.3);
+}
+
+.timeNumber {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5.5vw, 3.75rem);
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.05;
+  display: block;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 10px rgba(148, 163, 184, 0.2);
+}
+
+.timeLabel {
+  font-family: var(--font-sans);
+  font-size: clamp(0.55rem, 1.6vw, 0.72rem);
+  text-transform: uppercase;
+  letter-spacing: clamp(0.08em, 0.5vw, 0.3em);
+  color: var(--silver-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.weddingBanner {
+  margin-top: 3rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: #0f172a;
+  font-style: italic;
+  padding: 0.65rem 1.75rem;
+  display: inline-block;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: var(--border-radius-pill);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+@media (min-width: 768px) {
+  .weddingBanner {
+    font-size: 1.35rem;
+  }
+}

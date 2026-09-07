@@ -1,0 +1,162 @@
+.neonBtnContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  border-radius: 999px;
+  user-select: none;
+  isolation: isolate;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.neonBtnContainer.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.neonBtnContainer:hover {
+  transform: translateY(-2.5px);
+}
+
+.neonBtnContainer:active {
+  transform: scale(0.975);
+}
+
+/* Neon Border Wrapper */
+.neonOverlay {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: inherit;
+  overflow: visible;
+  transition: opacity 0.3s ease;
+}
+
+/* Base Interactive Element (Button or Link) */
+.baseBtn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: inherit;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fullWidth .baseBtn {
+  width: 100%;
+}
+
+.baseBtn:focus-visible {
+  outline: 2px solid #fff2ca;
+  outline-offset: 3px;
+}
+
+.baseBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   VARIANT: PRIMARY (Champagne Gold Solid Liquid Glow)
+   ═══════════════════════════════════════════════════ */
+
+.primary {
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
+  color: #0f172a;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15),
+              0 0 25px rgba(148, 163, 184, 0.4),
+              inset 0 1px 1px rgba(255, 255, 255, 0.9),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.neonBtnContainer:hover .primary {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 45%, #94a3b8 100%);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.2),
+              0 0 40px rgba(148, 163, 184, 0.6),
+              inset 0 1px 1px rgba(255, 255, 255, 1);
+}
+
+/* ═══════════════════════════════════════════════════
+   VARIANT: SECONDARY / OUTLINE (Frosted White Glass)
+   ═══════════════════════════════════════════════════ */
+
+.secondary {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  color: #0f172a;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06),
+              0 0 20px rgba(148, 163, 184, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.neonBtnContainer:hover .secondary {
+  background: #ffffff;
+  border-color: #0f172a;
+  color: #0f172a;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12),
+              0 0 30px rgba(148, 163, 184, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════
+   VARIANT: GHOST (Minimal Silver Link Pill)
+   ═══════════════════════════════════════════════════ */
+
+.ghost {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #334155;
+  box-shadow: none;
+}
+
+.neonBtnContainer:hover .ghost {
+  background: rgba(148, 163, 184, 0.15);
+  border-color: var(--silver-primary);
+  color: #0f172a;
+  box-shadow: 0 0 20px rgba(148, 163, 184, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════
+   SPECULAR SHINE LIGHT BEAM SWEEP
+   ═══════════════════════════════════════════════════ */
+
+.shineBeam {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  transition: left 0.75s ease-in-out;
+}
+
+.neonBtnContainer:hover .shineBeam {
+  left: 140%;
+}

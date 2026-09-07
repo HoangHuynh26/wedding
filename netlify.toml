@@ -1,0 +1,41 @@
+# Netlify Configuration for Wedding Invitation Application
+
+[build]
+  # Build client from root
+  command = "npm --prefix client install && npm --prefix client run build"
+  publish = "client/dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Route /api/rsvp requests to Netlify Serverless Function
+[[redirects]]
+  from = "/api/rsvp"
+  to = "/.netlify/functions/rsvp"
+  status = 200
+
+# Route /api/health requests to Netlify Serverless Function
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+# Single Page Application (SPA) routing fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Performance and Security Headers
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

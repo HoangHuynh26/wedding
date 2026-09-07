@@ -1,0 +1,388 @@
+.rsvpSection {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: var(--text-dark);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 6rem;
+}
+
+/* Ambient silver gradient glow */
+.ambientGlow {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(148, 163, 184, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+  animation: glowPulse 8s ease infinite;
+}
+
+/* Cinematic reveal header */
+.revealIntro {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 3.5rem;
+}
+
+.revealPrompt {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.85rem;
+}
+
+.revealSubtext {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.45rem;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .revealSubtext {
+    font-size: 1.85rem;
+  }
+}
+
+.revealHeading {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════
+   RSVP Form — Frosted Crystalline Glass Panel
+   ═══════════════════════════════════════════════ */
+
+.formCard {
+  max-width: 540px;
+  margin: 0 auto;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem 1.75rem;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(148, 163, 184, 0.1);
+  position: relative;
+  z-index: 10;
+  transition: border-color 0.5s ease;
+}
+
+.formCard:hover {
+  border-color: var(--glass-border-hover);
+}
+
+@media (min-width: 768px) {
+  .formCard {
+    padding: 3rem 2.5rem;
+  }
+}
+
+.formTitle {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  text-align: center;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.formSubtitle {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-dark-secondary);
+  margin-bottom: 2rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* White glass input fields */
+.inputField {
+  width: 100%;
+  padding: 1rem 1.15rem;
+  border: 1.5px solid rgba(148, 163, 184, 0.35);
+  border-radius: var(--border-radius-sm);
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.inputField::placeholder {
+  color: var(--text-muted);
+}
+
+.inputField:focus {
+  border-color: var(--silver-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
+  outline: none;
+}
+
+/* White glass textarea */
+.textareaField {
+  width: 100%;
+  padding: 0.95rem 1.15rem;
+  border: 1.5px solid rgba(148, 163, 184, 0.35);
+  border-radius: var(--border-radius-sm);
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 85px;
+  line-height: 1.5;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.textareaField::placeholder {
+  color: var(--text-muted);
+}
+
+.textareaField:focus {
+  border-color: var(--silver-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
+  outline: none;
+}
+
+/* Whose Guest Are You Selector */
+.sideSelector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 540px) {
+  .sideSelector {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.sideOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.8rem 0.65rem;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1.5px solid rgba(148, 163, 184, 0.35);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-dark-secondary);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.sideOption:hover {
+  background: #ffffff;
+  border-color: var(--silver-primary);
+  color: var(--text-dark);
+}
+
+.sideOptionActive {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-color: var(--silver-primary);
+  color: var(--text-dark);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08), 0 0 12px rgba(148, 163, 184, 0.25);
+  transform: translateY(-1px);
+}
+
+.sideOptionIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.sideOptionText {
+  white-space: nowrap;
+}
+
+.sideCheckIcon {
+  color: var(--silver-primary);
+  margin-left: 0.15rem;
+}
+
+.inputError {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12) !important;
+}
+
+.errorText {
+  color: #e74c3c;
+  font-size: 0.78rem;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+/* Metallic Platinum Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 1.1rem 1.5rem;
+  background: linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%);
+  color: #ffffff;
+  border-radius: var(--border-radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.2), 0 0 30px rgba(148, 163, 184, 0.3);
+  transition: all 0.4s var(--ease-luxury);
+  margin-top: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.3), 0 0 45px rgba(148, 163, 184, 0.5);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SUCCESS STATE — Glass Celebration Card
+   ═══════════════════════════════════════════════ */
+
+.successCard {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.successIconRing {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.15);
+  border: 2px solid var(--silver-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: #0f172a;
+  box-shadow: 0 0 35px var(--silver-glow);
+  animation: glowPulse 3s ease infinite;
+}
+
+.successHeading {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.successGuestName {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  font-size: 0.95rem;
+  color: var(--text-dark-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+}
+
+.guestSummary {
+  background: #f1f5f9;
+  border-radius: var(--border-radius-sm);
+  padding: 1rem;
+  border: 1px dashed rgba(148, 163, 184, 0.4);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-dark-secondary);
+}
+
+.guestSummary div {
+  margin-bottom: 0.35rem;
+}
+
+.guestSummary div:last-child {
+  margin-bottom: 0;
+}
+
+.guestSummary strong {
+  color: #0f172a;
+}
+
+.summaryMessageRow {
+  font-style: italic;
+  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.4rem;
+  line-height: 1.45;
+  border-left: 2.5px solid var(--silver-primary);
+}
+
+.resetButton {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--silver-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.resetButton:hover {
+  color: #0f172a;
+}

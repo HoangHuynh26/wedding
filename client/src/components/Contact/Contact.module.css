@@ -1,0 +1,255 @@
+.contactSection {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 5.5rem 0;
+  border-top: 1px solid var(--glass-border);
+}
+
+.ambientGlow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 450px;
+  background: radial-gradient(ellipse, rgba(148, 163, 184, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.contactsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 1050px;
+  margin: 3rem auto 0;
+}
+
+@media (min-width: 680px) {
+  .contactsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+/* Individual Person / Entity Card */
+.contactCard {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-luxury);
+}
+
+.contactCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-lg), 0 0 35px rgba(148, 163, 184, 0.25);
+}
+
+/* Corner filigree accent */
+.cardCorner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-top: 1.5px solid rgba(148, 163, 184, 0.5);
+  border-right: 1.5px solid rgba(148, 163, 184, 0.5);
+  border-radius: 0 4px 0 0;
+  pointer-events: none;
+}
+
+/* Avatar Ring */
+.avatarRing {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 45%, #94a3b8 80%, #64748b 100%);
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.1), 0 0 25px rgba(148, 163, 184, 0.3);
+  margin-bottom: 1rem;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Icon Orb for Venue & Family */
+.iconOrb {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1.5px solid rgba(148, 163, 184, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+}
+
+.roleBadge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--silver-primary);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.personName {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  line-height: 1.25;
+}
+
+.phoneNumber {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.noteText {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* Action Buttons Row */
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: auto;
+}
+
+.callBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--border-radius-pill);
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+  transition: all 0.25s ease;
+  flex: 1;
+  min-width: 110px;
+}
+
+.callBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.25);
+  color: #ffffff;
+}
+
+.zaloBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--border-radius-pill);
+  background: #ffffff;
+  color: #0068ff;
+  border: 1.5px solid rgba(0, 104, 255, 0.3);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  flex: 1;
+  min-width: 110px;
+}
+
+.zaloBtn:hover {
+  background: #0068ff;
+  color: #ffffff;
+  border-color: #0068ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 104, 255, 0.25);
+}
+
+.copyBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.copyBtn:hover {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  transform: scale(1.08);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 15px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}

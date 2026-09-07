@@ -1,0 +1,943 @@
+/* ═══════════════════════════════════════════════
+   ENVELOPE INTRO — LUMINOUS WHITE & METALLIC SILVER
+   LUXURY WELCOME CARD EXTERIOR
+   ═══════════════════════════════════════════════ */
+
+.envelopeGate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: radial-gradient(ellipse at 50% 35%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.envelopeGate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(148, 163, 184, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(148, 163, 184, 0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.envelopePerspectiveWrapper {
+  perspective: 1600px;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: auto;
+  padding: 0.75rem 0;
+  transition: max-width 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .envelopePerspectiveWrapper {
+    max-width: 740px;
+    padding: 1.25rem 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .envelopePerspectiveWrapper {
+    max-width: 900px;
+    padding: 1.75rem 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TOP INVITATION DETAILS (OUTSIDE THE CARD)
+   ═══════════════════════════════════════════════ */
+
+.topInvitationBanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0.95rem;
+  width: 100%;
+  max-width: 440px;
+  z-index: 50;
+  position: relative;
+  transition: max-width 0.35s ease, margin-bottom 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .topInvitationBanner {
+    max-width: 700px;
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .topInvitationBanner {
+    max-width: 860px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.topProclamation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.45rem;
+}
+
+.flourishWing {
+  color: var(--silver-primary);
+  font-size: 1.15rem;
+  line-height: 1;
+  text-shadow: 0 0 10px var(--silver-glow);
+}
+
+.proclamationText {
+  font-family: var(--font-serif);
+  font-size: 0.96rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.topGuestPlaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem 1.6rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.96) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08), 0 0 25px rgba(148, 163, 184, 0.15);
+  margin-top: 0.25rem;
+  max-width: 92%;
+}
+
+.guestSalutation {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.guestHonorName {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0.2rem 0;
+  letter-spacing: 0.02em;
+}
+
+.inviterReference {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.topDefaultPlaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.topSubProclamation {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--silver-primary);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.topWarmIntro {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--text-dark-secondary);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 440px;
+}
+
+/* ═══════════════════════════════════════════════
+   ENVELOPE CONTAINER & 3D BODY
+   ═══════════════════════════════════════════════ */
+
+.envelopeContainer {
+  width: 100%;
+  position: relative;
+}
+
+.envelopeBody {
+  width: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  min-height: 485px;
+  display: flex;
+  justify-content: center;
+  transition: min-height 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .envelopeBody {
+    min-height: 480px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .envelopeBody {
+    min-height: 520px;
+  }
+}
+
+/* Envelope Back and Pearlescent Lining */
+.envelopeBackLining {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+  border-radius: 20px;
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12),
+    0 0 50px rgba(148, 163, 184, 0.2);
+  z-index: 1;
+  transition: border-radius 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .envelopeBackLining {
+    border-radius: 24px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .envelopeBackLining {
+    border-radius: 28px;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   FRONT POCKET COVER (PROMINENT PHYSICAL INVITATION)
+   ═══════════════════════════════════════════════ */
+
+.envelopePocketFront {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.99) 100%);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 20px;
+  border: 1.5px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.85rem 1.15rem 1.5rem;
+  overflow: hidden;
+  transition: padding 0.35s ease, border-radius 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .envelopePocketFront {
+    padding: 2.25rem 2.5rem 1.85rem;
+    border-radius: 24px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .envelopePocketFront {
+    padding: 2.5rem 3.5rem 2.15rem;
+    border-radius: 28px;
+  }
+}
+
+.coverTopSection {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 12;
+  padding-bottom: 0.5rem;
+}
+
+.coverBottomSection {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 12;
+  padding-top: 0.5rem;
+}
+
+/* Monogram Inner Reveal (Unveiled when 3D flap opens) */
+.coverInnerReveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.innerMonogramEmblem {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(148, 163, 184, 0.45);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(241, 245, 249, 0.9) 100%);
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08), 0 0 20px rgba(148, 163, 184, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: width 0.35s ease, height 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .innerMonogramEmblem {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .innerMonogramEmblem {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+.innerMonogramImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.innerMonogramText {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--silver-primary);
+  letter-spacing: 0.08em;
+}
+
+.innerProclamationTag {
+  font-family: var(--font-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--silver-primary);
+  text-transform: uppercase;
+}
+
+/* Dynamic Specular Sheen Sweep */
+.specularSheen {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.5) 45%,
+      rgba(203, 213, 225, 0.3) 50%,
+      transparent 65%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: transform 0.2s ease-out;
+}
+
+/* Front Pocket Cover Content */
+.frontPocketCover {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 12;
+  margin: 0;
+}
+
+/* Personalized Guest Plaque */
+.guestPersonalizedPlaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1.1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06), 0 0 20px rgba(148, 163, 184, 0.15);
+  margin-bottom: 0.45rem;
+  max-width: 90%;
+}
+
+.guestSalutationTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.guestNameHighlight {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0.15rem 0;
+  letter-spacing: 0.02em;
+}
+
+.inviterSubnote {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Default Badge if no guest name */
+.invitationBadge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--silver-primary);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.leThanhHonHeading {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1e293b;
+  margin: 0 0 0.35rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: font-size 0.35s ease, letter-spacing 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .leThanhHonHeading {
+    font-size: 1.15rem;
+    letter-spacing: 0.28em;
+    margin-bottom: 0.45rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .leThanhHonHeading {
+    font-size: 1.28rem;
+    letter-spacing: 0.32em;
+    margin-bottom: 0.55rem;
+  }
+}
+
+.frontNames {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 0.45rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: font-size 0.35s ease, gap 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .frontNames {
+    font-size: 1.95rem;
+    gap: 0.65rem;
+    margin-bottom: 0.65rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .frontNames {
+    font-size: 2.35rem;
+    gap: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.nameBlock {
+  white-space: nowrap;
+}
+
+.heartConnector {
+  color: #64748b;
+  font-size: 1.15rem;
+  margin: 0 0.2rem;
+  text-shadow: 0 0 12px var(--silver-glow);
+  transition: font-size 0.35s ease, margin 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .heartConnector {
+    font-size: 1.4rem;
+    margin: 0 0.4rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .heartConnector {
+    font-size: 1.65rem;
+    margin: 0 0.5rem;
+  }
+}
+
+.frontDatePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: font-size 0.35s ease, padding 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .frontDatePill {
+    font-size: 0.82rem;
+    letter-spacing: 0.22em;
+    padding: 0.35rem 1.25rem;
+    margin-bottom: 0.65rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .frontDatePill {
+    font-size: 0.88rem;
+    letter-spacing: 0.24em;
+    padding: 0.4rem 1.45rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.pillIcon {
+  color: var(--silver-primary);
+}
+
+.frontQuote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--text-dark-secondary);
+  max-width: 420px;
+  margin: 0 auto 0.5rem;
+  line-height: 1.55;
+}
+
+.venueShortPreview {
+  font-size: 0.78rem;
+  color: var(--silver-primary);
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════
+   3D TRIANGULAR FLAP
+   ═══════════════════════════════════════════════ */
+
+.envelopeFlap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.flapTriangle {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-top: 1.5px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+  filter: drop-shadow(0 6px 14px rgba(15, 23, 42, 0.12));
+}
+
+/* ═══════════════════════════════════════════════
+   CAST SILVER & PLATINUM WAX SEAL MEDALLION
+   ═══════════════════════════════════════════════ */
+
+.waxSealTrigger {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s var(--ease-luxury);
+}
+
+.waxSealTrigger:focus-visible {
+  outline: 2px solid var(--silver-primary);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.waxSealBody {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  border: 2.5px solid rgba(255, 255, 255, 0.95);
+  background: #f8fafc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s var(--ease-luxury), box-shadow 0.3s var(--ease-luxury), width 0.35s ease, height 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .waxSealBody {
+    width: 98px;
+    height: 98px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .waxSealBody {
+    width: 106px;
+    height: 106px;
+  }
+}
+
+.sealImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.waxSealTrigger:hover .waxSealBody {
+  transform: scale(1.08);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.24);
+}
+
+.waxSealTrigger:active .waxSealBody {
+  transform: scale(0.94);
+}
+
+.sealShine {
+  position: absolute;
+  top: 6px;
+  left: 12px;
+  width: 22px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  transform: rotate(-30deg);
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.tapPromptBadge {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25), 0 0 20px rgba(148, 163, 184, 0.3);
+  white-space: nowrap;
+}
+
+.sparkleIcon {
+  color: #e2e8f0;
+}
+
+/* ═══════════════════════════════════════════════
+   INNER ENVELOPE CAVITY RADIANT GOLDEN LIGHT PORTAL
+   ═══════════════════════════════════════════════ */
+
+.envelopeInnerPortal {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  height: 240px;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 35%, rgba(255, 255, 240, 0.98) 0%, rgba(254, 240, 138, 0.75) 25%, rgba(251, 191, 36, 0.5) 55%, rgba(245, 158, 11, 0.2) 75%, transparent 90%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.innerRaysRing {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(251, 191, 36, 0.5);
+  animation: rotateRays 9s linear infinite;
+}
+
+.innerSunburstBeams {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg,
+      rgba(254, 240, 138, 0.3) 0deg 12deg,
+      transparent 12deg 24deg,
+      rgba(251, 191, 36, 0.2) 24deg 36deg,
+      transparent 36deg 48deg);
+  filter: blur(4px);
+  animation: rotateRays 14s linear infinite reverse;
+}
+
+@media (min-width: 640px) {
+  .envelopeInnerPortal {
+    height: 250px;
+    border-radius: 20px;
+  }
+
+  .innerRaysRing {
+    width: 260px;
+    height: 260px;
+  }
+
+  .innerSunburstBeams {
+    width: 420px;
+    height: 420px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .envelopeInnerPortal {
+    height: 270px;
+    border-radius: 24px;
+  }
+
+  .innerRaysRing {
+    width: 300px;
+    height: 300px;
+  }
+
+  .innerSunburstBeams {
+    width: 520px;
+    height: 520px;
+  }
+}
+
+.innerSparkleEmblem {
+  position: relative;
+  z-index: 5;
+  filter: drop-shadow(0 0 10px rgba(253, 224, 71, 0.7));
+}
+
+.innerSparkleGlyph {
+  color: #fbbf24;
+  animation: sparkleTwinkle 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes rotateRays {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0% {
+    transform: scale(0.9) rotate(0deg);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.25) rotate(20deg);
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   GLITTER WARP OVERLAY & CELESTIAL GOLDEN FLASH
+   ═══════════════════════════════════════════════ */
+
+.glitterWarpOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warpFlashCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%,
+      rgba(255, 255, 245, 0.98) 0%,
+      rgba(254, 240, 138, 0.7) 20%,
+      rgba(251, 191, 36, 0.45) 45%,
+      rgba(245, 158, 11, 0.2) 65%,
+      transparent 80%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.warpGoldenShockwave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid rgba(254, 240, 138, 0.9);
+  box-shadow: 0 0 50px rgba(251, 191, 36, 0.8), inset 0 0 30px rgba(254, 240, 138, 0.6);
+  animation: expandShockwave 1.3s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes expandShockwave {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(8);
+    opacity: 0;
+  }
+}
+
+.pocketClickable {
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-luxury), box-shadow 0.3s var(--ease-luxury);
+}
+
+.pocketClickable:hover {
+  box-shadow: 0 -12px 45px rgba(148, 163, 184, 0.25), 0 5px 25px rgba(15, 23, 42, 0.12);
+}
+
+/* ═══════════════════════════════════════════════
+   FAST SKIP BUTTON
+   ═══════════════════════════════════════════════ */
+
+.skipBtn {
+  margin-top: 1.25rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--text-dark);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 0.45rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+}
+
+.skipBtn:hover {
+  background: #ffffff;
+  border-color: var(--silver-primary);
+  color: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+}
+
+.skipBtn:active {
+  transform: scale(0.96);
+}
+
+/* ═══════════════════════════════════════════════
+   GLITTER WRAP OPENING EFFECT OVERLAY
+   ═══════════════════════════════════════════════ */
+
+.glitterWarpOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10005;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.35) 0%, rgba(2, 6, 23, 0.72) 100%);
+}

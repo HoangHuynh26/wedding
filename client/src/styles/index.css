@@ -1,0 +1,247 @@
+@import './variables.css';
+
+/* ═══════════════════════════════════════════════
+   CSS RESET & LUMINOUS BASE
+   ═══════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: 16px;
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-dark);
+  background-color: var(--bg-dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY — Crisp Editorial Contrast
+   ═══════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
+}
+
+input, textarea, select {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text-dark);
+  outline: none;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════
+   SELECTION & FOCUS — Silver Accents
+   ═══════════════════════════════════════════════ */
+
+::selection {
+  background-color: rgba(148, 163, 184, 0.35);
+  color: var(--text-dark);
+}
+
+:focus-visible {
+  outline: 2px solid var(--silver-primary);
+  outline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT — Container & Frosted Glass Cards
+   ═══════════════════════════════════════════════ */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Glass card — Frosted white crystal panel */
+.mobile-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.mobile-card:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-md), var(--glow-gold);
+}
+
+@media (min-width: 768px) {
+  .mobile-card {
+    padding: 2.5rem;
+    border-radius: var(--border-radius-lg);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION STRUCTURE
+   ═══════════════════════════════════════════════ */
+
+.section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  padding: 0 1rem;
+}
+
+.section-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.85rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 3.5rem;
+  }
+}
+
+/* Silver divider — Animated metallic line with diamond ornament */
+.gold-divider,
+.silver-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem auto 0;
+  width: 100%;
+  max-width: 200px;
+}
+
+.gold-divider::before,
+.gold-divider::after,
+.silver-divider::before,
+.silver-divider::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--silver-primary), transparent);
+  opacity: 0.6;
+}
+
+.gold-divider span,
+.silver-divider span {
+  color: var(--silver-primary);
+  font-size: 1rem;
+  text-shadow: 0 0 15px var(--silver-glow);
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR — Elegant Silver & Pearl White
+   ═══════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.75);
+}
+
+/* ═══════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

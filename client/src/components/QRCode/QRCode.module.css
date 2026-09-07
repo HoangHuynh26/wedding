@@ -1,0 +1,97 @@
+.qrSection {
+  background: #f8fafc;
+  position: relative;
+  padding: 5.5rem 0;
+}
+
+.qrCard {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(148, 163, 184, 0.1);
+  position: relative;
+  transition: border-color 0.5s ease;
+}
+
+.qrCard:hover {
+  border-color: var(--glass-border-hover);
+}
+
+@media (min-width: 768px) {
+  .qrCard {
+    padding: 3.5rem 2.5rem;
+  }
+}
+
+.qrContainer {
+  padding: 1.25rem;
+  background: #ffffff;
+  border-radius: var(--border-radius-md);
+  display: inline-block;
+  margin: 1.5rem auto;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08), 0 0 30px rgba(148, 163, 184, 0.15);
+  border: 2px solid rgba(148, 163, 184, 0.4);
+}
+
+.qrNotice {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--silver-primary);
+  font-weight: 700;
+  display: block;
+}
+
+.qrSubtext {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-dark-secondary);
+  margin: 1rem auto 1.5rem;
+  max-width: 360px;
+}
+
+/* Ghost glass action buttons */
+.actionRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  color: var(--text-dark);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.3s var(--ease-luxury);
+}
+
+.actionButton:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: var(--silver-primary);
+  box-shadow: 0 4px 15px rgba(148, 163, 184, 0.3);
+}
+
+.copiedToast {
+  font-size: 0.82rem;
+  color: #10b981;
+  margin-top: 0.75rem;
+  font-weight: 600;
+}

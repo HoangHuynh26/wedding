@@ -1,0 +1,14 @@
+{
+  "name": "wedding-invitation-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "start": "node server/src/server.js",
+    "build": "npm --prefix client run build",
+    "build:all": "npm --prefix client install && npm --prefix client run build",
+    "netlify:build": "npm --prefix client install && npm --prefix client run build"
+  },
+  "keywords": ["wedding", "invitation", "react", "express"]
+}

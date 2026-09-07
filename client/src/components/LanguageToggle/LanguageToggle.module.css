@@ -1,0 +1,76 @@
+.toggleWrapper {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10050;
+}
+
+/* Compact, delicate luxury white & silver pill */
+.toggleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 999px;
+  padding: 3px 4px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.toggleButton:hover {
+  border-color: var(--silver-primary);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12), 0 0 10px rgba(148, 163, 184, 0.3);
+}
+
+.optionPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-dark-secondary);
+  transition: all 0.25s ease;
+  line-height: 1;
+}
+
+.optionPill.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+}
+
+.optionPill:focus-visible {
+  outline: 1.5px solid var(--silver-primary);
+  outline-offset: 1px;
+}
+
+.divider {
+  font-size: 0.5rem;
+  color: rgba(148, 163, 184, 0.6);
+  pointer-events: none;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .toggleWrapper {
+    top: 10px;
+    left: 10px;
+  }
+
+  .optionPill {
+    padding: 2.5px 6px;
+    font-size: 0.58rem;
+  }
+}

@@ -1,0 +1,147 @@
+:root {
+  /* ═══════════════════════════════════════════════
+     LUMINOUS SILVER & WHITE — Luxury Wedding Palette
+     ═══════════════════════════════════════════════ */
+
+  /* Backgrounds — Pure luminous whites & frosted pearl mist */
+  --bg-dark: #ffffff;
+  --bg-dark-secondary: #f8fafc;
+  --bg-dark-tertiary: #f1f5f9;
+  --bg-section-alt: #f8fafc;
+  --bg-light: #ffffff;
+  --bg-ivory: #fcfcfd;
+  --bg-cream: #f8fafc;
+
+  /* Glass surfaces — Frosted crystalline white glass panels */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-strong: rgba(255, 255, 255, 0.94);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(148, 163, 184, 0.35);
+  --glass-border-hover: rgba(100, 116, 139, 0.65);
+  --glass-blur: 20px;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-dark: #ffffff;
+
+  /* Text — Deep charcoal chrome & slate for ultra-crisp legibility */
+  --text-dark: #0f172a;
+  --text-dark-secondary: #475569;
+  --text-light: #0f172a;
+  --text-light-secondary: #334155;
+  --text-muted: #64748b;
+  --text-on-dark: #ffffff;
+
+  /* Silver & Metallic Palette (mapped to existing --gold-* tokens for seamless compatibility) */
+  --gold-primary: #526071;
+  --gold-light: #1e293b;
+  --gold-lighter: #f8fafc;
+  --gold-dark: #334155;
+  --gold-deep: #0f172a;
+  --gold-glow: rgba(148, 163, 184, 0.35);
+  --gold-glow-intense: rgba(100, 116, 139, 0.45);
+  --gold-gradient: linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #94a3b8 70%, #64748b 100%);
+  --gold-shimmer: linear-gradient(90deg, #64748b 0%, #cbd5e1 30%, #ffffff 50%, #cbd5e1 70%, #64748b 100%);
+  --gold-gradient-text: linear-gradient(135deg, #0f172a 0%, #475569 45%, #94a3b8 75%, #1e293b 100%);
+
+  /* Explicit Silver & Metallic aliases */
+  --silver-primary: #526071;
+  --silver-light: #1e293b;
+  --silver-lighter: #f8fafc;
+  --silver-dark: #334155;
+  --silver-glow: rgba(148, 163, 184, 0.35);
+  --silver-glow-intense: rgba(100, 116, 139, 0.45);
+  --silver-gradient: linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #94a3b8 70%, #64748b 100%);
+  --silver-shimmer: linear-gradient(90deg, #64748b 0%, #cbd5e1 30%, #ffffff 50%, #cbd5e1 70%, #64748b 100%);
+  --silver-gradient-text: linear-gradient(135deg, #0f172a 0%, #475569 45%, #94a3b8 75%, #1e293b 100%);
+
+  /* Accent */
+  --rose-subtle: rgba(226, 232, 240, 0.4);
+  
+  /* Borders — Silver foil & hairline borders */
+  --border-gold: rgba(148, 163, 184, 0.35);
+  --border-gold-solid: #94a3b8;
+  --border-gold-hover: rgba(71, 85, 105, 0.6);
+  --border-light: rgba(148, 163, 184, 0.25);
+  --border-dark: rgba(148, 163, 184, 0.35);
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, sans-serif;
+  --font-script: 'Pinyon Script', cursive;
+
+  /* Shadows — Soft, elegant slate & silver depth */
+  --shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 12px 36px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-gold: 0 12px 35px rgba(148, 163, 184, 0.25);
+  --shadow-gold-intense: 0 0 45px rgba(148, 163, 184, 0.4);
+  --glow-gold: 0 0 30px rgba(148, 163, 184, 0.3);
+  --glow-gold-lg: 0 0 60px rgba(148, 163, 184, 0.25);
+
+  /* Spacing */
+  --touch-target: 48px;
+  --border-radius-sm: 10px;
+  --border-radius-md: 18px;
+  --border-radius-lg: 26px;
+  --border-radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.28s ease;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATION KEYFRAMES
+   ═══════════════════════════════════════════════ */
+
+@keyframes goldShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes silverShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(148, 163, 184, 0.3); box-shadow: 0 0 20px rgba(148, 163, 184, 0.15); }
+  50% { border-color: rgba(100, 116, 139, 0.6); box-shadow: 0 0 35px rgba(148, 163, 184, 0.35); }
+}
+
+@keyframes rotateRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Metallic silver gradient text utility */
+.text-gold-gradient,
+.text-silver-gradient {
+  background: var(--gold-gradient-text);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: silverShimmer 4s linear infinite;
+}
