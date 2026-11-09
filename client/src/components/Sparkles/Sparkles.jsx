@@ -5,7 +5,7 @@ import styles from './Sparkles.module.css';
  * Sparkles (Kim Tuyến Bay Bổng)
  * Luxury gold & champagne floating glitter, tumbling sequins, and twinkling stars.
  */
-export default function Sparkles({ count = 38, className = '' }) {
+export default function Sparkles({ count = 38, className = '', theme = 'gold-rose' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -49,18 +49,31 @@ export default function Sparkles({ count = 38, className = '' }) {
 
     // Particle types: 'star' (ngôi sao 4 cánh), 'flake' (kim tuyến lấp lánh xoay 3D), 'dust' (bụi tiên phát sáng)
     const types = ['star', 'flake', 'dust', 'flake', 'dust', 'star'];
-    const palette = [
-      { r: 255, g: 215, b: 70 },   // 24k Gold
-      { r: 248, g: 228, b: 160 },  // Warm Champagne
-      { r: 255, g: 245, b: 200 },  // Pearl White-Gold
-      { r: 235, g: 180, b: 85 },   // Royal Amber Gold
-    ];
+
+    // Luxury high-contrast palettes that pop brilliantly on light ivory/cream backgrounds
+    const paletteMap = {
+      'gold-rose': [
+        { r: 218, g: 148, b: 32 },  // Deep 24K Royal Gold
+        { r: 228, g: 122, b: 95 },  // Sparkling Rose Gold
+        { r: 242, g: 178, b: 52 },  // Radiant Sun Gold
+        { r: 196, g: 118, b: 34 },  // Warm Amber Bronze
+        { r: 215, g: 95, b: 85 },   // Romantic Rose Champagne
+      ],
+      'royal-gold': [
+        { r: 218, g: 148, b: 32 },  // Deep 24K Royal Gold
+        { r: 242, g: 178, b: 52 },  // Radiant Sun Gold
+        { r: 196, g: 118, b: 34 },  // Warm Amber Bronze
+        { r: 232, g: 165, b: 42 },  // Metallic Gold
+      ],
+    };
+
+    const palette = paletteMap[theme] || paletteMap['gold-rose'];
 
     const particles = Array.from({ length: count }).map(() => {
       const type = types[Math.floor(Math.random() * types.length)];
       const color = palette[Math.floor(Math.random() * palette.length)];
-      const baseAlpha = Math.random() * 0.55 + 0.35;
-      const size = type === 'star' ? Math.random() * 5 + 3.5 : type === 'flake' ? Math.random() * 3.5 + 2 : Math.random() * 2 + 1;
+      const baseAlpha = Math.random() * 0.45 + 0.45;
+      const size = type === 'star' ? Math.random() * 5.5 + 3.8 : type === 'flake' ? Math.random() * 4 + 2.2 : Math.random() * 2.5 + 1.2;
 
       return {
         x: Math.random() * initialW,

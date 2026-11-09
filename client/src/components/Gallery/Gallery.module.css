@@ -97,8 +97,6 @@
 .coverflowRoot {
   width: 100%;
   position: relative;
-  perspective: 1600px;
-  -webkit-perspective: 1600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,8 +106,6 @@
 
 .coverflowStage {
   position: relative;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
 }
 
 .coverflowCard {
@@ -388,6 +384,20 @@
   .lightboxCounter,
   .categoryCount {
     display: none !important;
+  }
+  .coverflowRoot {
+    perspective: none !important;
+    -webkit-perspective: none !important;
+  }
+  .coverflowStage {
+    transform-style: flat !important;
+    -webkit-transform-style: flat !important;
+  }
+  .coverflowCard {
+    transform-style: flat !important;
+    -webkit-transform-style: flat !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
   }
 }
 

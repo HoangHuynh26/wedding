@@ -6,9 +6,9 @@
 export const weddingConfig = {
   invitation: {
     title: 'THIỆP MỜI',
-    subtitle: 'TRÂN TRỌNG KÍNH MỜI BẠN ĐẾN DỰ LỄ THÀNH HÔN CỦA CHÚNG TÔI',
+    subtitle: 'TRÂN TRỌNG KÍNH MỜI BẠN ĐẾN DỰ LỄ VU QUY CỦA CHÚNG TÔI',
     openLabel: 'NHẤN ĐỂ MỞ THIỆP',
-    ceremonyLabel: 'LỄ THÀNH HÔN',
+    ceremonyLabel: 'LỄ VU QUY',
     heroLabel: 'NGÀY CHUNG ĐÔI',
     scrollLabel: 'CUỘN XUỐNG ĐỂ KHÁM PHÁ',
     rsvpLabel: 'Xác nhận tham dự',
@@ -100,7 +100,7 @@ export const weddingConfig = {
     fullDateDisplay: 'Chủ Nhật, ngày 17 tháng 01 năm 2027',
     timeDisplay: '11:20 AM',
     receptionTime: '17:30 - Đón khách & Tiệc trà khai vị',
-    ceremonyTime: '18:30 - Khai tiệc & Nghi lễ thành hôn',
+    ceremonyTime: '18:30 - Khai tiệc & Nghi lễ vu quy',
     dinnerTime: '19:00 - Tiệc mừng thân mật & Âm nhạc',
     isoDate: '2027-01-17T11:20:00+07:00',
   },
@@ -152,7 +152,7 @@ export const weddingConfig = {
     },
     {
       year: '2027',
-      title: 'Ngày Thành Hôn',
+      title: 'Lễ Vu Quy',
       subtitle: 'Khởi đầu cho chương hạnh phúc mới',
       description: 'Hôm nay, ngày 17.01.2027, trong sự chúc phúc của hai bên gia đình và bè bạn, chúng mình chính thức nắm tay nhau bước vào ngưỡng cửa hôn nhân.',
       image: '/photos/tuan-9792.jpg',

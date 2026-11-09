@@ -105,7 +105,7 @@ export default function WeddingHero({ phase }) {
         <h1 className={styles.names} id="wedding-title" tabIndex={-1}>
           <span className={styles.bride}>{bride.name}</span>
           <span className={styles.heart} aria-hidden="true">
-            <Heart size={15} strokeWidth={1.5} />
+            <Heart size={22} strokeWidth={1.6} />
           </span>
           <span className={styles.groom}>{groom.name}</span>
         </h1>
