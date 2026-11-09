@@ -284,6 +284,12 @@ export const translations = {
       rsvp: 'XÁC NHẬN',
       reopen: 'Xem lại thiệp cưới',
     },
+    thankYouSection: {
+      scriptTitle: 'Thank you!',
+      heading: 'Cảm ơn bạn đã dành tình cảm cho chúng mình!',
+      message: 'Sự hiện diện của bạn chính là món quà ý nghĩa nhất, và chúng mình vô cùng trân quý khi được cùng bạn chia sẻ niềm hạnh phúc trong ngày trọng đại này.',
+      closing: 'Với tất cả tình yêu thương,',
+    },
     footer: {
       quote: '“Cảm ơn bạn đã luôn là một phần trân quý trong hành trình hạnh phúc của chúng mình.”',
       tagline: 'Lễ Vu Quy • Gửi trọn yêu thương cho ngày hạnh phúc trăm năm',
@@ -545,6 +551,12 @@ export const translations = {
       rsvp: 'RSVP',
       reopen: 'Reopen Sealed Envelope',
     },
+    thankYouSection: {
+      scriptTitle: 'Thank you!',
+      heading: 'Thank you for your warm blessings and love!',
+      message: 'Your presence is the most meaningful gift, and we truly cherish sharing our joyous milestone with you on this special day.',
+      closing: 'With all our love & gratitude,',
+    },
     footer: {
       quote: '“Thank you for being such a cherished part of our journey toward lifelong happiness.”',
       tagline: 'With All Our Love • Dedicated to our special wedding day',
@@ -805,6 +817,12 @@ export const translations = {
       qr: '二维码请柬',
       rsvp: '出席回执',
       reopen: '重新查看请柬封面',
+    },
+    thankYouSection: {
+      scriptTitle: 'Thank you!',
+      heading: '衷心感谢您对我们的关爱与祝福！',
+      message: '您的到来与祝福是我们最珍贵的礼物，真诚期待与您共同见证并分享这一幸福美好的重要时刻。',
+      closing: '满怀爱意与感激，',
     },
     footer: {
       quote: '“感谢您成为我们迈向幸福婚姻旅途中珍贵而温暖的一部分。”',

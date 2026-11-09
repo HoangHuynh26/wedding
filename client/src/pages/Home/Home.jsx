@@ -10,6 +10,7 @@ import LoveStory from '../../components/LoveStory/LoveStory';
 import MobileQuickActions from '../../components/MobileQuickActions/MobileQuickActions';
 import MusicButton from '../../components/MusicButton/MusicButton';
 import RSVP from '../../components/RSVP/RSVP';
+import ThankYou from '../../components/ThankYou/ThankYou';
 import Venue from '../../components/Venue/Venue';
 import WeddingEnvelope from '../../components/WeddingEnvelope/WeddingEnvelope';
 import WeddingHero from '../../components/WeddingHero/WeddingHero';
@@ -21,7 +22,7 @@ import './Home.css';
 const openingDuration = 1850;
 const revealDuration = 1800;
 const motionPreference = '(prefers-reduced-motion: reduce)';
-const sectionIds = new Set(['hero', 'invitation', 'story', 'countdown', 'gallery', 'venue', 'rsvp', 'contact']);
+const sectionIds = new Set(['hero', 'invitation', 'story', 'countdown', 'gallery', 'venue', 'rsvp', 'contact', 'thank-you']);
 const { theme } = weddingConfig;
 const themeStyle = {
   '--wedding-ivory': theme.ivory,
@@ -120,6 +121,7 @@ export default function WeddingExperience() {
           <Venue />
           <RSVP />
           <Contact />
+          <ThankYou />
           <Footer />
         </>
       )}

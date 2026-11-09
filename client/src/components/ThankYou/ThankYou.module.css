@@ -1,0 +1,213 @@
+.thankYouSection {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 1.5rem;
+}
+
+/* Ambient backlight glow */
+.thankYouSection::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 450px;
+  background: radial-gradient(ellipse, rgba(148, 163, 184, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.thankYouCard {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.88));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--glass-border, rgba(148, 163, 184, 0.35));
+  border-radius: var(--border-radius-lg, 24px);
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 3.5rem);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 16px 50px rgba(15, 23, 42, 0.08), 0 0 30px rgba(148, 163, 184, 0.15);
+  transition: all 0.4s var(--ease-luxury, ease);
+}
+
+.thankYouCard:hover {
+  border-color: var(--glass-border-hover, rgba(100, 116, 139, 0.6));
+  box-shadow: 0 24px 65px rgba(15, 23, 42, 0.12), 0 0 45px rgba(148, 163, 184, 0.25);
+  transform: translateY(-3px);
+}
+
+/* Corner ornamental brackets */
+.cornerAccent {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: rgba(148, 163, 184, 0.5);
+  pointer-events: none;
+}
+
+.cornerTopLeft {
+  top: 14px;
+  left: 14px;
+  border-top: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  border-radius: 4px 0 0 0;
+}
+
+.cornerTopRight {
+  top: 14px;
+  right: 14px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  border-radius: 0 4px 0 0;
+}
+
+.cornerBottomLeft {
+  bottom: 14px;
+  left: 14px;
+  border-bottom: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  border-radius: 0 0 0 4px;
+}
+
+.cornerBottomRight {
+  bottom: 14px;
+  right: 14px;
+  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  border-radius: 0 0 4px 0;
+}
+
+/* Monogram crest */
+.monogramCrest {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #ffffff, #cbd5e1 45%, #94a3b8 80%, #64748b);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1), 0 0 20px rgba(148, 163, 184, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+/* Calligraphic Script Title */
+.scriptTitle {
+  font-family: var(--wedding-names, 'Pinyon Script', cursive);
+  font-size: clamp(3.2rem, 7.5vw, 5.2rem);
+  color: var(--wedding-navy, #17253a);
+  font-weight: 400;
+  line-height: 1.05;
+  margin: 0 0 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+/* Heart divider */
+.heartDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0.5rem auto 1.85rem;
+  max-width: 260px;
+}
+
+.dividerLine {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #94a3b8, transparent);
+  opacity: 0.7;
+}
+
+.heartIcon {
+  color: var(--wedding-gold, #b99154);
+  filter: drop-shadow(0 2px 8px rgba(185, 145, 84, 0.35));
+}
+
+/* Main Heading */
+.mainHeading {
+  font-family: var(--wedding-sans, 'Be Vietnam Pro', 'Montserrat', sans-serif);
+  font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+  font-weight: 700;
+  color: var(--text-dark, #0f172a);
+  line-height: 1.38;
+  margin: 0 0 1rem;
+  letter-spacing: -0.01em;
+}
+
+/* Message Paragraph */
+.messageText {
+  font-family: var(--wedding-sans, 'Be Vietnam Pro', 'Montserrat', sans-serif);
+  font-size: clamp(0.92rem, 2.2vw, 1.05rem);
+  color: var(--text-dark-secondary, #475569);
+  line-height: 1.75;
+  max-width: 620px;
+  margin: 0 auto 2.25rem;
+}
+
+/* Sign-off section */
+.signOff {
+  border-top: 1px dashed rgba(148, 163, 184, 0.35);
+  padding-top: 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.closingNote {
+  font-family: var(--wedding-sans, 'Be Vietnam Pro', 'Montserrat', sans-serif);
+  font-size: 0.82rem;
+  color: var(--silver-primary, #64748b);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.coupleNames {
+  font-family: var(--wedding-names, 'Pinyon Script', cursive);
+  font-size: clamp(2.4rem, 5.2vw, 3.8rem);
+  color: var(--wedding-navy, #17253a);
+  line-height: 1.15;
+  margin: 0 0 0.65rem;
+}
+
+.ampersand {
+  font-family: var(--wedding-sans, sans-serif);
+  font-size: 0.65em;
+  font-weight: 300;
+  color: var(--silver-primary, #64748b);
+  vertical-align: middle;
+  padding: 0 0.3rem;
+}
+
+.weddingDateBadge {
+  display: inline-block;
+  font-family: var(--wedding-sans, 'Be Vietnam Pro', sans-serif);
+  font-size: 0.78rem;
+  color: #334155;
+  background: rgba(241, 245, 249, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 0.35rem 1.15rem;
+  border-radius: var(--border-radius-pill, 9999px);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .thankYouSection {
+    padding: 3.5rem 1rem;
+  }
+
+  .thankYouCard {
+    padding: 2.25rem 1.25rem;
+  }
+}
