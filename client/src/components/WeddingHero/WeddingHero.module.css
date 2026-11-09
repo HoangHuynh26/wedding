@@ -263,10 +263,6 @@
 }
 
 @media (max-width: 767px), (max-width: 1200px) and (max-aspect-ratio: 1 / 1) {
-  .heroSparkles {
-    display: none !important;
-  }
-
   .hero {
     grid-template-rows: auto 1fr auto;
   }

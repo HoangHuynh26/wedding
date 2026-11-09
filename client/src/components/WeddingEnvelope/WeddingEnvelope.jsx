@@ -4,6 +4,7 @@ import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
 import { BotanicalSprig, WeddingMonogram } from './WeddingOrnaments';
+import Sparkles from '../Sparkles/Sparkles';
 import styles from './WeddingEnvelope.module.css';
 
 const { event, invitation } = weddingConfig;
@@ -149,6 +150,9 @@ export default function WeddingEnvelope({ phase, onOpen }) {
         <span className={`${styles.petal} ${styles.petalUpper}`} />
         <FloatingParticles />
       </div>
+
+      {/* Hiệu ứng kim tuyến bay bổng lấp lánh ngoài phong bì & thiệp */}
+      <Sparkles count={38} className={styles.envelopeSparkles} />
 
       <header className={styles.heading}>
         <h1 id={headingId}>{words.title}</h1>

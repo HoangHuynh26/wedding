@@ -15,10 +15,16 @@
 .room,
 .fabric,
 .dust,
-.bloom {
+.bloom,
+.envelopeSparkles {
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+.envelopeSparkles {
+  z-index: 4;
+  transition: opacity 850ms ease;
 }
 
 .room {
@@ -725,7 +731,8 @@
 .experience[data-phase='reveal'] .room,
 .experience[data-phase='reveal'] .back,
 .experience[data-phase='reveal'] .flap,
-.experience[data-phase='reveal'] .pocket {
+.experience[data-phase='reveal'] .pocket,
+.experience[data-phase='reveal'] .envelopeSparkles {
   opacity: 0;
 }
 
