@@ -22,7 +22,7 @@ body::-webkit-scrollbar {
 .wedding-front {
   --wedding-serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
   --wedding-sans: 'Be Vietnam Pro', 'Noto Sans SC', system-ui, sans-serif;
-  --wedding-names: 'Great Vibes', 'Alex Brush', cursive;
+  --wedding-names: 'Pinyon Script', 'Great Vibes', 'Alex Brush', cursive;
 }
 
 :where(.wedding-front) :focus-visible {
