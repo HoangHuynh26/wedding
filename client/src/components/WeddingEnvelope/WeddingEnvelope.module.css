@@ -478,10 +478,54 @@
 
 .ribbonRight {
   transform: translateX(-5%) rotate(-6deg);
+  animation: ribbonFlutterRight 3.8s ease-in-out infinite;
 }
 
 .ribbonLeft {
   transform: translateX(5%) scaleX(-1) rotate(-11deg);
+  animation: ribbonFlutterLeft 4.3s ease-in-out infinite;
+}
+
+@keyframes ribbonFlutterRight {
+  0%, 100% {
+    transform: translateX(-5%) rotate(-6deg) skewX(0deg) scale(1, 1);
+    filter: drop-shadow(0.3rem 0.2rem 0.14rem rgba(141, 118, 87, 0.39));
+  }
+  20% {
+    transform: translateX(-4.2%) rotate(-10.5deg) skewX(-3.5deg) scale(0.98, 1.03);
+    filter: drop-shadow(0.24rem 0.26rem 0.18rem rgba(141, 118, 87, 0.34));
+  }
+  45% {
+    transform: translateX(-5.6%) rotate(-3.5deg) skewX(2.8deg) scale(1.02, 0.97);
+    filter: drop-shadow(0.34rem 0.18rem 0.12rem rgba(141, 118, 87, 0.43));
+  }
+  70% {
+    transform: translateX(-4.6%) rotate(-8.5deg) skewX(-2deg) scale(0.99, 1.01);
+    filter: drop-shadow(0.26rem 0.24rem 0.16rem rgba(141, 118, 87, 0.36));
+  }
+  85% {
+    transform: translateX(-5.2%) rotate(-4.8deg) skewX(1.4deg) scale(1.01, 0.99);
+    filter: drop-shadow(0.32rem 0.2rem 0.14rem rgba(141, 118, 87, 0.38));
+  }
+}
+
+@keyframes ribbonFlutterLeft {
+  0%, 100% {
+    transform: translateX(5%) scaleX(-1) rotate(-11deg) skewX(0deg) scale(1, 1);
+    filter: drop-shadow(0.3rem 0.2rem 0.14rem rgba(141, 118, 87, 0.39));
+  }
+  25% {
+    transform: translateX(5.5%) scaleX(-1) rotate(-6.5deg) skewX(3deg) scale(1.03, 0.97);
+    filter: drop-shadow(0.34rem 0.18rem 0.12rem rgba(141, 118, 87, 0.43));
+  }
+  50% {
+    transform: translateX(4.3%) scaleX(-1) rotate(-15.5deg) skewX(-3.5deg) scale(0.97, 1.03);
+    filter: drop-shadow(0.24rem 0.26rem 0.18rem rgba(141, 118, 87, 0.34));
+  }
+  75% {
+    transform: translateX(5.2%) scaleX(-1) rotate(-9.5deg) skewX(1.8deg) scale(1.01, 0.99);
+    filter: drop-shadow(0.31rem 0.22rem 0.15rem rgba(141, 118, 87, 0.37));
+  }
 }
 
 .waxGlowHalo {
