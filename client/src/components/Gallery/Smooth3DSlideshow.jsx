@@ -74,7 +74,7 @@ export default function Smooth3DSlideshow({
   // Responsive sizing & mobile / tablet swipe-only detection
   const getLayoutMetrics = () => {
     if (typeof window === 'undefined') {
-      return { width: 420, height: 560, gap: 7.2, depth: 220, isMobile: true };
+      return { width: 420, height: 560, gap: 7.2, depth: 220, isMobile: true, isTouch: true };
     }
     const w = window.innerWidth;
     const isTouchOrTablet =
@@ -83,18 +83,23 @@ export default function Smooth3DSlideshow({
       (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
 
     if (w < 480) {
-      // Strictly even integers to prevent subpixel anti-aliasing blur
-      const rawW = Math.min(w - 56, 320);
+      // Mobile screen: card takes comfortable width, clean 3:4 aspect ratio
+      const rawW = Math.min(w - 44, 340);
       const cw = Math.floor(rawW / 2) * 2;
-      const ch = Math.floor((cw * 1.32) / 2) * 2;
-      return { width: cw, height: Math.min(ch, 420), gap: 4.8, depth: 150, isMobile: true };
+      const ch = Math.round(cw * 1.34);
+      return { width: cw, height: ch, gap: 4.8, depth: 150, isMobile: true, isTouch: true };
     } else if (w <= 768) {
-      return { width: 350, height: 466, gap: 6.0, depth: 180, isMobile: true };
+      const rawW = Math.min(w - 80, 380);
+      const cw = Math.floor(rawW / 2) * 2;
+      const ch = Math.round(cw * 1.34);
+      return { width: cw, height: ch, gap: 5.6, depth: 180, isMobile: true, isTouch: true };
     } else if (w <= 1366) {
       // iPad, iPad Air, iPad Pro 11", iPad Pro 12.9" & 13" (portrait & landscape)
-      return { width: 420, height: 560, gap: 7.0, depth: 215, isMobile: isTouchOrTablet };
+      const cw = w <= 1024 ? 420 : 460;
+      const ch = Math.round(cw * 1.34);
+      return { width: cw, height: ch, gap: 6.8, depth: 215, isMobile: true, isTouch: true };
     } else {
-      return { width: 430, height: 574, gap: 7.5, depth: 225, isMobile: isTouchOrTablet };
+      return { width: 440, height: 590, gap: 7.5, depth: 225, isMobile: isTouchOrTablet, isTouch: isTouchOrTablet };
     }
   };
 
@@ -109,6 +114,7 @@ export default function Smooth3DSlideshow({
   }, []);
 
   const isMobile = dimensions.isMobile;
+  const isTouch = dimensions.isTouch;
   const cardWidth = propCardWidth || dimensions.width;
   const cardHeight = propCardHeight || dimensions.height;
   const effectiveGap = gap || dimensions.gap;
@@ -124,7 +130,7 @@ export default function Smooth3DSlideshow({
   // Preload adjacent images in memory for instant crisp display upon swiping
   useEffect(() => {
     if (n === 0) return;
-    for (let offset = -3; offset <= 3; offset++) {
+    for (let offset = -4; offset <= 4; offset++) {
       const idx = (((active + offset) % n) + n) % n;
       const s = list[idx];
       const imgSrc = s?.image?.src || s?.src || s?.image;
@@ -255,8 +261,8 @@ export default function Smooth3DSlideshow({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    perspective: `${PERSPECTIVE}px`,
-    WebkitPerspective: `${PERSPECTIVE}px`,
+    perspective: isTouch ? 'none' : `${PERSPECTIVE}px`,
+    WebkitPerspective: isTouch ? 'none' : `${PERSPECTIVE}px`,
     overflow: 'hidden',
     outline: 'none',
     padding: '10px 0',
@@ -284,8 +290,8 @@ export default function Smooth3DSlideshow({
           position: 'relative',
           width: cardWidth,
           height: cardHeight,
-          transformStyle: 'preserve-3d',
-          WebkitTransformStyle: 'preserve-3d',
+          transformStyle: isTouch ? 'flat' : 'preserve-3d',
+          WebkitTransformStyle: isTouch ? 'flat' : 'preserve-3d',
         }}
         className={styles.coverflowStage}
       >
@@ -307,21 +313,25 @@ export default function Smooth3DSlideshow({
 
           const cardStyle = {
             position: 'absolute',
-            left: '50%',
-            top: '50%',
+            left: 0,
+            top: 0,
             width: cardWidth,
             height: cardHeight,
             borderRadius: effectiveRadius,
             overflow: 'hidden',
-            transformStyle: isActive ? 'flat' : 'preserve-3d',
-            WebkitTransformStyle: isActive ? 'flat' : 'preserve-3d',
             transformOrigin: 'center center',
+            transformStyle: isTouch ? 'flat' : (isActive ? 'flat' : 'preserve-3d'),
+            WebkitTransformStyle: isTouch ? 'flat' : (isActive ? 'flat' : 'preserve-3d'),
             transform: isActive
-              ? 'translate3d(-50%, -50%, 0)'
-              : `translate3d(-50%, -50%, 0) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`,
+              ? 'translateX(0px) scale(1)'
+              : (isTouch
+                ? `translateX(${tx}px) scale(${sc})`
+                : `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`),
             WebkitTransform: isActive
-              ? 'translate3d(-50%, -50%, 0)'
-              : `translate3d(-50%, -50%, 0) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`,
+              ? 'translateX(0px) scale(1)'
+              : (isTouch
+                ? `translateX(${tx}px) scale(${sc})`
+                : `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`),
             transition: transitionCss,
             opacity: visible ? 1 : 0,
             cursor: isActive ? 'zoom-in' : 'pointer',
@@ -336,8 +346,6 @@ export default function Smooth3DSlideshow({
                 ? '0 25px 60px rgba(15, 23, 42, 0.42)'
                 : '0 12px 30px rgba(15, 23, 42, 0.3)'),
             border: 'none',
-            backfaceVisibility: isActive ? 'visible' : 'hidden',
-            WebkitBackfaceVisibility: isActive ? 'visible' : 'hidden',
           };
 
           return (
@@ -349,14 +357,14 @@ export default function Smooth3DSlideshow({
               aria-hidden={!visible}
               className={styles.coverflowCard}
             >
-              {/* Photo Image — Razor sharp rendering on Retina / Mobile / iPad */}
+              {/* Photo Image — Razor sharp native rendering on Mobile, iPad & Desktop */}
               {src ? (
                 <img
                   src={src}
                   alt={slide.image?.alt || slide.title || ''}
                   draggable={false}
                   decoding="async"
-                  loading={ax <= 2 ? 'eager' : 'lazy'}
+                  loading={ax <= 1 ? 'eager' : 'lazy'}
                   style={{
                     position: 'absolute',
                     inset: 0,
@@ -366,10 +374,6 @@ export default function Smooth3DSlideshow({
                     display: 'block',
                     userSelect: 'none',
                     pointerEvents: 'none',
-                    imageRendering: '-webkit-optimize-contrast',
-                    WebkitBackfaceVisibility: 'hidden',
-                    transform: 'translateZ(0)',
-                    WebkitTransform: 'translateZ(0)',
                   }}
                 />
               ) : null}
