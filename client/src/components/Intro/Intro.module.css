@@ -332,13 +332,11 @@
 .archGleam {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    transparent 40%,
-    transparent 60%,
-    rgba(212, 168, 87, 0.15) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(212, 168, 87, 0.15) 100%);
   pointer-events: none;
 }
 
@@ -383,10 +381,11 @@
 
 .personName {
   font-family: var(--font-serif);
-  font-size: 1.6rem;
+  font-size: clamp(1.25rem, 4.5vw, 1.65rem);
   color: var(--gold-light);
   margin: 0.2rem 0 0.75rem;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .infoBadge {
@@ -399,17 +398,19 @@
   border-radius: 6px;
   background: rgba(212, 168, 87, 0.08);
   margin-bottom: 0.5rem;
+  white-space: nowrap;
 }
 
 .lineageBadge {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.82rem;
+  font-size: clamp(0.7rem, 2.3vw, 0.82rem);
   color: rgba(230, 220, 205, 0.8);
   margin-bottom: 0.9rem;
   text-align: center;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 .lineageBadge strong {

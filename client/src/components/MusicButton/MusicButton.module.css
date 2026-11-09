@@ -3,6 +3,66 @@
   bottom: 24px;
   right: 24px;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .musicButtonWrapper {
+    bottom: 18px;
+    right: 18px;
+    gap: 10px;
+  }
+}
+
+/* Luxury 3D Silver Back To Top (Hero) Button */
+.scrollTopButton {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f1f5f9 45%, #94a3b8 100%);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.18),
+              0 0 20px rgba(148, 163, 184, 0.35),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .scrollTopButton {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+.scrollTopButton:hover {
+  transform: scale(1.1) translateY(-2px);
+  border-color: #ffffff;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 40%, #64748b 100%);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25),
+              0 0 30px rgba(148, 163, 184, 0.55);
+}
+
+.scrollTopButton:active {
+  transform: scale(0.95);
+}
+
+.chevronIcon {
+  color: #0f172a;
+  transition: transform 0.25s ease;
+}
+
+.scrollTopButton:hover .chevronIcon {
+  transform: translateY(-2px);
 }
 
 /* Luxury 3D Silver Medallion Music Button */
@@ -24,6 +84,13 @@
   position: relative;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .musicButton {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .musicButton:hover {

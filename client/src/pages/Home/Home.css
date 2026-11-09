@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
 html,
 body {
   margin: 0;
@@ -9,4 +11,20 @@ body {
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
+}
+
+.wedding-home {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.wedding-front {
+  --wedding-serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  --wedding-sans: 'Be Vietnam Pro', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+:where(.wedding-front) :focus-visible {
+  outline: 2px solid #826442;
+  outline-offset: 4px;
 }

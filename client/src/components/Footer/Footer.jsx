@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container">
 
         <h3 className={styles.coupleFullName}>
-          {weddingConfig.groom.name} &bull; {weddingConfig.bride.name}
+          {weddingConfig.bride.name} ♡ {weddingConfig.groom.name}
         </h3>
 
         <p className={styles.footerQuote}>

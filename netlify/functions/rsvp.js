@@ -50,7 +50,7 @@ exports.handler = async function (event, context) {
         };
       }
 
-      const { fullName, location, side = 'Nhà Trai (Chú Rể)', message = '', attendance = true } = body;
+      const { fullName, location, side = 'Nhà Gái (Cô Dâu)', message = '', attendance = true } = body;
 
       // Validation
       if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 2) {
@@ -77,7 +77,7 @@ exports.handler = async function (event, context) {
 
       const trimmedName = fullName.trim();
       const trimmedLocation = location.trim();
-      const trimmedSide = side ? String(side).trim() : 'Nhà Trai (Chú Rể)';
+      const trimmedSide = side ? String(side).trim() : 'Nhà Gái (Cô Dâu)';
       const trimmedMessage = message ? String(message).trim() : '';
       const cacheKey = `${trimmedName.toLowerCase()}_${trimmedLocation.toLowerCase()}`;
 

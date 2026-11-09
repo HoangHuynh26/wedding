@@ -469,11 +469,159 @@
 }
 
 /* Song Selection Styles */
+.musicHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.musicCategoryBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.musicCatPill {
+  font-size: 0.76rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--border-radius-pill);
+  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  color: var(--text-dark-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.musicCatPill:hover {
+  border-color: var(--silver-dark);
+  color: var(--text-dark);
+  background: #f8fafc;
+}
+
+.musicCatPillActive {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+}
+
+.catCount {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.musicSearchRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.musicSearchInput {
+  width: 100%;
+  padding: 0.65rem 2.2rem 0.65rem 2.35rem;
+  font-size: 0.84rem;
+  font-family: inherit;
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  background: #ffffff;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.musicSearchInput:focus {
+  border-color: var(--silver-dark);
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.15);
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.clearSearchBtn:hover {
+  color: var(--text-dark);
+}
+
+.sttBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.songDurationBadge {
+  font-size: 0.62rem;
+  font-weight: 500;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.ytLinkBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: #fef2f2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ytLinkBtn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: scale(1.08);
+}
+
+.noMusicFound {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  background: #ffffff;
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--border-radius-sm);
+}
+
 .musicGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
   margin-top: 0.6rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
 }
 
 @media (min-width: 680px) {
@@ -634,6 +782,27 @@
   color: var(--text-dark);
 }
 
+.itemBadgesRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.itemLangBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
 .itemSongBadge {
   display: inline-flex;
   align-items: center;
@@ -644,5 +813,88 @@
   border: 1px solid #e2e8f0;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
-  margin-top: 0.35rem;
+}
+
+/* Language Selector Cards */
+.langGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 720px) {
+  .langGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.langCard {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  padding: 0.95rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.langCard:hover {
+  border-color: var(--silver-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.langCardActive {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.18);
+}
+
+.langCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.langFlag {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.langName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.langBadgePill {
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.18);
+  color: #475569;
+}
+
+.langCardActive .langBadgePill {
+  background: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+}
+
+.langDesc {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.langCardActive .langDesc {
+  color: #cbd5e1;
 }

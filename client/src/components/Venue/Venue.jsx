@@ -25,7 +25,7 @@ export default function Venue() {
             {/* Details Column */}
             <div className={styles.infoCol}>
               <div>
-                <span className={styles.venueHall}>Địa điểm tổ chức bên cô dâu</span>
+                <span className={styles.venueHall}>{t.venue.brideVenueTag}</span>
 
                 {/* Date & Time */}
                 <div className={styles.detailRow}>
@@ -34,7 +34,7 @@ export default function Venue() {
                   </div>
                   <div className={styles.detailText}>
                     <h4>{t.venue.timeTitle}</h4>
-                    <p>{t.countdown.fullDate}</p>
+                    <p>{t.venue.timeDetail || t.countdown.fullDate}</p>
                   </div>
                 </div>
 

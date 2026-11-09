@@ -11,14 +11,14 @@ import { motion } from "framer-motion";
 const DEFAULT_IMAGES = [
     { image: "/groom.jpg", offsetY: 0, title: "Chú Rể Đình Huy" },
     { image: "/bride.jpg", offsetY: 0, title: "Cô Dâu Thu Hiền" },
-    { image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Khoảnh Khắc Bình Yên" },
-    { image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Lời Hẹn Ước" },
-    { image: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Tình Yêu Nở Hoa" },
-    { image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Ánh Nhìn Ngọt Ngào" },
-    { image: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Chuyến Đi Kỷ Niệm" },
-    { image: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Vũ Điệu Hạnh Phúc" },
-    { image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Hẹn Hò & Gắn Kết" },
-    { image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80", offsetY: 0, title: "Lần Đầu Gặp Gỡ" },
+    { image: "/couple.jpg", offsetY: 0, title: "Sánh Bước Thành Đôi" },
+    { image: "/photos/tuan-1196.jpg", offsetY: 0, title: "Nụ Hôn Ngọt Ngào" },
+    { image: "/photos/tuan-0058.jpg", offsetY: 0, title: "Khoảnh Khắc Bình Yên" },
+    { image: "/photos/tuan-0992.jpg", offsetY: 0, title: "Tà Khăn Voan Bay" },
+    { image: "/photos/tuan-1514.jpg", offsetY: 0, title: "Ánh Nhìn Ngọt Ngào" },
+    { image: "/photos/tuan-2015.jpg", offsetY: 0, title: "Áo Dài Truyền Thống" },
+    { image: "/photos/tuan-0544.jpg", offsetY: 0, title: "Cá Tính & Rạng Rỡ" },
+    { image: "/photos/tuan-9792.jpg", offsetY: 0, title: "Lời Hẹn Ước Trăm Năm" },
 ];
 
 const DEFAULT_BACKGROUND = "transparent";

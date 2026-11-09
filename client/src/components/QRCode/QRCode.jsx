@@ -50,7 +50,7 @@ export default function QRCode() {
           transition={{ duration: 0.8 }}
         >
           <span className={styles.qrNotice}>{t.qrcode.notice}</span>
-          
+
           <h2 className="section-title" style={{ fontSize: '2rem', marginTop: '0.5rem' }}>
             {t.qrcode.title}
           </h2>
