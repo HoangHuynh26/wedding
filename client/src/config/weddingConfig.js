@@ -22,16 +22,10 @@ export const weddingConfig = {
     gold: '#B99154',
   },
   hero: {
-    photo: '/photos/tuan-1514.jpg',
-    desktopPosition: '35% 45%',
-    mobilePosition: '35% 42%',
+    photo: '/photos/tuan-0923.jpg',
+    desktopPosition: '48% 38%',
+    mobilePosition: '48% 36%',
     slides: [
-      {
-        src: '/photos/tuan-1514.jpg',
-        desktopPosition: '35% 45%',
-        mobilePosition: '35% 42%',
-        alt: 'Đình Huy và Thu Hiền rạng ngời bên ban công',
-      },
       {
         src: '/photos/tuan-0923.jpg',
         desktopPosition: '48% 38%',

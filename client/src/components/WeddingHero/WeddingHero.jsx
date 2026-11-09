@@ -18,9 +18,9 @@ export default function WeddingHero({ phase }) {
   // Slides from weddingConfig (curated single full-frame photos of the couple together)
   const slides = (hero.slides && hero.slides.length > 0) ? hero.slides : [
     {
-      src: hero.photo || '/photos/tuan-1514.jpg',
-      desktopPosition: hero.desktopPosition || '35% 45%',
-      mobilePosition: hero.mobilePosition || '35% 42%',
+      src: hero.photo || '/photos/tuan-0923.jpg',
+      desktopPosition: hero.desktopPosition || '48% 38%',
+      mobilePosition: hero.mobilePosition || '48% 36%',
       alt: `Ảnh cưới của ${bride.name} và ${groom.name}`,
     },
   ];
