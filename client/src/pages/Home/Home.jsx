@@ -1,114 +1,128 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
-// Components
-import EnvelopeIntro from '../../components/EnvelopeIntro/EnvelopeIntro';
-import Hero from '../../components/Hero/Hero';
-import FormalInvitation from '../../components/FormalInvitation/FormalInvitation';
-import Intro from '../../components/Intro/Intro';
-import LoveStory from '../../components/LoveStory/LoveStory';
-import Countdown from '../../components/Countdown/Countdown';
-import WeddingVideo from '../../components/WeddingVideo/WeddingVideo';
-import Gallery from '../../components/Gallery/Gallery';
-import Venue from '../../components/Venue/Venue';
-import QRCode from '../../components/QRCode/QRCode';
-import RSVP from '../../components/RSVP/RSVP';
 import Contact from '../../components/Contact/Contact';
-import Footer from '../../components/Footer/Footer';
-import MusicButton from '../../components/MusicButton/MusicButton';
+import Countdown from '../../components/Countdown/Countdown';
 import CursorEffect from '../../components/CursorEffect/CursorEffect';
-import LanguageToggle from '../../components/LanguageToggle/LanguageToggle';
-import "./Home.css"
+import Footer from '../../components/Footer/Footer';
+import FormalInvitation from '../../components/FormalInvitation/FormalInvitation';
+import Gallery from '../../components/Gallery/Gallery';
+import LoveStory from '../../components/LoveStory/LoveStory';
+import MobileQuickActions from '../../components/MobileQuickActions/MobileQuickActions';
+import MusicButton from '../../components/MusicButton/MusicButton';
+import RSVP from '../../components/RSVP/RSVP';
+import Venue from '../../components/Venue/Venue';
+import WeddingEnvelope from '../../components/WeddingEnvelope/WeddingEnvelope';
+import WeddingHero from '../../components/WeddingHero/WeddingHero';
+import WeddingVideo from '../../components/WeddingVideo/WeddingVideo';
+import weddingConfig from '../../config/weddingConfig';
+import { useAudio } from '../../context/AudioContext';
+import './Home.css';
 
-export default function Home() {
-  const location = useLocation();
-  // Sealed envelope gate displayed on initial visit
-  const [showEnvelope, setShowEnvelope] = useState(true);
+const openingDuration = 1850;
+const revealDuration = 1800;
+const motionPreference = '(prefers-reduced-motion: reduce)';
+const sectionIds = new Set(['hero', 'invitation', 'story', 'countdown', 'gallery', 'venue', 'rsvp', 'contact']);
+const { theme } = weddingConfig;
+const themeStyle = {
+  '--wedding-ivory': theme.ivory,
+  '--wedding-champagne': theme.champagne,
+  '--wedding-pearl': theme.pearl,
+  '--wedding-navy': theme.navy,
+  '--wedding-gold': theme.gold,
+};
 
-  // Position viewport directly at Hero section from the beginning and lock background scrolling
+export default function WeddingExperience() {
+  const { pathname, hash } = useLocation();
+  const { playAudio } = useAudio();
+  const fragment = hash.slice(1);
+  const pathSection = pathname.replace(/^\/|\/$/g, '');
+  const destination = sectionIds.has(fragment)
+    ? fragment
+    : (pathSection === 'rsvp' || pathSection === 'story' ? pathSection : '');
+  const [phase, setPhase] = useState(() => destination ? 'open' : 'sealed');
+  const openedByGuest = useRef(false);
+  const locked = phase !== 'open';
+
   useEffect(() => {
-    if (showEnvelope) {
-      window.scrollTo(0, 0);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!locked) return undefined;
+
+    const { style: rootStyle } = document.documentElement;
+    const { style: bodyStyle } = document.body;
+    const rootOverflow = rootStyle.overflow;
+    const bodyOverflow = bodyStyle.overflow;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    rootStyle.overflow = 'hidden';
+    bodyStyle.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = '';
+      rootStyle.overflow = rootOverflow;
+      bodyStyle.overflow = bodyOverflow;
     };
-  }, [showEnvelope]);
+  }, [locked]);
 
   useEffect(() => {
-    // Handle direct hash or route shortcuts like /rsvp or /story
-    if (location.pathname === '/rsvp') {
-      setShowEnvelope(false);
-      const rsvpEl = document.getElementById('rsvp');
-      if (rsvpEl) {
-        setTimeout(() => rsvpEl.scrollIntoView({ behavior: 'smooth' }), 300);
-      }
-    } else if (location.pathname === '/story') {
-      setShowEnvelope(false);
-      const storyEl = document.getElementById('story');
-      if (storyEl) {
-        setTimeout(() => storyEl.scrollIntoView({ behavior: 'smooth' }), 300);
-      }
+    if (phase !== 'opening' && phase !== 'reveal') return undefined;
+
+    const opening = phase === 'opening';
+    const timer = window.setTimeout(
+      () => setPhase(opening ? 'reveal' : 'open'),
+      opening ? openingDuration : revealDuration,
+    );
+    return () => window.clearTimeout(timer);
+  }, [phase]);
+
+  useEffect(() => {
+    if (destination && locked) setPhase('open');
+  }, [destination, locked]);
+
+  useEffect(() => {
+    if (locked) return undefined;
+
+    if (openedByGuest.current && !destination) {
+      document.getElementById('wedding-title')?.focus({ preventScroll: true });
+      openedByGuest.current = false;
+      return undefined;
     }
-  }, [location.pathname]);
+
+    if (!destination) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(destination)?.scrollIntoView();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [destination, locked]);
+
+  function openInvitation() {
+    if (phase !== 'sealed') return;
+    openedByGuest.current = true;
+    // Start playback while the browser still has the guest's click or key press.
+    void playAudio();
+    setPhase(window.matchMedia(motionPreference).matches ? 'open' : 'opening');
+  }
 
   return (
-    <main style={{ position: 'relative', width: '100%', overflowX: 'hidden' }}>
-
-      {/* 0. Sealed Envelope Opening Gate & Opening Animation */}
-      <EnvelopeIntro
-        isVisible={showEnvelope}
-        onOpenComplete={() => {
-          setShowEnvelope(false);
-          document.body.style.overflow = '';
-          // Ensure fullscreen hero video starts playback
-          const heroVideo = document.querySelector('#hero video');
-          if (heroVideo) {
-            heroVideo.play().catch(() => {});
-          }
-        }}
-      />
-
-      {/* Desktop Custom Cursor */}
-      <CursorEffect />
-
-      {/* Floating Background Music Player */}
-      <MusicButton />
-
-      {/* 1. Fullscreen Cinematic Hero with Video */}
-      <Hero />
-
-      {/* 2. Formal Luxury Wedding Invitation Card */}
-      <FormalInvitation />
-
-
-      {/* 3. Vertical Love Story Timeline (2021 - 2026) */}
-      <LoveStory />
-
-      {/* 4. Wedding Countdown Timer */}
-      <Countdown />
-
-      {/* 5. "Our Memories" Video Section */}
-      <WeddingVideo />
-
-      {/* 6. Photo Gallery with Interactive Lightbox */}
-      <Gallery />
-
-      {/* 7. Venue Details & Google Maps Integration */}
-      <Venue />
-
-
-      {/* 9. Cinematic RSVP Reveal & Form (Dispatches to Make.com for Excel) */}
-      <RSVP />
-
-      {/* 10. Direct Contact Cards & Support */}
-      <Contact />
-
-      {/* 11. Warm Romantic Footer */}
-      <Footer />
+    <main className="wedding-home">
+      <div className="wedding-front" style={themeStyle}>
+        <div inert={locked}>
+          <WeddingHero phase={phase} />
+        </div>
+        {locked && <WeddingEnvelope phase={phase} onOpen={openInvitation} />}
+      </div>
+      {!locked && (
+        <>
+          <CursorEffect />
+          <MusicButton />
+          <MobileQuickActions />
+          <FormalInvitation />
+          <LoveStory />
+          <Countdown />
+          {/* <WeddingVideo /> — Ẩn tạm thời, sẽ hoàn thiện sau */}
+          <Gallery />
+          <Venue />
+          <RSVP />
+          <Contact />
+          <Footer />
+        </>
+      )}
     </main>
   );
 }

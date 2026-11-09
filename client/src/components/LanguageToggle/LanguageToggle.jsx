@@ -29,6 +29,17 @@ export default function LanguageToggle() {
         >
           <span className={styles.langText}>EN</span>
         </button>
+        <span className={styles.divider}>•</span>
+        <button
+          type="button"
+          onClick={() => setLanguage('zh')}
+          className={`${styles.optionPill} ${language === 'zh' ? styles.active : ''}`}
+          aria-label="切换至中文"
+          aria-pressed={language === 'zh'}
+          title="中文"
+        >
+          <span className={styles.langText}>中文</span>
+        </button>
       </div>
     </aside>
   );

@@ -1,2 +1,4 @@
-# Netlify SPA redirect
-/*    /index.html   200
+# Netlify Redirects for API & SPA
+/api/rsvp    /.netlify/functions/rsvp    200
+/api/health  /.netlify/functions/health  200
+/*           /index.html                 200

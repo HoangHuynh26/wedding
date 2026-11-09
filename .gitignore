@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files (CRITICAL: Do not commit sensitive keys / env)
+.env
+.env.*
+*.env
+client/.env*
+server/.env*
+
+# Data & database files
+data/
+server/data/
+*.sqlite
+*.sqlite3
+*.db
+temp_*.txt
+*.log
+
+# Scratch scripts & raw downloads
+scratch/
+.system_generated/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+*.local
+.vscode/
+.idea/

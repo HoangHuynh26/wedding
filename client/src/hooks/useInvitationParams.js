@@ -37,6 +37,20 @@ export function useInvitationParams() {
         ''
       ).trim().toLowerCase();
 
+      const rawLang = (
+        searchParams.get('lang') ||
+        searchParams.get('language') ||
+        searchParams.get('locale') ||
+        ''
+      ).trim().toLowerCase();
+
+      let lang = 'vi';
+      if (rawLang === 'en' || rawLang === 'english' || rawLang === 'eng') {
+        lang = 'en';
+      } else if (rawLang === 'zh' || rawLang === 'cn' || rawLang.startsWith('zh-') || rawLang === 'chinese') {
+        lang = 'zh';
+      }
+
       // Find song in playlist if specified
       const playlist = weddingConfig.playlist || [];
       const foundSong = playlist.find((s) => s.id.toLowerCase() === songId);
@@ -47,6 +61,8 @@ export function useInvitationParams() {
         inviterName: from,
         songId: foundSong ? foundSong.id : '',
         selectedSong,
+        lang,
+        hasLangParam: Boolean(rawLang),
         hasPersonalization: Boolean(to || from || songId),
       };
     } catch {

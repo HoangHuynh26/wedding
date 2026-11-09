@@ -12,7 +12,7 @@ export default function Navigation({ onOpenInvitation }) {
   const navLinks = [
     { label: t.nav.story, sublabel: t.nav.storySub, href: '#story' },
     { label: t.nav.date, sublabel: t.nav.dateSub, href: '#countdown' },
-    { label: t.nav.video, sublabel: t.nav.videoSub, href: '#video' },
+    // { label: t.nav.video, sublabel: t.nav.videoSub, href: '#video' }, — Ẩn tạm thời
     { label: t.nav.gallery, sublabel: t.nav.gallerySub, href: '#gallery' },
     { label: t.nav.venue, sublabel: t.nav.venueSub, href: '#venue' },
     { label: t.nav.qr, sublabel: t.nav.qrSub, href: '#qrcode' },

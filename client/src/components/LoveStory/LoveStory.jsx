@@ -1,8 +1,75 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './LoveStory.module.css';
+
+function TimelineMilestoneItem({ milestone, index, fallbackImage }) {
+  const itemRef = useRef(null);
+
+  // Track the item's scroll progress through the window viewport
+  const { scrollYProgress } = useScroll({
+    target: itemRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // When scrolling down:
+  // - 0.00 -> 0.18: Item enters from bottom, fades in from 0 to 1
+  // - 0.18 -> 0.52: Item is in the prime reading area (center of viewport), solid opacity 1
+  // - 0.52 -> 0.78: Item moves into the upper viewport ("card trên"), smoothly fades out from 1 to 0
+  // When scrolling up:
+  // - 0.78 -> 0.52: Item moves back down into view, smoothly fades back in from 0 to 1
+  // - 0.52 -> 0.18: Item returns to solid opacity 1
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.18, 0.52, 0.78],
+    [0, 1, 1, 0]
+  );
+
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.18, 0.52, 0.78],
+    [0.94, 1, 1, 0.96]
+  );
+
+  const y = useTransform(
+    scrollYProgress,
+    [0, 0.18, 0.52, 0.78],
+    [35, 0, 0, -25]
+  );
+
+  const pointerEvents = useTransform(opacity, (v) => (v < 0.15 ? 'none' : 'auto'));
+
+  return (
+    <motion.div
+      ref={itemRef}
+      className={styles.timelineItem}
+      style={{ opacity, scale, y, pointerEvents, willChange: 'transform, opacity' }}
+    >
+      {/* Timeline node */}
+      <div className={styles.timelineNode} />
+
+      {/* Milestone Card */}
+      <div className={styles.itemCard}>
+        <span className={styles.yearBadge}>{milestone.year}</span>
+        <h3 className={styles.itemTitle}>{milestone.title}</h3>
+        <span className={styles.itemSubtitle}>{milestone.subtitle}</span>
+        <p className={styles.itemDescription}>{milestone.description}</p>
+
+        {fallbackImage && (
+          <div className={styles.imageWrapper}>
+            <img
+              src={fallbackImage}
+              alt={milestone.title}
+              className={styles.itemImage}
+              loading="lazy"
+            />
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function LoveStory() {
   const { t } = useLanguage();
@@ -31,36 +98,12 @@ export default function LoveStory() {
             const fallbackImage = weddingConfig.story[index]?.image;
 
             return (
-              <motion.div
+              <TimelineMilestoneItem
                 key={milestone.year + index}
-                className={styles.timelineItem}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-              >
-                {/* Timeline node */}
-                <div className={styles.timelineNode} />
-
-                {/* Milestone Card */}
-                <div className={styles.itemCard}>
-                  <span className={styles.yearBadge}>{milestone.year}</span>
-                  <h3 className={styles.itemTitle}>{milestone.title}</h3>
-                  <span className={styles.itemSubtitle}>{milestone.subtitle}</span>
-                  <p className={styles.itemDescription}>{milestone.description}</p>
-
-                  {fallbackImage && (
-                    <div className={styles.imageWrapper}>
-                      <img
-                        src={fallbackImage}
-                        alt={milestone.title}
-                        className={styles.itemImage}
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+                milestone={milestone}
+                index={index}
+                fallbackImage={fallbackImage}
+              />
             );
           })}
         </div>

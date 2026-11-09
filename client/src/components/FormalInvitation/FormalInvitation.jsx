@@ -2,16 +2,34 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Sparkles } from 'lucide-react';
 import weddingConfig from '../../config/weddingConfig';
+import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
 import styles from './FormalInvitation.module.css';
 
+// Helper function to render text while giving numbers a bold, prominent, big font
+function renderWithNumHighlight(text) {
+  if (!text) return text;
+  const parts = String(text).split(/(\d+(?::\d+)?(?:th|st|nd|rd)?)/g);
+  return parts.map((part, i) => {
+    if (/^\d+(?::\d+)?(?:th|st|nd|rd)?$/.test(part)) {
+      return (
+        <span key={i} className={styles.numSpan}>
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
+
 export default function FormalInvitation() {
-  const { groom, bride, event, venue } = weddingConfig;
-  const { guestName, inviterName, hasPersonalization } = useInvitationParams();
+  const { groom, bride, venue } = weddingConfig;
+  const { t } = useLanguage();
+  const { guestName, hasPersonalization } = useInvitationParams();
 
   return (
     <section className={styles.formalSection} id="invitation" aria-label="Formal Wedding Invitation">
-      <div className="container">
+      <div className={`container ${styles.formalContainer}`}>
         {/* KOREAN MINIMALIST EDITORIAL WEDDING CARD */}
         <motion.div
           className={styles.invitationCard}
@@ -20,34 +38,34 @@ export default function FormalInvitation() {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* 1. TOP COUPLE HERO PHOTO */}
+          {/* 1. TOP COUPLE HERO PHOTO (Image #3 — Staircase Loving Gaze) */}
           <div className={styles.topPhotoFrame}>
             <img
-              src="./couple.jpg"
-              alt={`${groom.name} & ${bride.name}`}
+              src="/photos/tuan-0974.jpg"
+              alt={`${bride.name} & ${groom.name}`}
               className={styles.topHeroImg}
             />
           </div>
 
           {/* 2. CARD CONTENT BODY */}
           <div className={styles.cardContentBody}>
-            {/* PARENTS' TWO-COLUMN PILLARS */}
+            {/* PARENTS' TWO-COLUMN PILLARS — Bride's Family First (Lễ Vu Quy) */}
             <div className={styles.familyPillarsRow}>
-              {/* Groom's Family */}
+              {/* Bride's Family */}
               <div className={styles.familyColumn}>
-                <span className={styles.pillarTitle}>NHÀ TRAI</span>
+                <span className={styles.pillarTitle}>{t.formal.brideSideTitle}</span>
                 <div className={styles.parentsNames}>
-                  <div>Ông: Trần Đình Lý</div>
-                  <div>Bà: Lê Thị Kim Dung</div>
+                  <div>{t.formal.brideFather}</div>
+                  <div>{t.formal.brideMother}</div>
                 </div>
               </div>
 
-              {/* Bride's Family */}
+              {/* Groom's Family */}
               <div className={styles.familyColumn}>
-                <span className={styles.pillarTitle}>NHÀ GÁI</span>
+                <span className={styles.pillarTitle}>{t.formal.groomSideTitle}</span>
                 <div className={styles.parentsNames}>
-                  <div>Ông: Nguyễn Thanh Tâm</div>
-                  <div>Bà: Nguyễn Xuân Mai</div>
+                  <div>{t.formal.groomFather}</div>
+                  <div>{t.formal.groomMother}</div>
                 </div>
               </div>
             </div>
@@ -55,14 +73,14 @@ export default function FormalInvitation() {
             {/* INVITATION PROCLAMATION & LOVING QUOTE */}
             <div className={styles.invitationAnnouncement}>
               <h3 className={styles.announcementTitle}>
-                KÍNH MỜI THAM DỰ TIỆC CHUNG VUI
+                {t.formal.announcementLine1}
                 <br />
-                CỦA GIA ĐÌNH CHÚNG TÔI
+                {t.formal.announcementLine2}
               </h3>
               <p className={styles.vietnameseQuote}>
-                Tình yêu và sự gắn kết đưa hai trái tim về chung một mái nhà,
+                {t.formal.quoteLine1}
                 <br />
-                rất mong sự hiện diện của quý khách để cùng sẻ chia khoảnh khắc ý nghĩa này.
+                {t.formal.quoteLine2}
               </p>
 
               {/* Personalized Guest Salutation if ?to=... */}
@@ -70,10 +88,12 @@ export default function FormalInvitation() {
                 <div className={styles.recipientFormalPlaque}>
                   <span className={styles.recipientHonorTag}>
                     <Sparkles size={11} />
-                    <span>TRÂN TRỌNG KÍNH MỜI</span>
+                    <span>{t.formal.honorTag}</span>
                     <Sparkles size={11} />
                   </span>
-                  <h4 className={styles.recipientGuestName}>{guestName || 'Quý Khách Quý'}</h4>
+                  <h4 className={styles.recipientGuestName}>
+                    {guestName || t.formal.defaultGuest}
+                  </h4>
                 </div>
               )}
             </div>
@@ -83,47 +103,47 @@ export default function FormalInvitation() {
               <img src="/orchid.jpg" alt="" className={styles.orchidImg} />
             </div>
 
-            {/* COUPLE NAMES (EDITORIAL TYPOGRAPHY) */}
+            {/* COUPLE NAMES — Bride ♡ Groom (Lễ Bên Nhà Gái) */}
             <div className={styles.coupleNamesSection}>
-              <h2 className={styles.groomName}>
-                <span>TRẦN LÊ ĐÌNH HUY</span>
+              <h2 className={styles.brideName}>
+                <span>{bride.name}</span>
               </h2>
               <div className={styles.ampersandBlock}>
-                <span className={styles.ampersandGlyph}>&amp;</span>
+                <span className={styles.heartGlyph}>♡</span>
               </div>
-              <h2 className={styles.brideName}>
-                <span>NGUYỄN THỊ THU HIỀN</span>
+              <h2 className={styles.groomName}>
+                <span>{groom.name}</span>
               </h2>
             </div>
 
-            {/* 3-BOX CALENDAR DATE (VIETNAMESE) */}
+            {/* 3-BOX CALENDAR DATE */}
             <div className={styles.calendarBoxSection}>
               <div className={styles.timeHeader}>
-                <span>{event.timeDisplay}, CHỦ NHẬT</span>
+                <span>{renderWithNumHighlight(t.formal.timeDayHeader)}</span>
               </div>
 
               <div className={styles.threeBoxDateRow}>
                 <div className={styles.dateSideBox}>
-                  <span>THÁNG 01</span>
+                  <span>{renderWithNumHighlight(t.formal.monthBox)}</span>
                 </div>
                 <div className={styles.dateCenterNumber}>
-                  <span>17</span>
+                  <span>{t.formal.dayNumber}</span>
                 </div>
                 <div className={styles.dateSideBox}>
-                  <span>NĂM 2027</span>
+                  <span>{renderWithNumHighlight(t.formal.yearBox)}</span>
                 </div>
               </div>
 
               <div className={styles.lunarDateText}>
-                <span>( Tức ngày 10 tháng 12 năm Bính Ngọ )</span>
+                <span>{renderWithNumHighlight(t.formal.lunarDate)}</span>
               </div>
             </div>
 
             {/* VENUE & DIRECTIONS SECTION */}
             <div className={styles.venueSection}>
-              <span className={styles.venueIntroLabel}>Tổ chức tại</span>
-              <h4 className={styles.venueNameText}>GIA</h4>
-              <p className={styles.venueAddressViet}>{venue.address}</p>
+              <span className={styles.venueIntroLabel}>{t.formal.venueIntro}</span>
+              <h4 className={styles.venueNameText}>{t.formal.venueHostName}</h4>
+              <p className={styles.venueAddressViet}>{t.formal.venueAddress || venue.address}</p>
               {/* Prominent Google Maps Direction Button */}
               <a
                 href={venue.googleMapsUrl}
@@ -133,7 +153,7 @@ export default function FormalInvitation() {
                 id="formal-invitation-maps-btn"
               >
                 <MapPin size={17} className={styles.pinIcon} />
-                <span>CHỈ ĐƯỜNG</span>
+                <span>{t.formal.directionsBtn}</span>
               </a>
             </div>
 
@@ -147,4 +167,3 @@ export default function FormalInvitation() {
     </section>
   );
 }
-

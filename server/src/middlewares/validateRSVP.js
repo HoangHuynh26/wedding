@@ -34,7 +34,7 @@ const validateRSVP = (req, res, next) => {
   // Sanitize values
   req.body.fullName = fullName.trim();
   req.body.location = location.trim();
-  req.body.side = req.body.side ? String(req.body.side).trim().substring(0, 80) : 'Nhà Trai (Chú Rể)';
+  req.body.side = req.body.side ? String(req.body.side).trim().substring(0, 80) : 'Nhà Gái (Cô Dâu)';
   req.body.message = req.body.message ? String(req.body.message).trim().substring(0, 1000) : '';
 
   if (req.body.attendance === undefined) {

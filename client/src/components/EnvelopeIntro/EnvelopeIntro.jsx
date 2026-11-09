@@ -69,9 +69,9 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
     try {
       const heroVideo = document.querySelector('#hero video');
       if (heroVideo) {
-        heroVideo.play().catch(() => {});
+        heroVideo.play().catch(() => { });
       }
-    } catch {}
+    } catch { }
 
     // 3. Single card-opening effect: Flap folds open in 3D & GlitterWrap starfield warp tunnel plays right on Hero
     setPhase('opening');
@@ -80,7 +80,7 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
       setTimeout(() => {
         setPhase('done');
         onOpenComplete();
-      }, 1000)
+      }, 5000)
     );
   };
 
@@ -94,9 +94,9 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
         animate={
           phase === 'opening'
             ? {
-                opacity: 0,
-                transition: { duration: 1.0, ease: 'easeOut' },
-              }
+              opacity: [1, 1, 0],
+              transition: { duration: 5.0, times: [0, 0.8, 1], ease: 'easeOut' },
+            }
             : { opacity: 1 }
         }
         exit={{ opacity: 0 }}
@@ -110,7 +110,7 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
             className={styles.glitterWarpOverlay}
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 1.1, times: [0, 0.25, 0.75, 1], ease: 'easeInOut' }}
+            transition={{ duration: 5.0, times: [0, 0.12, 0.85, 1], ease: 'easeInOut' }}
           >
             <GlitterWrap />
           </motion.div>
@@ -125,7 +125,7 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
             initial={{ opacity: 0, y: -16 }}
             animate={
               phase === 'opening'
-                ? { opacity: 0, y: -20, transition: { duration: 0.45, ease: 'easeIn' } }
+                ? { opacity: 0, y: -20, transition: { duration: 1.0, ease: 'easeIn' } }
                 : { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
             }
           >
@@ -134,16 +134,16 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
               <div className={styles.topGuestPlaque}>
                 <span className={styles.guestSalutation}>
                   <Sparkles size={11} className={styles.sparkleIcon} />
-                  <span>Trân Trọng Kính Mời</span>
+                  <span>{t.envelope.salutation}</span>
                   <Sparkles size={11} className={styles.sparkleIcon} />
                 </span>
                 <h2 className={styles.guestHonorName}>
-                  {guestName || 'Quý Khách Quý'}
+                  {guestName || t.envelope.defaultGuest}
                 </h2>
               </div>
             ) : (
               <div className={styles.topDefaultPlaque}>
-                <span className={styles.topSubProclamation}>{t.envelope.subHeader || 'KÍNH BÁO TIN VUI'}</span>
+                <span className={styles.topSubProclamation}>{t.envelope.subHeader}</span>
                 <p className={styles.topWarmIntro}>
                   {t.envelope.invitation}
                 </p>
@@ -164,18 +164,18 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
               animate={
                 phase === 'opening'
                   ? {
-                      scale: 1.06,
-                      opacity: [1, 1, 0],
-                      y: -12,
-                      transition: { duration: 1.0, times: [0, 0.5, 1], ease: 'easeOut' },
-                    }
+                    scale: 1.06,
+                    opacity: [1, 1, 0],
+                    y: -14,
+                    transition: { duration: 4.8, times: [0, 0.75, 1], ease: 'easeOut' },
+                  }
                   : isDesktop && isHovered
                     ? {
-                        rotateX: tilt.x,
-                        rotateY: tilt.y,
-                        scale: 1.02,
-                        transition: { duration: 0.15, ease: 'easeOut' },
-                      }
+                      rotateX: tilt.x,
+                      rotateY: tilt.y,
+                      scale: 1.02,
+                      transition: { duration: 0.15, ease: 'easeOut' },
+                    }
                     : { scale: 1, opacity: 1, y: 0, rotateX: 0, rotateY: 0, filter: 'blur(0px)' }
               }
             >
@@ -209,12 +209,14 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
 
                   {/* Bottom Section (Below Center Wax Seal) */}
                   <div className={styles.coverBottomSection}>
-                    {/* Couple Names */}
-                    <h2 style={{ marginTop: "40px" }} className={styles.leThanhHonHeading}>LỄ THÀNH HÔN</h2>
+                    {/* Couple Names (Bride ♡ Groom for Lễ Vu Quy) */}
+                    <h2 style={{ marginTop: '40px' }} className={styles.leThanhHonHeading}>
+                      {t.envelope.ceremonyHeading}
+                    </h2>
                     <h1 className={styles.frontNames}>
-                      <span className={styles.nameBlock}>{weddingConfig.groom.name}</span>
-                      <span className={styles.heartConnector}>♡</span>
                       <span className={styles.nameBlock}>{weddingConfig.bride.name}</span>
+                      <span className={styles.heartConnector}>♡</span>
+                      <span className={styles.nameBlock}>{weddingConfig.groom.name}</span>
                     </h1>
 
                     {/* Date Pill */}
@@ -240,7 +242,7 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
                     ? { rotateX: 0 }
                     : {
                       rotateX: -180,
-                      transition: { duration: 0.55, ease: [0.25, 1, 0.5, 1] },
+                      transition: { duration: 1.0, ease: [0.25, 1, 0.5, 1] },
                     }
                 }
               >
@@ -260,6 +262,12 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
                   whileHover={{ x: '-50%', y: '-50%', scale: 1.08 }}
                   whileTap={{ x: '-50%', y: '-50%', scale: 0.94 }}
                 >
+                  {/* Soft Yellow Radiating Glow Aura & Concentric Outward Waves */}
+                  <div className={styles.sealRadiateHalo} aria-hidden="true" />
+                  <div className={`${styles.sealRadiateWave} ${styles.wave1}`} aria-hidden="true" />
+                  <div className={`${styles.sealRadiateWave} ${styles.wave2}`} aria-hidden="true" />
+                  <div className={`${styles.sealRadiateWave} ${styles.wave3}`} aria-hidden="true" />
+
                   {/* Center Cast Silver Wax Seal Medallion Image */}
                   <div className={styles.waxSealBody}>
                     <img

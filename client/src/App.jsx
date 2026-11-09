@@ -8,8 +8,8 @@ import NotFound from './pages/NotFound/NotFound';
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <LanguageProvider>
         <AudioProvider>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -20,7 +20,7 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AudioProvider>
-      </BrowserRouter>
-    </LanguageProvider>
+      </LanguageProvider>
+    </BrowserRouter>
   );
 }
