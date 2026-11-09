@@ -1,0 +1,28 @@
+.oceanCanvasWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.oceanCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Subtle cinematic vignette softening the outer edges to maintain crisp readability of the title & envelope */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 55%,
+    rgba(235, 222, 202, 0.3) 85%,
+    rgba(215, 198, 175, 0.55) 100%
+  );
+  pointer-events: none;
+}

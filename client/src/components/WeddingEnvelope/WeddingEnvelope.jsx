@@ -5,6 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
 import { BotanicalSprig, WeddingMonogram } from './WeddingOrnaments';
 import Sparkles from '../Sparkles/Sparkles';
+import OceanWavesBackground from './OceanWavesBackground';
 import styles from './WeddingEnvelope.module.css';
 
 const { event, invitation } = weddingConfig;
@@ -142,7 +143,8 @@ export default function WeddingEnvelope({ phase, onOpen }) {
       aria-labelledby={headingId}
     >
       <div className={styles.room} aria-hidden="true">
-        <div className={styles.fabric} />
+        {/* Nền sóng biển dập dềnh chạy vào bờ cát vàng nhiệt đới */}
+        <OceanWavesBackground phase={phase} />
         <FlowerBranch className={`${styles.branch} ${styles.branchUpper}`} />
         <FlowerBranch className={`${styles.branch} ${styles.branchLower}`} />
         <span className={`${styles.petal} ${styles.petalLeft}`} />
