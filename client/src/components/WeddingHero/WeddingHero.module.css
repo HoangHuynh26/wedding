@@ -127,14 +127,19 @@
 .heart {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  margin: clamp(0.35rem, 0.65vw, 0.8rem) 0;
+  gap: 0.85rem;
+  margin: clamp(0.45rem, 0.85vw, 1rem) 0;
   color: var(--wedding-gold);
+}
+
+.heart svg {
+  width: 1.45rem;
+  height: 1.45rem;
 }
 
 .heart::before,
 .heart::after {
-  width: 1.25rem;
+  width: 2rem;
   height: 1px;
   background: currentColor;
   content: '';
@@ -309,12 +314,18 @@
   }
 
   .heart {
-    margin: 0.26rem 0;
+    margin: 0.4rem 0;
+    gap: 0.8rem;
   }
 
   .heart svg {
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 1.85rem;
   }
 
   .actions {
@@ -380,18 +391,18 @@
   }
 
   .heart {
-    margin: 0.45rem 0;
-    gap: 0.85rem;
+    margin: 0.6rem 0;
+    gap: 1rem;
   }
 
   .heart svg {
-    width: 1.15rem;
-    height: 1.15rem;
+    width: 1.65rem;
+    height: 1.65rem;
   }
 
   .heart::before,
   .heart::after {
-    width: 2.2rem;
+    width: 2.5rem;
   }
 
   .actions {
