@@ -273,7 +273,7 @@
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 168, 83, 0.2);
   border: 1px solid rgba(212, 168, 83, 0.35);
   cursor: zoom-in;
-  max-height: 74vh;
+  max-height: 80vh;
 }
 
 .lightboxImageWrapper.isZoomed {
@@ -282,7 +282,7 @@
 
 .lightboxImg {
   max-width: 100%;
-  max-height: 74vh;
+  max-height: 80vh;
   object-fit: contain;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -350,16 +350,16 @@
 }
 
 .lightboxInfo {
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   text-align: center;
   color: #ffffff;
 }
 
 .lightboxCounter {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--gold-secondary, #d4a853);
   letter-spacing: 0.15em;
-  margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .lightboxTitle {

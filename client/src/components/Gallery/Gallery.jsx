@@ -390,18 +390,14 @@ export default function Gallery() {
                 />
               </div>
 
-              {/* Lightbox Info Bar */}
-              <div className={styles.lightboxInfo}>
-                {!isMobile && (
+              {/* Lightbox Info Bar (Đã bỏ toàn bộ tiêu đề và chú thích mô tả theo yêu cầu) */}
+              {!isMobile && (
+                <div className={styles.lightboxInfo}>
                   <div className={styles.lightboxCounter}>
                     {String(lightboxIndex + 1).padStart(2, '0')} / {String(filteredPhotos.length).padStart(2, '0')}
                   </div>
-                )}
-                <h4 className={styles.lightboxTitle}>{currentLightboxPhoto.title}</h4>
-                {currentLightboxPhoto.caption && (
-                  <p className={styles.lightboxCaption}>{currentLightboxPhoto.caption}</p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
