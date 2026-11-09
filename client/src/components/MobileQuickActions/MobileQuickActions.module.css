@@ -28,6 +28,25 @@
   padding: 4px;
 }
 
+@media (max-width: 420px) {
+  .actionPillFrame {
+    bottom: 14px;
+    left: 8px;
+    padding: 3px;
+  }
+
+  .actionButton {
+    gap: 4px;
+    padding: 5px 8px;
+    font-size: 0.72rem;
+  }
+
+  .iconCircle {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .actionButton {
   display: inline-flex;
   align-items: center;

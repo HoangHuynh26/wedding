@@ -63,6 +63,15 @@
   width: 100%;
 }
 
+@media (max-width: 480px) {
+  .baseBtn {
+    padding: 0.8rem 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    gap: 0.45rem;
+  }
+}
+
 .baseBtn:focus-visible {
   outline: 2px solid #fff2ca;
   outline-offset: 3px;
