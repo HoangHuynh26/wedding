@@ -82,9 +82,8 @@ export default function FormalInvitation() {
             {/* INVITATION PROCLAMATION & LOVING QUOTE */}
             <div className={styles.invitationAnnouncement}>
               <h3 className={styles.announcementTitle}>
-                {t.formal.announcementLine1}
-                <br />
-                {t.formal.announcementLine2}
+                <span className={styles.announcementLine}>{t.formal.announcementLine1}</span>
+                <span className={styles.announcementLine}>{t.formal.announcementLine2}</span>
               </h3>
               <p className={styles.vietnameseQuote}>
                 {t.formal.quoteLine1}

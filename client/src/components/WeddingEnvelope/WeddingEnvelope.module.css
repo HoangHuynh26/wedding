@@ -22,28 +22,12 @@
   overflow: hidden;
 }
 
-/* Iridescent sheer pearl-mauve silk/tulle wrap panels over the card */
-.veilPanel {
-  position: absolute;
-  top: -4%;
-  bottom: -4%;
-  width: calc(50% + 1px);
-  background: linear-gradient(104deg, #ede1eaa6, #ece0e84d 34%, #b8a3b266 68%, #f7eff6a3),
-              linear-gradient(176deg, #f9f4f944, #b7a2b26b 50%, #e9dbe64d);
-  transform: translateX(0) scaleX(1);
-  transition: transform 1830ms 3080ms cubic-bezier(.49,.06,.36,1);
-}
-.veilPanel::before {
-  content: '';
+.wrap {
   position: absolute;
   inset: 0;
-  background: url('/mauve-theme/mother-of-pearl.webp') left center / 200% 100%;
-  mix-blend-mode: soft-light;
-  opacity: .46;
+  width: 100%;
+  height: 100%;
 }
-.veilPanelLeft { left: 0; transform-origin: left; box-shadow: inset -5px 0 9px #735a6e29; }
-.veilPanelRight { right: 0; transform-origin: right; box-shadow: inset 5px 0 9px #735a6e29; }
-.veilPanelRight::before { background-position: right center; }
 
 .envelopeShell {
   position: absolute;
@@ -458,23 +442,6 @@
   transform: translateY(104%);
 }
 
-/* Both organza panels draw away from the knot before their corners follow. */
-.experience[data-phase='opening'] .veilPanelLeft {
-  transform: translateX(-102%) scaleX(.82);
-  animation: foldLeft 1500ms 3080ms ease-in-out both;
-}
-.experience[data-phase='opening'] .veilPanelRight {
-  transform: translateX(102%) scaleX(.82);
-  animation: foldRight 1500ms 3080ms ease-in-out both;
-}
-@keyframes foldLeft {
-  from { clip-path: polygon(0 0,100% 0,100% 50%,100% 100%,0 100%); }
-  to { clip-path: polygon(0 0,100% 0,5% 50%,100% 100%,0 100%); }
-}
-@keyframes foldRight {
-  from { clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 50%); }
-  to { clip-path: polygon(0 0,100% 0,100% 100%,0 100%,95% 50%); }
-}
 .guestBadge { transition: opacity 160ms ease; }
 .experience[data-phase='opening'] .guestBadge,
 .experience[data-phase='opening'] .envelopeSparkles {
@@ -482,5 +449,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .waxSealWrap, .risingParticle, .risingStarCore, .risingOrbCore, .petalSatinSheen { animation: none; }
-  .paperPocket, .topFlapPivot, .veilPanel { transition: none; }
+  .paperPocket, .topFlapPivot { transition: none; }
 }

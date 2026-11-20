@@ -154,18 +154,33 @@ export function AudioProvider({ children }) {
   }, [playlist, defaultTrack]);
 
   const playAudio = async (options = {}) => {
-    const { fromStart = false, fadeMs = 1150 } = options || {};
+    const {
+      fromStart = false,
+      startAtSec = 0,
+      fadeMs = 900,
+      syncWithTimestamp = null,
+    } = options || {};
     if (audioRef.current) {
       try {
         if (fromStart) {
           try {
-            audioRef.current.currentTime = 0;
+            audioRef.current.currentTime = Math.max(0, startAtSec);
           } catch {
             // Ignore seek before metadata is loaded
           }
         }
         await audioRef.current.play();
-        rampVolume(audioRef.current, fromStart ? 0.18 : 0.45, 1, fadeMs);
+        if (fromStart && typeof syncWithTimestamp === 'number') {
+          const driftSec = (performance.now() - syncWithTimestamp) / 1000;
+          if (driftSec > 0.18 && driftSec < 3.5) {
+            try {
+              audioRef.current.currentTime = Math.max(0, startAtSec + driftSec);
+            } catch {
+              // Ignore seek failure
+            }
+          }
+        }
+        rampVolume(audioRef.current, fromStart ? 0.65 : 0.45, 1, fadeMs);
         setIsPlaying(true);
         return true;
       } catch (err) {

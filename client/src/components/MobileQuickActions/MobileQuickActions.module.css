@@ -1,11 +1,45 @@
-/* Container: purely for mobile devices */
+/* Container: visible across mobile, tablet, and desktop */
 .mobileActionsContainer {
   display: block;
 }
 
-@media (min-width: 769px) {
-  .mobileActionsContainer {
-    display: none !important;
+@media (min-width: 768px) {
+  .actionPillFrame {
+    bottom: 20px;
+    left: 20px;
+    padding: 5px;
+    box-shadow: 0 10px 30px rgba(58, 48, 66, 0.16);
+    border: 1px solid rgba(78, 68, 88, 0.22);
+  }
+
+  .actionButton {
+    gap: 7px;
+    padding: 7px 14px;
+    min-height: 36px;
+    font-size: 0.84rem;
+  }
+
+  .iconCircle {
+    width: 26px;
+    height: 26px;
+  }
+
+  .callPopover {
+    bottom: 78px;
+    left: 20px;
+    width: 310px;
+  }
+}
+
+@media (hover: hover) {
+  .actionButton:hover {
+    background: #f7f4f8;
+    color: #2c2532;
+  }
+
+  .actionButton:hover .iconCircle {
+    border-color: rgba(78, 68, 88, 0.45);
+    background: #f0eaf2;
   }
 }
 

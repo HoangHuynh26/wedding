@@ -1,10 +1,26 @@
-.bow {
+.bow,
+.photo {
   position: absolute;
   width: 102%;
   height: auto;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -43.4%);
   pointer-events: none;
   filter: drop-shadow(0 3px 3px rgb(60 36 54 / 16%));
+}
+
+.bow { transform: translate(-50%, -32.5%); }
+.photo { transform: translate(-50%, -43.6975%); }
+.photo[hidden] { display: none; }
+
+.photo[data-opening='true'] {
+  animation: clearBowFallback 1ms 3750ms forwards;
+}
+
+@keyframes clearBowFallback {
+  to { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo[data-opening='true'] { visibility: hidden; animation: none; }
 }

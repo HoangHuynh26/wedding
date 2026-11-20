@@ -13,6 +13,7 @@ import RSVP from '../../components/RSVP/RSVP';
 import ScratchReveal from '../../components/ScratchReveal/ScratchReveal';
 import Venue from '../../components/Venue/Venue';
 import WeddingEnvelope from '../../components/WeddingEnvelope/WeddingEnvelope';
+import { WRAP_CLEAR_MS } from '../../components/WeddingEnvelope/openingTiming';
 import WeddingHero from '../../components/WeddingHero/WeddingHero';
 import WeddingSchedule from '../../components/WeddingSchedule/WeddingSchedule';
 import weddingConfig from '../../config/weddingConfig';
@@ -81,11 +82,10 @@ export default function WeddingExperience() {
     if (phase !== 'opening') return undefined;
     const preference = window.matchMedia(motionPreference);
     const finish = () => setPhase('open');
-    // The veil's transition normally finishes the opening. Allow for a suspended tab.
-    const fallback = window.setTimeout(finish, 5350);
+    const reveal = window.setTimeout(finish, WRAP_CLEAR_MS);
     preference.addEventListener('change', finish);
     return () => {
-      window.clearTimeout(fallback);
+      window.clearTimeout(reveal);
       preference.removeEventListener('change', finish);
     };
   }, [phase]);
@@ -113,8 +113,14 @@ export default function WeddingExperience() {
   function openInvitation() {
     if (phase !== 'sealed') return;
     openedByGuest.current = true;
-    void playAudio({ fromStart: true, fadeMs: 1400 });
-    setPhase(window.matchMedia(motionPreference).matches ? 'open' : 'opening');
+    const reducedMotion = window.matchMedia(motionPreference).matches;
+    void playAudio({
+      fromStart: true,
+      startAtSec: reducedMotion ? 5.2 : 0,
+      fadeMs: 350,
+      syncWithTimestamp: reducedMotion ? null : performance.now(),
+    });
+    setPhase(reducedMotion ? 'open' : 'opening');
   }
 
   return (
@@ -125,7 +131,6 @@ export default function WeddingExperience() {
             <WeddingEnvelope
               phase={phase}
               onOpen={openInvitation}
-              onOpened={() => setPhase('open')}
             />
           )}
         </WeddingHero>

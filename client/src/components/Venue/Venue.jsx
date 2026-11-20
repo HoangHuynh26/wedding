@@ -51,7 +51,7 @@ export default function Venue() {
         {/* Fine-line vintage plum-charcoal architectural etching (blends directly into lavender paper) */}
         <div className={styles.etchingFrame}>
           <img
-            src="/mauve-theme/venue-etching.webp"
+            src={venue.etchingImage || '/mauve-theme/venue-etching.webp'}
             alt={t.venue.hall || venue.name}
             className={styles.etchingImg}
             loading="lazy"

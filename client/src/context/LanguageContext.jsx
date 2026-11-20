@@ -90,6 +90,7 @@ export const groomVenueConfig = {
   coordinates: { latitude: 10.79977, longitude: 106.67289 },
   googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=White+Palace+194+Hoang+Van+Thu+Phu+Nhuan+Ho+Chi+Minh',
   embedMapUrl: 'https://www.google.com/maps?q=White+Palace+194+Hoang+Van+Thu+Phu+Nhuan+Ho+Chi+Minh&z=16&output=embed',
+  etchingImage: '/mauve-theme/white-palace-etching.webp',
 };
 
 export const groomTranslations = {
@@ -421,7 +422,7 @@ export const translations = {
       dob: 'Sinh ngày:',
       sonOf: 'Trưởng nam của:',
       daughterOf: 'Ái nữ của:',
-      announcementLine1: 'KÍNH MỜI THAM DỰ TIỆC CHUNG VUI',
+      announcementLine1: 'KÍNH MỜI THAM DỰ TIỆC CHUNG\u00A0VUI',
       announcementLine2: 'CỦA GIA ĐÌNH CHÚNG TÔI',
       quoteLine1: 'Tình yêu và sự gắn kết đưa hai trái tim về chung một mái nhà,',
       quoteLine2: 'rất mong sự hiện diện của quý khách để cùng sẻ chia khoảnh khắc ý nghĩa này.',

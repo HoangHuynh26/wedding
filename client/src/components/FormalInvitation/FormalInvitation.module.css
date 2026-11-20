@@ -211,13 +211,23 @@
 
 .announcementTitle {
   font-family: var(--font-serif);
-  font-size: clamp(0.96rem, 3.7vw, 1.45rem);
+  font-size: clamp(0.82rem, 3.2vw, 1.25rem);
   font-weight: 600;
-  letter-spacing: clamp(0.03em, 0.7vw, 0.12em);
+  letter-spacing: clamp(0.02em, 0.4vw, 0.07em);
   color: #453e4b;
   line-height: 1.6;
   margin-bottom: 1.25rem;
   text-transform: uppercase;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.announcementLine {
+  display: block;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .koreanQuote {
@@ -609,7 +619,7 @@
    ═══════════════════════════════════════════════════ */
 @media (min-width: 768px) {
   .cardContentBody {
-    padding: 4.25rem 3.25rem 5.25rem;
+    padding: 3.75rem clamp(1.75rem, 3.5vw, 3rem) 4.75rem;
   }
 
   .familyPillarsRow {
@@ -639,9 +649,9 @@
   }
 
   .announcementTitle {
-    font-size: 1.65rem;
-    letter-spacing: 0.12em;
-    line-height: 1.65;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    letter-spacing: clamp(0.03em, 0.4vw, 0.08em);
+    line-height: 1.6;
     margin-bottom: 1.65rem;
   }
 
@@ -830,8 +840,8 @@
 
   .announcementTitle {
     font-size: 1.12rem;
-    letter-spacing: 0.1em;
-    line-height: 1.5;
+    letter-spacing: 0.06em;
+    line-height: 1.55;
     margin-bottom: 0.9rem;
   }
 

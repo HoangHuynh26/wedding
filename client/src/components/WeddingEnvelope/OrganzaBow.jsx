@@ -1,412 +1,407 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { partingProgress } from './openingTiming';
 import styles from './OrganzaBow.module.css';
 
+const photoUrl = '/mauve-theme/silk-organza-bow.webp';
 const width = 1280;
-const height = 714;
-const ribbonY = 312;
-const finishTime = 4520;
+const height = 960;
+const waist = 312;
+const knotX = 640;
+const finishTime = 5070;
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const mix = (a, b, t) => a + (b - a) * t;
 
-// Photograph fragments are clipped once at their native scale from silk-organza-bow.webp.
-const photoPieces = {
-  leftLoop: {
-    bounds: [341, 106, 267, 240],
-    edge: 'M605 273 C595 214 568 165 518 137 C481 115 437 104 421 109 C407 127 377 190 344 281 C339 295 358 307 393 322 C458 350 529 351 600 324 Z',
-  },
-  rightLoop: {
-    bounds: [670, 106, 266, 240],
-    edge: 'M672 279 C691 194 732 153 803 122 C825 112 843 106 852 109 C873 135 910 213 931 276 C941 294 916 313 885 325 C817 352 744 350 675 324 Z',
-  },
-  leftTail: {
-    bounds: [255, 319, 355, 296],
-    edge: 'M593 321 C567 346 541 351 505 375 C419 436 344 519 258 578 C310 585 395 607 456 613 C522 539 578 437 608 345 Z',
-  },
-  rightTail: {
-    bounds: [666, 314, 371, 305],
-    edge: 'M670 316 C735 337 800 374 850 416 C904 465 975 532 1035 567 C987 582 912 600 837 617 C761 536 702 433 669 351 Z',
-  },
-  knot: {
-    bounds: [592, 262, 91, 99],
-    edge: 'M604 269 C620 273 623 260 639 267 C654 272 676 265 679 287 C682 306 680 337 670 348 C657 360 640 345 628 353 C613 365 597 350 597 335 C594 314 594 282 604 269 Z',
-  },
-};
-
-// Build a seamless, full-length real photographed silk organza sash (660 x 134) from the actual photo strip
-function buildRealSash(image, isRight) {
-  const sashW = 660;
-  const sashH = 134;
-  const stripW = 334;
-
-  // 1. Extract the clean outer photographed silk ribbon strip along its exact stitched satin hems
-  const strip = document.createElement('canvas');
-  strip.width = stripW;
-  strip.height = sashH;
-  const sctx = strip.getContext('2d');
-  if (!isRight) {
-    sctx.translate(0, -244);
-    sctx.clip(new Path2D('M0 247 L334 252 L334 373 L0 375 Z'));
-    sctx.drawImage(image, 0, 0);
-  } else {
-    sctx.translate(-946, -244);
-    sctx.clip(new Path2D('M946 252 L1280 247 L1280 375 L946 373 Z'));
-    sctx.drawImage(image, 0, 0);
-  }
-
-  // 2. Extend seamlessly to 660px by mirror-blending the real silk texture toward the center knot
-  const full = document.createElement('canvas');
-  full.width = sashW;
-  full.height = sashH;
-  const fctx = full.getContext('2d');
-  const overlap = 36;
-
-  if (!isRight) {
-    // 1. Fade the right overlap edge of the outer photo strip [298..334] from 1 -> 0
-    sctx.setTransform(1, 0, 0, 1, 0, 0);
-    sctx.globalCompositeOperation = 'destination-in';
-    const sGrad = sctx.createLinearGradient(0, 0, stripW, 0);
-    sGrad.addColorStop(0, 'rgba(0,0,0,1)');
-    sGrad.addColorStop((stripW - overlap) / stripW, 'rgba(0,0,0,1)');
-    sGrad.addColorStop(1, 'rgba(0,0,0,0)');
-    sctx.fillStyle = sGrad;
-    sctx.fillRect(0, 0, stripW, sashH);
-    sctx.globalCompositeOperation = 'source-over';
-    fctx.drawImage(strip, 0, 0);
-
-    // 2. Build mirrored inner continuation [298..656] with a single full-width alpha mask
-    const mir = document.createElement('canvas');
-    mir.width = stripW;
-    mir.height = sashH;
-    const mctx = mir.getContext('2d');
-    mctx.translate(stripW, 0);
-    mctx.scale(-1, 1);
-    if (!isRight) {
-      mctx.translate(0, -244);
-      mctx.clip(new Path2D('M0 247 L334 252 L334 373 L0 375 Z'));
-      mctx.drawImage(image, 0, 0);
-    }
-
-    mctx.setTransform(1, 0, 0, 1, 0, 0);
-    mctx.globalCompositeOperation = 'destination-in';
-    const mGrad = mctx.createLinearGradient(0, 0, stripW, 0);
-    mGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    mGrad.addColorStop(overlap / stripW, 'rgba(0,0,0,1)');
-    mGrad.addColorStop((stripW - 34) / stripW, 'rgba(0,0,0,1)');
-    mGrad.addColorStop(1, 'rgba(0,0,0,0)');
-    mctx.fillStyle = mGrad;
-    mctx.fillRect(0, 0, stripW, sashH);
-    mctx.globalCompositeOperation = 'source-over';
-
-    fctx.drawImage(mir, stripW - overlap, 0, stripW + 24, sashH);
-  } else {
-    // 1. Fade the left overlap edge of the outer right photo strip [0..36] from 0 -> 1
-    sctx.setTransform(1, 0, 0, 1, 0, 0);
-    sctx.globalCompositeOperation = 'destination-in';
-    const sGrad = sctx.createLinearGradient(0, 0, stripW, 0);
-    sGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    sGrad.addColorStop(overlap / stripW, 'rgba(0,0,0,1)');
-    sGrad.addColorStop(1, 'rgba(0,0,0,1)');
-    sctx.fillStyle = sGrad;
-    sctx.fillRect(0, 0, stripW, sashH);
-    sctx.globalCompositeOperation = 'source-over';
-    fctx.drawImage(strip, sashW - stripW, 0);
-
-    // 2. Build mirrored inner continuation [4..362] with a single full-width alpha mask
-    const mir = document.createElement('canvas');
-    mir.width = stripW;
-    mir.height = sashH;
-    const mctx = mir.getContext('2d');
-    mctx.translate(stripW, 0);
-    mctx.scale(-1, 1);
-    mctx.translate(-946, -244);
-    mctx.clip(new Path2D('M946 252 L1280 247 L1280 375 L946 373 Z'));
-    mctx.drawImage(image, 0, 0);
-
-    mctx.setTransform(1, 0, 0, 1, 0, 0);
-    mctx.globalCompositeOperation = 'destination-in';
-    const mGrad = mctx.createLinearGradient(0, 0, stripW, 0);
-    mGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    mGrad.addColorStop(34 / stripW, 'rgba(0,0,0,1)');
-    mGrad.addColorStop((stripW - overlap) / stripW, 'rgba(0,0,0,1)');
-    mGrad.addColorStop(1, 'rgba(0,0,0,0)');
-    mctx.fillStyle = mGrad;
-    mctx.fillRect(0, 0, stripW, sashH);
-    mctx.globalCompositeOperation = 'source-over';
-
-    fctx.drawImage(mir, 4, 0, stripW + 22, sashH);
-  }
-
-  return { layer: full, y: 244, w: sashW, h: sashH };
-}
-
-function clipPieces(image) {
-  const pieces = Object.fromEntries(Object.entries(photoPieces).map(([name, { bounds, edge }]) => {
-    const [x, y, w, h] = bounds;
-    const layer = document.createElement('canvas');
-    layer.width = w;
-    layer.height = h;
-    const draw = layer.getContext('2d');
-    draw.translate(-x, -y);
-    draw.clip(new Path2D(edge));
-    draw.drawImage(image, 0, 0);
-
-    // Feather only the tucked root of each tail so it merges seamlessly into the silk sash
-    if (name === 'leftTail' || name === 'rightTail') {
-      draw.setTransform(1, 0, 0, 1, 0, 0);
-      draw.globalCompositeOperation = 'destination-in';
-      const neckX = name === 'leftTail' ? w : 0;
-      const neckGrad = draw.createRadialGradient(neckX, 10, 4, neckX, 10, 46);
-      neckGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
-      neckGrad.addColorStop(0.55, 'rgba(0, 0, 0, 0.78)');
-      neckGrad.addColorStop(1, 'rgba(0, 0, 0, 1)');
-      draw.fillStyle = neckGrad;
-      draw.fillRect(0, 0, w, h);
-      draw.globalCompositeOperation = 'source-over';
-    }
-
-    return [name, { layer, x, y }];
-  }));
-
-  pieces.leftSash = buildRealSash(image, false);
-  pieces.rightSash = buildRealSash(image, true);
-  return pieces;
-}
-
-function ease(time, start, end) {
-  const p = Math.min(1, Math.max(0, (time - start) / (end - start)));
+function ease(value, from, to) {
+  const p = clamp((value - from) / (to - from));
   return p * p * (3 - 2 * p);
 }
 
-function paintPiece(draw, piece, pivotX, pivotY, angle, dx = 0, dy = 0, scaleX = 1, scaleY = 1) {
-  draw.save();
-  draw.translate(pivotX + dx, pivotY + dy);
-  draw.rotate(angle);
-  if (scaleX !== 1 || scaleY !== 1) draw.scale(scaleX, scaleY);
-  draw.drawImage(piece.layer, piece.x - pivotX, piece.y - pivotY);
-  draw.restore();
+function cubic(a, b, c, d, t) {
+  const s = 1 - t;
+  return s * s * s * a + 3 * s * s * t * b + 3 * s * t * t * c + t * t * t * d;
 }
 
-// Draw the real photographed horizontal silk organza sash with natural knot-pinch & rippling release wave
-function paintRealSash(draw, sash, isRight, knotX, travel, knotPinch, waveAmp, time) {
-  const { layer, y, w, h } = sash;
-  const sliceW = 6;
-  // Base x so inner tip reaches past knotX when tied, then glides outward by travel
-  const baseX = isRight
-    ? (knotX - 24) + travel
-    : (knotX + 24 - w) - travel;
+// Upper and lower stitched hems, measured on the original 1280px photograph.
+// u follows the length of the silk. v goes from one hem to the opposite hem.
+const hems = {
+  leftLoop: [[603,274,578,178,501,122,423,109], [601,327,513,362,379,347,344,291]],
+  rightLoop: [[674,275,699,179,774,125,850,109], [673,327,762,362,899,351,933,290]],
+  leftTail: [[600,322,508,363,373,496,258,578], [606,346,574,444,511,552,456,613]],
+  rightTail: [[670,318,802,365,920,499,1035,567], [670,348,706,446,778,556,837,617]],
+};
 
-  for (let sx = 0; sx < w; sx += sliceW) {
-    const sw = Math.min(sliceW, w - sx);
-    const screenX = baseX + sx;
-    if (screenX + sw < -40 || screenX > width + 40) continue;
-
-    // Distance from the inner knot end of this sash
-    const distFromInner = isRight ? sx : (w - (sx + sw));
-
-    // While tied, the silk sash gathers/pinches vertically into the knot; when untied it relaxes open
-    const gather = knotPinch * Math.exp(-distFromInner / 95);
-    const scaleY = 1 - 0.56 * gather;
-
-    // Supple transverse silk wave rippling outward from the center as tension releases
-    const waveEnvelope = Math.exp(-distFromInner / 340);
-    const phase = distFromInner * 0.022 - time * 0.0085;
-    const waveY = waveAmp * waveEnvelope * Math.sin(phase) + travel * 0.045;
-
-    const curH = h * scaleY;
-    const drawY = ribbonY + (y + h * 0.5 - ribbonY) * scaleY - curH * 0.5 + waveY;
-
-    draw.drawImage(layer, sx, 0, sw, h, screenX, drawY, sw + 0.5, curH);
-  }
+function silkPoint(hem, u, v, endCurve = 0) {
+  const [a, b] = hem;
+  const edge = (c, i) => cubic(c[i], c[i + 2], c[i + 4], c[i + 6], u);
+  return [
+    mix(edge(a, 0), edge(b, 0), v) + endCurve * u ** 3 * Math.sin(Math.PI * v),
+    mix(edge(a, 1), edge(b, 1), v),
+  ];
 }
 
-// Coupled loop-shrinking physics: as the tails are pulled outward, the bow loops narrow, tilt, and draw into the knot
-function threadLoop(draw, { layer, x, y }, pull, mouth, fromRight = false) {
-  if (pull >= 0.995) return;
-  if (!pull) {
-    draw.drawImage(layer, x, y);
-    return;
+const vertex = (x, y, source, light = 1) => [x, y, source[0], source[1], light];
+
+function paintBow(painter, time) {
+  const tug = ease(time, 1630, 2450);
+  const feed = ease(time, 2010, 3050);
+  const drop = ease(time, 2730, 3450);
+  const unwrap = ease(time, 2760, 3690);
+  const leftSettle = ease(time, 2940, 3680);
+  const rightSettle = ease(time, 2940, 3750);
+  // Canvas spans 102% of the folio. Both cloth layers use the same folio-space distance.
+  const travel = (width / 1.02) * 0.56 * partingProgress(time);
+  painter.begin();
+
+  function band(side) {
+    const release = side < 0 ? leftSettle : rightSettle;
+    painter.surface(34, 20, (u, v) => {
+      // A reflected run of the unobscured photographed band extends the silk behind the bow.
+      const fromEdge = (1 - u) * 640;
+      const sample = 318 - Math.abs(318 - (fromEdge % 636));
+      const sx = side < 0 ? sample : width - 1 - sample;
+      const ridge = (v * 3.45 + .17 * Math.sin(Math.PI * u) + (side < 0 ? .23 : 0)) * 2 * Math.PI;
+      const fold = Math.sin(ridge);
+      const cross = v + release * .036 * fold * Math.sin(v * Math.PI);
+      const sy = mix(245 + 4 * sample / 318, 376 - 2 * sample / 318, cross);
+      const half = mix(13 + 51 * ease(u, 0, .46), (side < 0 ? 92 : 86) * (1 - (1 - u) ** 1.65), release);
+      const crease = release * Math.sin(Math.PI * u);
+      const y = waist + (2 * v - 1) * half
+        + crease * (6 * fold + side * 7);
+      const reflection = Math.cos(ridge);
+      return vertex(knotX + side * (u * 642 + travel), y, [sx, sy],
+        1 + release * (.12 - .36 * Math.max(0, reflection) ** 2 - .04 * (1 - u)));
+    });
   }
 
-  // Loops shrink both horizontally (sliding into mouth) and vertically (tension narrowing)
-  const slideOffset = (fromRight ? -1 : 1) * 265 * Math.pow(pull, 1.08);
-  const tensionNarrow = 1 - 0.42 * ease(pull, 0.05, 0.9);
-  const folding = ease(pull, 0, 0.16);
+  function tail(side) {
+    const isRight = side > 0;
+    const hem = isRight ? hems.rightTail : hems.leftTail;
+    const settle = isRight ? rightSettle : leftSettle;
+    const paidOut = isRight ? .28 * feed : 0;
+    painter.surface(34, 5, (u, v) => {
+      // Keep the weave running in one direction as material feeds down from the knot.
+      const grain = u / (1 + 2.6 * paidOut * (1 - u));
+      const source = silkPoint(hem, grain, v);
+      const [x, y] = silkPoint(hem, u, v);
+      const mid = silkPoint(hem, u, .5);
+      const rx = 670;
+      const ry = 332;
+      const angle = isRight ? (.22 + .19 * u) * tug : 0;
+      const dx = x - rx;
+      const dy = y - ry;
+      const rootX = mix(hem[0][0], hem[1][0], v) - rx;
+      const rootY = mix(hem[0][1], hem[1][1], v) - ry;
+      const rootAngle = isRight ? .22 * tug : 0;
+      const gather = ease(time, 1660, 2350) * (1 - u) ** 3;
+      const neckX = rx + rootX * Math.cos(rootAngle) - rootY * Math.sin(rootAngle);
+      const neckY = ry + rootX * Math.sin(rootAngle) + rootY * Math.cos(rootAngle);
+      const drawnX = rx + dx * Math.cos(angle) - dy * Math.sin(angle) + 35 * paidOut * u + (knotX - neckX) * gather;
+      const drawnY = ry + dx * Math.sin(angle) + dy * Math.cos(angle) + 410 * paidOut * u + (waist - neckY) * gather;
+      // The free ends sweep in arcs and settle as folds on their respective bands.
+      const local = ease(settle, .13 * u, 1);
+      const sweep = Math.sin(local * Math.PI) * u;
+      const foldWidth = (isRight ? 29 : 34) * (1 - (1 - u) ** 2);
+      const laidX = knotX + side * (u * (isRight ? 700 : 684) + (v - .5) * 75 * u);
+      const laidY = waist + (v - .5) * foldWidth + u * 9 - 9 * Math.sin(u * Math.PI);
+      return vertex(
+        mix(drawnX, laidX, local) + side * (travel + sweep * 50),
+        mix(drawnY, laidY, local) + sweep * (isRight ? 58 : 76),
+        source, 1 + .047 * sweep * ((y - mid[1]) / 80),
+      );
+    });
+  }
 
-  for (let slice = 0; slice < layer.width; slice += 4) {
-    const rawX = x + slice + slideOffset;
-    if (!fromRight) {
-      const visible = Math.min(4, layer.width - slice, mouth - rawX);
-      if (visible <= 0) break;
-      const distToMouth = Math.max(0, mouth - (rawX + visible * 0.5));
-      const mouthPinch = 1 - 0.82 * folding * (1 - ease(distToMouth, 0, 130));
-      const sy = tensionNarrow * mouthPinch;
-      // Subtle downward pull tilt toward the knot as tail tugs the loop
-      const pullDip = 14 * pull * (1 - Math.min(1, distToMouth / 180));
-      draw.drawImage(
-        layer,
-        slice, 0, visible, layer.height,
-        rawX, ribbonY + (y - ribbonY) * sy + pullDip, visible + 0.4, layer.height * sy,
+  function loop(side) {
+    const isRight = side > 0;
+    if (isRight && feed === 1) return;
+    const hem = isRight ? hems.rightLoop : hems.leftLoop;
+    const endCurve = side * 6;
+    painter.surface(30, 6, (u, v) => {
+      if (isRight) {
+        const available = 1 - feed;
+        const source = silkPoint(hem, feed + available * u, v, endCurve);
+        const [x, y] = silkPoint(hem, available * u, v, endCurve);
+        const takeup = Math.sin(feed * Math.PI);
+        const throat = ease(feed, .65, 1);
+        return vertex(
+          mix(x, 659, throat), mix(y, waist + 1, throat) + takeup * u * 25,
+          source, 1 - .055 * takeup * (1 - u),
+        );
+      }
+      const source = silkPoint(hem, u, v, endCurve);
+      const center = silkPoint(hem, u, .5, endCurve);
+      // Once the wrap opens, gravity turns over the last bight. Its outer fold
+      // drops below the waist before its two plies settle lengthwise on the left sash.
+      const roll = ease(drop, .14 * u, 1);
+      const turn = Math.sin(roll * Math.PI);
+      const loft = (1 - roll) * (1 - .22 * turn);
+      const laidX = knotX - 661 * u + (v - .5) * 42 * u;
+      const laidY = waist - 12 * Math.sin(Math.PI * u) + 4 * u;
+      return vertex(
+        mix(center[0], laidX, roll) + (source[0] - center[0]) * loft - travel,
+        mix(center[1], laidY, roll) + (source[1] - center[1]) * loft
+          + 197 * turn * u ** 1.45 + 27 * Math.sin(2 * Math.PI * (u - .24)) * turn * u
+          + (v - .5) * 25 * u * roll,
+        source, 1 - .14 * turn * u * (1 - v),
       );
-    } else {
-      const sliceRight = rawX + 4;
-      if (sliceRight <= mouth) continue;
-      const screenX = Math.max(mouth, rawX);
-      const srcOffset = screenX - rawX;
-      const visible = Math.min(4 - srcOffset, layer.width - (slice + srcOffset));
-      if (visible <= 0) continue;
-      const distToMouth = Math.max(0, (screenX + visible * 0.5) - mouth);
-      const mouthPinch = 1 - 0.82 * folding * (1 - ease(distToMouth, 0, 130));
-      const sy = tensionNarrow * mouthPinch;
-      const pullDip = 14 * pull * (1 - Math.min(1, distToMouth / 180));
-      draw.drawImage(
-        layer,
-        slice + srcOffset, 0, visible, layer.height,
-        screenX, ribbonY + (y - ribbonY) * sy + pullDip, visible + 0.4, layer.height * sy,
+    });
+  }
+
+  band(-1);
+  band(1);
+  tail(-1);
+  tail(1);
+  loop(-1);
+  loop(1);
+
+  if (time < 3750) {
+    // The rolled wrap peels from the left across the waist, turns edge-on and
+    // slips below the right pleat. Its contact point stays at the waist during the tug.
+    const tuck = ease(time, 3370, 3750);
+    painter.surface(18, 6, (u, v) => {
+      const x = 592 + 91 * u;
+      const y = 262 + 99 * v;
+      const wave = Math.sin(Math.PI * unwrap);
+      const radius = (1 - .12 * feed) * (1 - tuck);
+      const unfoldedX = knotX + 185 * u;
+      const unfoldedY = waist + 9 * Math.sin(Math.PI * u) - 7 * u;
+      return vertex(
+        mix(x, unfoldedX, unwrap) + (v - .5) * 29 * wave,
+        mix(waist + (y - waist) * radius, unfoldedY + (v - .5) * 20 * radius, unwrap)
+          - wave * 17 * Math.sin(Math.PI * u),
+        [1 + 91 * u, 1 + 99 * v], 1 + .075 * wave * Math.cos(u * 2 * Math.PI),
       );
+    });
+  }
+  painter.end();
+}
+
+// The atlas keeps the original photograph's translucent mesh, highlights and seams.
+// Its upper-left corner has room for the isolated winding of silk at the center.
+function makeAtlas(image) {
+  const atlas = document.createElement('canvas');
+  atlas.width = image.naturalWidth;
+  atlas.height = image.naturalHeight;
+  const ctx = atlas.getContext('2d');
+  ctx.drawImage(image, 0, 0);
+  ctx.clearRect(0, 0, 95, 102);
+  ctx.save();
+  ctx.translate(1 - 592, 1 - 262);
+  ctx.clip(new Path2D('M604 269 C620 273 623 260 639 267 C654 272 676 265 679 287 C682 306 680 337 670 348 C657 360 640 345 628 353 C613 365 597 350 597 335 C594 314 594 282 604 269 Z'));
+  ctx.drawImage(image, 0, 0);
+  ctx.restore();
+  return atlas;
+}
+
+function triangleGrid(columns, rows, point, triangle) {
+  let upper = Array.from({ length: columns + 1 }, (_, i) => point(i / columns, 0));
+  for (let j = 1; j <= rows; j++) {
+    const lower = Array.from({ length: columns + 1 }, (_, i) => point(i / columns, j / rows));
+    for (let i = 0; i < columns; i++) {
+      triangle(upper[i], upper[i + 1], lower[i]);
+      triangle(lower[i], upper[i + 1], lower[i + 1]);
     }
+    upper = lower;
   }
 }
 
-function drawBow(draw, pieces, time) {
-  draw.clearRect(0, 0, width, height);
-
-  // Stage 1: Both tails actively pull outward & swing upward, drawing the two loops into the knot
-  const pullLeft = ease(time, 1100, 2520);
-  const pullRight = ease(time, 1180, 2600);
-  const avgPull = 0.5 * (pullLeft + pullRight);
-
-  // Stage 2: Knot cinches under tension, then unrolls flat into the ribbon as the loops slip free
-  const knotCinch = Math.sin(ease(time, 1100, 2350) * Math.PI);
-  const knotUnwrap = ease(time, 2250, 2950);
-  const knotPinch = 1 - 0.72 * knotUnwrap;
-
-  // Stage 3: Supple silk release wave & outward parting glide with the organza veil panels
-  const releaseWave = Math.sin(ease(time, 2350, 3450) * Math.PI) * 16;
-  const leftPart = 920 * ease(time, 2820, finishTime);
-  const rightPart = 940 * ease(time, 2760, 4460);
-
-  const knotX = 638 + 6 * Math.sin(avgPull * Math.PI);
-  const knotShift = knotX - 638;
-  const exitFade = 1 - ease(time, 4120, finishTime);
-  draw.globalAlpha = exitFade;
-
-  // Tail roots stay firmly anchored inside the knot while their outer tips elongate & lift upward
-  // as they pull the loop fabric through the knot, then glide outward with leftPart / rightPart!
-  const leftTailPullX = knotShift - leftPart;
-  const leftTailPullY = -8 * pullLeft + leftPart * 0.045 + releaseWave * 0.4;
-  const leftTailAngle = 0.42 * pullLeft - 0.1 * ease(time, 2800, 4100);
-  const leftTailStretchX = 1 + 0.34 * pullLeft;
-  const leftTailStretchY = 1 - 0.1 * pullLeft;
-
-  const rightTailPullX = knotShift + rightPart;
-  const rightTailPullY = -8 * pullRight + rightPart * 0.045 - releaseWave * 0.4;
-  const rightTailAngle = -0.42 * pullRight + 0.1 * ease(time, 2800, 4100);
-  const rightTailStretchX = 1 + 0.34 * pullRight;
-  const rightTailStretchY = 1 - 0.1 * pullRight;
-
-  // 1. Draw the actively pulling real silk tails
-  paintPiece(
-    draw,
-    pieces.leftTail,
-    604,
-    328,
-    leftTailAngle,
-    leftTailPullX,
-    leftTailPullY,
-    leftTailStretchX,
-    leftTailStretchY,
-  );
-  paintPiece(
-    draw,
-    pieces.rightTail,
-    671,
-    328,
-    rightTailAngle,
-    rightTailPullX,
-    rightTailPullY,
-    rightTailStretchX,
-    rightTailStretchY,
-  );
-
-  // 2. Draw the 100% REAL photographed horizontal silk organza sashes (with knot gather & silk wave)
-  paintRealSash(draw, pieces.leftSash, false, knotX, leftPart, knotPinch, releaseWave, time);
-  paintRealSash(draw, pieces.rightSash, true, knotX, rightPart, knotPinch, -releaseWave, time);
-
-  // 3. Draw both bow loops shrinking & pulling naturally through the center knot as tails pull them
-  threadLoop(draw, pieces.leftLoop, pullLeft, knotX - 4, false);
-  threadLoop(draw, pieces.rightLoop, pullRight, knotX + 4, true);
-
-  // 4. Center knot cinches tight as tails pull, then unrolls & dissolves into the parting silk ribbons
-  if (knotUnwrap < 0.98) {
-    const knotAlpha = (1 - ease(knotUnwrap, 0.35, 0.96)) * exitFade;
-    const knotScaleX = 1 - 0.16 * knotCinch + 0.55 * knotUnwrap;
-    const knotScaleY = 1 - 0.12 * knotCinch - 0.48 * knotUnwrap;
-    const knotTwist = -0.08 * knotCinch + 0.05 * knotUnwrap;
-    draw.globalAlpha = knotAlpha;
-    paintPiece(
-      draw,
-      pieces.knot,
-      638,
-      315,
-      knotTwist,
-      knotX - 638,
-      4 * knotUnwrap,
-      knotScaleX,
-      knotScaleY,
-    );
+function gpuPainter(gl, atlas) {
+  const attributes = [
+    ['position', 2, 0], ['source', 2, 8], ['light', 1, 16],
+  ];
+  const program = gl.createProgram();
+  const shaders = [
+    [gl.VERTEX_SHADER, `
+      attribute vec2 position, source;
+      attribute float light;
+      varying mediump vec2 uv;
+      varying mediump float shade;
+      void main() {
+        uv = source / vec2(1280., 714.);
+        shade = light;
+        gl_Position = vec4(position.x / 640. - 1., 1. - position.y / 480., 0., 1.);
+      }`],
+    [gl.FRAGMENT_SHADER, `
+      precision mediump float;
+      uniform sampler2D photo;
+      varying mediump vec2 uv;
+      varying mediump float shade;
+      void main() {
+        vec4 silk = texture2D(photo, uv);
+        gl_FragColor = vec4(silk.rgb * shade, silk.a);
+      }`],
+  ].map(([type, code]) => {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, code);
+    gl.compileShader(shader);
+    gl.attachShader(program, shader);
+    return shader;
+  });
+  gl.linkProgram(program);
+  shaders.forEach((shader) => gl.deleteShader(shader));
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    gl.deleteProgram(program);
+    return null;
   }
-  draw.globalAlpha = 1;
+  gl.useProgram(program);
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  attributes.forEach(([name, size, offset]) => {
+    const id = gl.getAttribLocation(program, name);
+    gl.enableVertexAttribArray(id);
+    gl.vertexAttribPointer(id, size, gl.FLOAT, false, 20, offset);
+  });
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlas);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  // Seven surfaces, 2,168 cells at most, six vertices per cell and five floats per vertex.
+  const vertices = new Float32Array(2168 * 6 * 5);
+  let offset = 0;
+  const triangle = (a, b, c) => {
+    vertices.set(a, offset); vertices.set(b, offset + 5); vertices.set(c, offset + 10);
+    offset += 15;
+  };
+  return {
+    begin() { offset = 0; gl.clear(gl.COLOR_BUFFER_BIT); },
+    surface(columns, rows, point) { triangleGrid(columns, rows, point, triangle); },
+    end() {
+      gl.bufferData(gl.ARRAY_BUFFER, vertices.subarray(0, offset), gl.DYNAMIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, offset / 5);
+    },
+    dispose() { gl.deleteTexture(texture); gl.deleteBuffer(buffer); gl.deleteProgram(program); },
+  };
+}
+
+// Canvas2D uses the same moving hems on devices without a WebGL context.
+function cpuPainter(output, atlas) {
+  const surface = document.createElement('canvas');
+  const lighting = document.createElement('canvas');
+  surface.width = lighting.width = width;
+  surface.height = lighting.height = height;
+  const ctx = surface.getContext('2d');
+  const shade = lighting.getContext('2d');
+  let minX, minY, maxX, maxY;
+  function path(context, a, b, c) {
+    context.beginPath(); context.moveTo(a[0], a[1]); context.lineTo(b[0], b[1]);
+    context.lineTo(c[0], c[1]); context.closePath();
+  }
+  function triangle(a, b, c) {
+    const su = b[2] - a[2], sv = b[3] - a[3], tu = c[2] - a[2], tv = c[3] - a[3];
+    const det = su * tv - tu * sv;
+    if (Math.abs(det) < .001) return;
+    const bx = b[0] - a[0], by = b[1] - a[1], cx = c[0] - a[0], cy = c[1] - a[1];
+    const xx = (bx * tv - cx * sv) / det, xy = (cx * su - bx * tu) / det;
+    const yx = (by * tv - cy * sv) / det, yy = (cy * su - by * tu) / det;
+    const sx = Math.max(0, Math.floor(Math.min(a[2], b[2], c[2])) - 1);
+    const sy = Math.max(0, Math.floor(Math.min(a[3], b[3], c[3])) - 1);
+    const w = Math.ceil(Math.max(a[2], b[2], c[2])) + 1 - sx;
+    const h = Math.ceil(Math.max(a[3], b[3], c[3])) + 1 - sy;
+    minX = Math.min(minX, a[0], b[0], c[0]); minY = Math.min(minY, a[1], b[1], c[1]);
+    maxX = Math.max(maxX, a[0], b[0], c[0]); maxY = Math.max(maxY, a[1], b[1], c[1]);
+    ctx.save();
+    path(ctx, a, b, c); ctx.clip();
+    ctx.transform(xx, yx, xy, yy, a[0] - xx * a[2] - xy * a[3], a[1] - yx * a[2] - yy * a[3]);
+    ctx.drawImage(atlas, sx, sy, w, h, sx, sy, w, h);
+    ctx.restore();
+    const light = (a[4] + b[4] + c[4]) / 3;
+    if (Math.abs(light - 1) < .012) return;
+    shade.fillStyle = light < 1 ? '#000' : '#fff';
+    shade.globalAlpha = light < 1 ? 1 - light : Math.min(1, (light - 1) * 3);
+    path(shade, a, b, c); shade.fill();
+  }
+  return {
+    begin() { output.clearRect(0, 0, width, height); },
+    surface(columns, rows, point) {
+      minX = width; minY = height; maxX = maxY = 0;
+      // Adjacent triangle edges have complementary coverage. Adding premultiplied color
+      // within each continuous piece prevents a transparent hairline along the diagonal.
+      ctx.globalCompositeOperation = shade.globalCompositeOperation = 'lighter';
+      triangleGrid(Math.ceil(columns / 2), Math.ceil(rows / 2), point, triangle);
+      const x = Math.max(0, Math.floor(minX) - 1), y = Math.max(0, Math.floor(minY) - 1);
+      const w = Math.min(width, Math.ceil(maxX) + 1) - x, h = Math.min(height, Math.ceil(maxY) + 1) - y;
+      if (w <= 0 || h <= 0) return;
+      ctx.globalCompositeOperation = 'source-atop';
+      ctx.drawImage(lighting, x, y, w, h, x, y, w, h);
+      output.drawImage(surface, x, y, w, h, x, y, w, h);
+      ctx.clearRect(x, y, w, h); shade.clearRect(x, y, w, h);
+    },
+    end() {}, dispose() {},
+  };
 }
 
 export default function OrganzaBow({ opening }) {
+  const [useCpu, setUseCpu] = useState(false);
   const canvas = useRef(null);
-  const openingStart = useRef(null);
-  const [pieces, setPieces] = useState(null);
-
+  const fallback = useRef(null);
+  const animation = useRef(null);
+  const start = useRef(null);
   useEffect(() => {
+    const element = canvas.current;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let disposed = false;
+    let frame;
+    let wake;
+    let lastTime;
+    let painter;
+    const run = (now) => {
+      cancelAnimationFrame(frame);
+      clearTimeout(wake);
+      if (!painter || disposed) return;
+      const elapsed = start.current === null ? 0 : now - start.current;
+      const time = motion.matches && start.current !== null ? finishTime : elapsed;
+      const visibleTime = time < 1630 ? 0 : time;
+      if (visibleTime !== lastTime) paintBow(painter, visibleTime);
+      lastTime = visibleTime;
+      if (fallback.current) fallback.current.hidden = true;
+      if (start.current !== null && time < 1630) {
+        wake = window.setTimeout(refresh, 1630 - time);
+      } else if (start.current !== null && time < finishTime) {
+        frame = requestAnimationFrame(run);
+      }
+    };
+    const refresh = () => run(performance.now());
+    animation.current = refresh;
+    motion.addEventListener('change', refresh);
     const image = new Image();
-    image.src = '/mauve-theme/silk-organza-bow.webp';
-    let cancelled = false;
-
-    image.decode().then(() => {
-      if (!cancelled) setPieces(clipPieces(image));
-    }).catch(() => {
-      // Paper and veil can still open if the decorative image fails to load.
-    });
-
-    return () => { cancelled = true; };
-  }, []);
-
+    const switchToCanvas = () => setUseCpu(true);
+    element.addEventListener('webglcontextlost', switchToCanvas);
+    image.onload = () => {
+      if (disposed) return;
+      const atlas = makeAtlas(image);
+      const gl = !useCpu && element.getContext('webgl', { alpha: true, antialias: true, depth: false });
+      const ctx = !gl && element.getContext('2d');
+      painter = gl ? gpuPainter(gl, atlas) : ctx && cpuPainter(ctx, atlas);
+      if (gl && !painter) { switchToCanvas(); return; }
+      refresh();
+    };
+    image.src = photoUrl;
+    return () => {
+      disposed = true;
+      animation.current = null;
+      image.onload = null;
+      element.removeEventListener('webglcontextlost', switchToCanvas);
+      motion.removeEventListener('change', refresh);
+      cancelAnimationFrame(frame);
+      clearTimeout(wake);
+      painter?.dispose();
+    };
+  }, [useCpu]);
   useEffect(() => {
-    openingStart.current = opening ? performance.now() : null;
+    start.current = opening ? performance.now() : null;
+    animation.current?.();
   }, [opening]);
 
-  useEffect(() => {
-    if (!pieces || !canvas.current) return undefined;
-    const draw = canvas.current.getContext('2d');
-    if (!draw) return undefined;
-    if (!opening) {
-      drawBow(draw, pieces, 0);
-      return undefined;
-    }
-
-    const start = openingStart.current ?? performance.now();
-    let frame;
-    function paint(now) {
-      const elapsed = now - start;
-      drawBow(draw, pieces, Math.min(elapsed, finishTime));
-      if (elapsed < finishTime) frame = requestAnimationFrame(paint);
-    }
-    paint(performance.now());
-    return () => cancelAnimationFrame(frame);
-  }, [opening, pieces]);
-
   return (
-    <canvas
-      ref={canvas}
-      className={styles.bow}
-      data-opening={opening}
-      width={width}
-      height={height}
-      aria-hidden="true"
-    />
+    <>
+      <img ref={fallback} className={styles.photo} data-opening={opening} src={photoUrl} alt="" aria-hidden="true" />
+      <canvas key={useCpu ? '2d' : 'webgl'} ref={canvas} className={styles.bow} data-opening={opening} width={width} height={height} aria-hidden="true" />
+    </>
   );
 }

@@ -4,6 +4,7 @@ import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
 import OrganzaBow from './OrganzaBow';
+import OrganzaWrap from './OrganzaWrap';
 import styles from './WeddingEnvelope.module.css';
 
 // Ethereal rising blink-blink starlight & pearl bokeh motes floating upward from bottom to top
@@ -32,7 +33,7 @@ const RISING_SPARKLES = [
   { id: 's22', kind: 'star', left: '71%', size: 16, dur: '6.1s', delay: '-0.4s', blink: '1.4s', drift: '-10px' },
 ];
 
-export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
+export default function WeddingEnvelope({ phase, onOpen }) {
   const headingId = useId();
   const { language, t } = useLanguage();
   const { guestName, inviterName } = useInvitationParams();
@@ -53,13 +54,7 @@ export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
     >
       <div className={styles.folioStage}>
         <div className={styles.silkVeilSystem} aria-hidden="true">
-          <div className={`${styles.veilPanel} ${styles.veilPanelLeft}`} />
-          <div
-            className={`${styles.veilPanel} ${styles.veilPanelRight}`}
-            onTransitionEnd={(event) => {
-              if (!sealed && event.target === event.currentTarget && event.propertyName === 'transform') onOpened();
-            }}
-          />
+          <OrganzaWrap opening={!sealed} />
           <OrganzaBow opening={!sealed} />
         </div>
 
