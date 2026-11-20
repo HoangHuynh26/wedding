@@ -1,1088 +1,469 @@
+/* The envelope, organza and printed invitation share one physical frame. */
 .experience {
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='144' height='144'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.69' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.21'/%3E%3C/svg%3E");
-  --opening-ease: cubic-bezier(.22, .66, .24, 1);
-  --card-copy-fade: 135ms;
-  position: fixed;
-  z-index: 20;
-  inset: 0;
-  overflow: hidden;
-  overflow: clip;
-  isolation: isolate;
-  color: var(--wedding-navy, #17253a);
-  font-family: var(--wedding-sans, sans-serif);
-}
-
-.room,
-.fabric,
-.dust,
-.bloom,
-.envelopeSparkles {
+  --paper-ease: cubic-bezier(.42, .08, .29, 1);
   position: absolute;
   inset: 0;
-  pointer-events: none;
-}
-
-.envelopeSparkles {
-  z-index: 4;
-  transition: opacity 850ms ease;
-}
-
-.dust {
-  z-index: 2;
-}
-
-.room {
-  background: #eedfc8;
-  transition: opacity 1250ms 180ms ease;
-}
-
-/* ═══════════════════════════════════════════════════
-   AUTHENTIC FLORAL ARTISTRY (JMII WEDDING STYLE)
-   Hydrangeas (Cẩm Tú Cầu), Orchids (Lan Hồ Điệp), Calla Lilies & Amaranthus
-   ═══════════════════════════════════════════════════ */
-
-.floralArrangement {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
   z-index: 8;
-  transform-style: flat;
-}
-
-.floralImage {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  object-fit: contain;
-  transition: opacity 800ms ease;
-}
-
-/* Lower-Left Cluster: Hydrangea (cẩm tú cầu trắng) + Orchid (lan hồ điệp) + Hanging amaranthus tassels */
-.floralBottomLeft {
-  left: clamp(-3.6rem, -8vw, -6.5rem);
-  bottom: clamp(-4rem, -8.5vw, -7.5rem);
-  width: clamp(11rem, 25vw, 19.5rem);
-  height: auto;
-  filter: drop-shadow(4px 14px 28px rgba(60, 45, 25, 0.24));
-  animation: gentleSwayLeft 7.5s ease-in-out infinite alternate;
-}
-
-/* Right Cluster: Calla lily + Hydrangea + Orchid + Trailing amaranthus tassels */
-.floralRight {
-  right: clamp(-3.4rem, -7.5vw, -6.5rem);
-  top: clamp(-1.5rem, -2vw, 0.5rem);
-  width: clamp(11rem, 24vw, 19rem);
-  height: auto;
-  filter: drop-shadow(-4px 14px 28px rgba(60, 45, 25, 0.24));
-  animation: gentleSwayRight 8.5s ease-in-out infinite alternate;
-}
-
-/* Top-Left Orchid branch: Delicate Phalaenopsis orchid bud curving into the envelope */
-.floralTopLeft {
-  left: clamp(-2.2rem, -4.5vw, -3.8rem);
-  top: clamp(-3rem, -6vw, -5.2rem);
-  width: clamp(5.8rem, 12vw, 9.8rem);
-  height: auto;
-  filter: drop-shadow(2px 8px 18px rgba(60, 45, 25, 0.18));
-  animation: gentleFloatTop 6.8s ease-in-out infinite alternate;
-}
-
-/* Drifting single orchid petal near bottom center / right */
-.floralDriftingPetal {
-  right: clamp(4rem, 15vw, 11rem);
-  bottom: clamp(-3.5rem, -7vw, -5.5rem);
-  width: clamp(2.8rem, 5.5vw, 4.2rem);
-  height: auto;
-  filter: drop-shadow(2px 6px 12px rgba(60, 45, 25, 0.16));
-  animation: petalFloat 6s ease-in-out infinite alternate;
-}
-
-@keyframes gentleSwayLeft {
-  0% { transform: rotate(0deg) translateY(0); }
-  50% { transform: rotate(1.2deg) translateY(-4px); }
-  100% { transform: rotate(-1deg) translateY(3px); }
-}
-
-@keyframes gentleSwayRight {
-  0% { transform: rotate(0deg) translateY(0); }
-  50% { transform: rotate(-1.4deg) translateY(-5px); }
-  100% { transform: rotate(0.8deg) translateY(3px); }
-}
-
-@keyframes gentleFloatTop {
-  0% { transform: rotate(0deg) translateY(0); }
-  100% { transform: rotate(2deg) translateY(-4px); }
-}
-
-@keyframes petalFloat {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(3px, -5px) rotate(4deg); }
-  100% { transform: translate(-3px, 3px) rotate(-3deg); }
-}
-
-.experience[data-phase='reveal'] .floralArrangement {
-  opacity: 0;
-  transition: opacity 650ms ease;
-}
-
-.dust i {
-  position: absolute;
-  width: var(--size);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: #fffdf6;
-  box-shadow: 0 0 .5rem #fffef8, 0 0 .9rem #fff7e0;
-  animation: floatDust 12s var(--delay) ease-in-out infinite alternate;
-}
-
-.heading {
-  position: absolute;
-  z-index: 3;
-  top: clamp(2.2rem, 7.5svh, 5.2rem);
-  left: 50%;
-  width: min(calc(100% - 3rem), 46rem);
-  transform: translateX(-50%);
-  text-align: center;
-  transition: opacity 550ms ease, transform 850ms var(--opening-ease);
-}
-
-.heading h1 {
-  margin: 0;
-  color: inherit;
-  font-family: inherit;
-  font-size: clamp(1.4rem, 2.4vw, 2.3rem);
-  font-weight: 600;
-  letter-spacing: .35em;
-  line-height: 1.45;
-  text-transform: uppercase;
-  padding-inline-start: .35em;
-}
-
-.heading p {
-  margin: clamp(.6rem, 1.4svh, 1rem) auto 0;
-  font-size: clamp(0.85rem, 1.15vw, 1.15rem);
-  font-weight: 500;
-  letter-spacing: .2em;
-  line-height: 1.65;
-  text-transform: uppercase;
-  max-width: 44rem;
-}
-
-.heading .personalization {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .25rem 1rem;
-  justify-content: center;
-  margin-top: .6rem;
-  font-size: clamp(0.9rem, 1.15vw, 1.15rem);
-  letter-spacing: .065em;
-  text-transform: none;
-  overflow-wrap: anywhere;
-}
-
-.personalization strong {
-  font-weight: 600;
-}
-
-.headingRule {
-  display: flex;
-  align-items: center;
-  width: min(70%, 24rem);
-  margin: clamp(.65rem, 2.1svh, 1.4rem) auto 0;
-  gap: .5rem;
-  color: #8c8178;
-  opacity: .62;
-}
-
-.headingRule::before,
-.headingRule::after {
-  flex: 1;
-  height: 1px;
-  content: '';
-  background: linear-gradient(90deg, transparent, currentColor);
-}
-
-.headingRule::after {
-  transform: scaleX(-1);
-}
-
-.headingRule i {
-  width: .28rem;
-  height: .28rem;
-  transform: rotate(45deg);
-  background: currentColor;
-}
-
-.stage {
-  --envelope-perspective: 1700px;
-  position: absolute;
-  z-index: 2;
-  top: 53.4%;
-  left: 50%;
-  width: min(61vw, 55rem, calc((100svh - 12rem) * 1.75));
-  aspect-ratio: 1.75;
-  transform: translate(-50%, -50%);
-  perspective: var(--envelope-perspective);
-  perspective-origin: 50% 7%;
-}
-
-.drift,
-.envelope,
-.back,
-.pocket,
-.sealAssembly {
-  position: absolute;
-  inset: 0;
-}
-
-.drift,
-.envelope,
-.flapHinge {
-  transform-style: preserve-3d;
-}
-
-.drift {
-  animation: hoverEnvelope 7s ease-in-out infinite;
-}
-
-.envelope {
-  transition: transform 1320ms 240ms var(--opening-ease);
-}
-
-.back {
-  border-radius: .16rem;
-  border: 1px solid #f9f4eac9;
-  background:
-    var(--grain),
-    radial-gradient(ellipse at 50% 9%, #a7957f 0%, transparent 72%),
-    linear-gradient(165deg, #d1c2ae, #e9dfd2 70%, #d5c6b5);
-  box-shadow: 0 1.4rem 2.15rem #51402b48, .2rem .44rem .58rem #59463046, 0 3.3rem 4.4rem #59463018;
-  transition: opacity 550ms ease, box-shadow 950ms ease;
-}
-
-.cardTrack {
-  position: absolute;
-  inset: 0;
-  transform: translateZ(2px);
-  clip-path: inset(-100% -100% 0);
-  transition: transform 1250ms var(--opening-ease) var(--card-copy-fade);
-}
-
-.card {
-  position: absolute;
-  top: 0;
-  left: 3%;
-  width: 94%;
-  height: 118%;
-  container-type: inline-size;
-  transform: translateY(12%);
-  transform-origin: 50% 35%;
-  opacity: 0;
   overflow: hidden;
-  border: 1px solid #fff8ed;
-  border-radius: .18rem;
-  background:
-    var(--grain),
-    radial-gradient(ellipse at 50% 35%, #fffaf4 12%, transparent 74%),
-    linear-gradient(158deg, #e7dccc, #f8f0e6 68%, #e9dbcd);
-  box-shadow: 0 .35rem 1rem #58473042, inset 0 0 0 .29rem #fff9ed68;
-  text-align: center;
-  transition: opacity 450ms 530ms ease, transform 1120ms 690ms var(--opening-ease);
+  isolation: isolate;
 }
 
-.cardCopy {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(0.45rem, 2.5cqw, 1.25rem);
-  padding: clamp(0.85rem, 3.8cqw, 2rem) 6% 4%;
-  transition: opacity var(--card-copy-fade) ease-out;
-}
-
-.cardMonogram {
-  width: clamp(2.8rem, 15cqw, 5.2rem);
-  max-width: 5.5rem;
-  height: auto;
-  aspect-ratio: 1;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 5px rgba(152, 105, 47, 0.28));
-}
-
-.cardLabel {
-  margin: 0;
-  color: #48515d;
-  font-size: clamp(0.95rem, 3.2cqw, 1.35rem);
-  font-weight: 600;
-  letter-spacing: .32em;
-  line-height: 1.3;
-}
-
-.cardDate {
-  display: inline-flex;
-  align-items: center;
-  gap: .48em;
-  margin-top: clamp(0.2rem, 1cqw, 0.6rem);
-  padding: .52em 1.35em;
-  border: 1px solid #79674d38;
-  border-radius: 100vmax;
-  color: #364456;
-  font-size: clamp(0.88rem, 2.9cqw, 1.25rem);
-  font-weight: 550;
-  letter-spacing: .15em;
-  line-height: 1.3;
-  white-space: nowrap;
-}
-
-.cardDate svg {
-  width: 1.15em;
-  height: 1.15em;
-}
-
-.cardSprig,
-.pocketSprig {
+.folioStage {
   position: absolute;
-  width: 21%;
-  height: auto;
-  color: #8e826b;
+  inset: 0;
+  overflow: hidden;
+}
+
+.silkVeilSystem {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.cardSprig {
-  top: -11%;
-  opacity: .43;
-}
-
-.cardSprigLeft {
-  left: -3.5%;
-  transform: scaleY(-1) rotate(11deg);
-}
-
-.cardSprigRight {
-  right: -3.5%;
-  transform: rotate(191deg);
-}
-
-.pocket {
-  transform: translateZ(13px);
-  transition: opacity 620ms ease, transform 850ms var(--opening-ease);
-}
-
-.side,
-.fold {
+/* Iridescent sheer pearl-mauve silk/tulle wrap panels over the card */
+.veilPanel {
   position: absolute;
-  inset: 0;
-  transition: clip-path 940ms 230ms var(--opening-ease);
+  top: -4%;
+  bottom: -4%;
+  width: calc(50% + 1px);
+  background: linear-gradient(104deg, #ede1eaa6, #ece0e84d 34%, #b8a3b266 68%, #f7eff6a3),
+              linear-gradient(176deg, #f9f4f944, #b7a2b26b 50%, #e9dbe64d);
+  transform: translateX(0) scaleX(1);
+  transition: transform 1830ms 3080ms cubic-bezier(.49,.06,.36,1);
 }
-
-.sideLeft {
-  clip-path: polygon(0 0, 71% 80%, 0 100%);
-  background: var(--grain), linear-gradient(40deg, #e1d5c5, #f4eee4 53%, #ded1bf);
-}
-
-.sideRight {
-  clip-path: polygon(100% 0, 29% 80%, 100% 100%);
-  background: var(--grain), linear-gradient(324deg, #e1d4c2, #f3ebe0 46%, #cfc0ac);
-}
-
-.fold {
-  clip-path: polygon(0 100%, 36% 55%, 43% 48%, 50% 46%, 57% 48%, 64% 55%, 100% 100%);
-  background: var(--grain), linear-gradient(170deg, #fdf8ef 39%, #f3e9dc 66%, #e6d9c8 100%);
-  border-bottom: 1px solid #fbf5ea;
-}
-
-.pocketSprig {
-  bottom: 1.8%;
-  width: 13%;
-  opacity: .54;
-  transition: opacity 570ms 180ms ease;
-}
-
-.pocketSprigLeft {
-  left: 1.7%;
-  transform: rotate(-12deg);
-}
-
-.pocketSprigRight {
-  right: 1.7%;
-  transform: scaleX(-1) rotate(-12deg);
-}
-
-.flap {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 64%;
-  transform: translateZ(23px);
-  perspective: var(--envelope-perspective);
-  perspective-origin: 50% 0;
-  transition: transform 0ms 620ms, opacity 680ms ease;
-}
-
-.flapHinge {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 0;
-  transform: rotateX(0deg);
-  transition: transform 1090ms 190ms var(--opening-ease);
-}
-
-.flapFace {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.flapFace::before {
-  position: absolute;
-  inset: 0;
+.veilPanel::before {
   content: '';
-  clip-path: polygon(0 0, 100% 0, 99% 10%, 97% 19%, 57% 92%, 53% 98%, 50% 100%, 47% 98%, 43% 92%, 3% 19%, 1% 10%);
-  border-top: 1px solid #fffcf6;
-}
-
-.flapFront {
-  filter: drop-shadow(0 .18rem .12rem #4f3e2c56) drop-shadow(.06rem .38rem .43rem #75645032);
-}
-
-.flapFront::before {
-  background:
-    var(--grain),
-    radial-gradient(ellipse at 31% 0, #fffcf6 2%, transparent 70%),
-    linear-gradient(171deg, #f8f3ea 6%, #f1e8dc 56%, #dacebc 100%);
-}
-
-.flapBack {
-  transform: rotateY(180deg);
-  filter: drop-shadow(0 .2rem .32rem #5f4b364d);
-}
-
-.flapBack::before {
-  border-top-color: #e9d9bf;
-  background: var(--grain), linear-gradient(173deg, #c6b397, #ded1be 58%, #f4eae0);
-}
-
-.sealAssembly {
-  transform: translateZ(33px);
-  pointer-events: none;
-}
-
-.ribbon {
   position: absolute;
-  top: 58%;
-  left: 50%;
-  width: 26%;
-  height: 49%;
-  transform-origin: top left;
-  clip-path: polygon(2% 0, 26% 1%, 33% 27%, 47% 53%, 70% 80%, 100% 100%, 75% 94%, 72% 100%, 50% 84%, 30% 59%, 15% 32%);
-  background: linear-gradient(127deg, #c9b38e 8%, #e1d0b4 34%, #fff5e2 54%, #e6d4b9 76%, #f8edda 93%);
-  filter: drop-shadow(.3rem .2rem .14rem #8d765763);
-}
-
-.ribbonRight {
-  transform: translateX(-5%) rotate(-6deg);
-  animation: ribbonFlutterRight 3.8s ease-in-out infinite;
-}
-
-.ribbonLeft {
-  transform: translateX(5%) scaleX(-1) rotate(-11deg);
-  animation: ribbonFlutterLeft 4.3s ease-in-out infinite;
-}
-
-@keyframes ribbonFlutterRight {
-  0%, 100% {
-    transform: translateX(-5%) rotate(-6deg) skewX(0deg) scale(1, 1);
-    filter: drop-shadow(0.3rem 0.2rem 0.14rem rgba(141, 118, 87, 0.39));
-  }
-  20% {
-    transform: translateX(-4.2%) rotate(-10.5deg) skewX(-3.5deg) scale(0.98, 1.03);
-    filter: drop-shadow(0.24rem 0.26rem 0.18rem rgba(141, 118, 87, 0.34));
-  }
-  45% {
-    transform: translateX(-5.6%) rotate(-3.5deg) skewX(2.8deg) scale(1.02, 0.97);
-    filter: drop-shadow(0.34rem 0.18rem 0.12rem rgba(141, 118, 87, 0.43));
-  }
-  70% {
-    transform: translateX(-4.6%) rotate(-8.5deg) skewX(-2deg) scale(0.99, 1.01);
-    filter: drop-shadow(0.26rem 0.24rem 0.16rem rgba(141, 118, 87, 0.36));
-  }
-  85% {
-    transform: translateX(-5.2%) rotate(-4.8deg) skewX(1.4deg) scale(1.01, 0.99);
-    filter: drop-shadow(0.32rem 0.2rem 0.14rem rgba(141, 118, 87, 0.38));
-  }
-}
-
-@keyframes ribbonFlutterLeft {
-  0%, 100% {
-    transform: translateX(5%) scaleX(-1) rotate(-11deg) skewX(0deg) scale(1, 1);
-    filter: drop-shadow(0.3rem 0.2rem 0.14rem rgba(141, 118, 87, 0.39));
-  }
-  25% {
-    transform: translateX(5.5%) scaleX(-1) rotate(-6.5deg) skewX(3deg) scale(1.03, 0.97);
-    filter: drop-shadow(0.34rem 0.18rem 0.12rem rgba(141, 118, 87, 0.43));
-  }
-  50% {
-    transform: translateX(4.3%) scaleX(-1) rotate(-15.5deg) skewX(-3.5deg) scale(0.97, 1.03);
-    filter: drop-shadow(0.24rem 0.26rem 0.18rem rgba(141, 118, 87, 0.34));
-  }
-  75% {
-    transform: translateX(5.2%) scaleX(-1) rotate(-9.5deg) skewX(1.8deg) scale(1.01, 0.99);
-    filter: drop-shadow(0.31rem 0.22rem 0.15rem rgba(141, 118, 87, 0.37));
-  }
-}
-
-.waxGlowHalo {
-  position: absolute;
-  top: 59%;
-  left: 50%;
-  width: 26%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 235, 170, 0.8) 0%, rgba(225, 185, 95, 0.5) 38%, rgba(255, 220, 130, 0.2) 58%, transparent 75%);
-  filter: blur(8px);
-  pointer-events: none;
-  animation: haloPulse 3.2s ease-in-out infinite;
-  z-index: 0;
-}
-
-@keyframes haloPulse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(0.94);
-    opacity: 0.6;
-    filter: blur(7px);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.3);
-    opacity: 1;
-    filter: blur(12px);
-  }
-}
-
-.wax {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  top: 59%;
-  left: 50%;
-  width: 17.5%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%) rotate(-7deg);
-  border-radius: 50% 46% 49% 45% / 51% 49% 44% 48%;
-  background: radial-gradient(circle at 45% 45%, #faf0de 46%, #d7c1a4 55%, #fff6e7 66%, #d9c5a8 75%);
-  box-shadow:
-    0 0 16px rgba(220, 175, 80, 0.65),
-    0 0 32px rgba(255, 220, 120, 0.42),
-    inset 0.08rem 0.15rem 0.28rem #fff9e8,
-    inset -0.22rem -0.34rem 0.5rem #86705075,
-    0.14rem 0.58rem 0.85rem #71543379;
-  color: #98682a;
-  animation: pulseWaxGlow 3.5s ease-in-out infinite;
-  transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
-}
-
-@keyframes pulseWaxGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 14px rgba(212, 168, 87, 0.55),
-      0 0 28px rgba(255, 215, 120, 0.35),
-      inset 0.08rem 0.15rem 0.28rem #fff9e8,
-      inset -0.22rem -0.34rem 0.5rem #86705075,
-      0.14rem 0.58rem 0.85rem #71543379;
-    filter: brightness(1);
-  }
-  50% {
-    box-shadow:
-      0 0 26px rgba(230, 185, 75, 0.92),
-      0 0 50px rgba(255, 230, 130, 0.72),
-      0 0 75px rgba(255, 245, 185, 0.45),
-      inset 0.08rem 0.15rem 0.32rem #fffdf5,
-      inset -0.22rem -0.34rem 0.5rem #86705075,
-      0.18rem 0.65rem 1rem #71543389;
-    filter: brightness(1.08);
-  }
-}
-
-.wax::before,
-.wax::after {
-  position: absolute;
-  content: '';
-  pointer-events: none;
-}
-
-.wax::before {
-  inset: 11%;
-  border-radius: 50%;
-  border: 1px solid #fdf4dd;
-  box-shadow: 0.02rem -0.11rem 0.23rem #ac8b61a8, inset 0.07rem 0.11rem 0.2rem #b7976d4a;
-}
-
-.wax::after {
   inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(ellipse at 25% 20%, #fffcefcb, transparent 53%);
-  animation: shimmerWax 7s ease-in-out infinite;
+  background: url('/mauve-theme/mother-of-pearl.webp') left center / 200% 100%;
+  mix-blend-mode: soft-light;
+  opacity: .46;
 }
+.veilPanelLeft { left: 0; transform-origin: left; box-shadow: inset -5px 0 9px #735a6e29; }
+.veilPanelRight { right: 0; transform-origin: right; box-shadow: inset 5px 0 9px #735a6e29; }
+.veilPanelRight::before { background-position: right center; }
 
-.waxInnerGlow {
+.envelopeShell {
   position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 248, 225, 0.7) 0%, rgba(255, 235, 170, 0.35) 50%, transparent 75%);
+  inset: 0;
+  z-index: 8;
   pointer-events: none;
-  animation: innerGleam 3.5s ease-in-out infinite;
+  perspective: 1400px;
+  perspective-origin: 50% 46%;
 }
 
-@keyframes innerGleam {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
-}
-
-.waxLogoImg {
-  position: relative;
-  z-index: 2;
-  width: 72%;
-  height: 72%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 4px rgba(255, 225, 130, 0.85)) drop-shadow(0 0 10px rgba(212, 168, 87, 0.65));
-  animation: logoLuster 3.5s ease-in-out infinite;
-  user-select: none;
-  pointer-events: none;
-  transition: transform 300ms ease, filter 300ms ease;
-}
-
-@keyframes logoLuster {
-  0%, 100% {
-    filter: drop-shadow(0 0 4px rgba(255, 220, 130, 0.7)) drop-shadow(0 0 9px rgba(212, 168, 87, 0.5));
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 9px rgba(255, 245, 180, 0.98)) drop-shadow(0 0 20px rgba(230, 180, 75, 0.9)) drop-shadow(0 0 32px rgba(255, 235, 150, 0.6));
-    transform: scale(1.05);
-  }
-}
-
-.opener {
+.envelopePicture {
   position: absolute;
-  z-index: 5;
   inset: 0;
   width: 100%;
   height: 100%;
-  border: 0;
-  border-radius: 0.2rem;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-  touch-action: manipulation;
-  cursor: pointer;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pocketImg,
+.topFlapImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Subtle pearlescent silk sheen moving gently across the sculpted ginkgo petals */
+.petalSatinSheen {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 24%,
+    rgba(245, 236, 244, 0.16) 42%,
+    rgba(255, 250, 255, 0.24) 50%,
+    rgba(232, 218, 232, 0.14) 58%,
+    transparent 76%
+  );
+  mix-blend-mode: soft-light;
+  animation: satinPetalShimmer 8s ease-in-out infinite alternate;
+}
+
+@keyframes satinPetalShimmer {
+  0% {
+    transform: translate(-10%, -6%) rotate(-2deg);
+  }
+  100% {
+    transform: translate(10%, 6%) rotate(2deg);
+  }
+}
+
+/* Lower sculpted petal pocket — clipped below the V-flap seam so it separates cleanly on open */
+.paperPocket {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: polygon(0% 26.2%, 49.3% 52.7%, 100% 26.7%, 100% 100%, 0% 100%);
+  transition: transform 1830ms 320ms cubic-bezier(.47, .08, .33, 1);
+}
+
+@media (min-aspect-ratio: 105/100) {
+  .paperPocket {
+    clip-path: polygon(0% 7.2%, 49.8% 54.5%, 100% 14.2%, 100% 100%, 0% 100%);
+  }
+}
+
+/* Top hinged V-flap + attached Organic Oval Wax Seal */
+.topFlapPivot {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  transform-origin: 50% 0%;
+  transform: rotateX(0deg);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 12px 20px rgba(24, 16, 22, 0.46));
+  transition: transform 1660ms var(--paper-ease);
+}
+
+.flapTop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.flapTopShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 255, 0.08) 0%,
+    transparent 36%,
+    rgba(36, 24, 34, 0.28) 54%
+  );
+  opacity: 0;
+  transition: opacity 760ms var(--paper-ease);
+}
+
+.experience[data-phase='opening'] .flapTopShade {
+  opacity: 1;
+}
+
+/* Photorealistic Organic Vertical-Oval Satin Mauve-Taupe Wax Seal HH at the V-flap junction */
+.waxSealAnchor {
+  position: absolute;
+  top: 52.2%;
+  left: 49.5%;
+  width: clamp(118px, min(33.5vw, 21.5svh), 210px);
+  aspect-ratio: 772 / 842;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  z-index: 6;
+}
+
+@media (min-aspect-ratio: 105/100) {
+  .waxSealAnchor {
+    top: 53.2%;
+    left: 49.8%;
+    width: clamp(132px, min(16.8vw, 29.5svh), 224px);
+  }
+}
+
+.waxSealWrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  animation: sealSubtlePulse 3.6s ease-in-out infinite;
+}
+
+.waxSealImg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(-6px 14px 18px rgba(24, 15, 22, 0.62))
+    drop-shadow(0 4px 7px rgba(24, 15, 22, 0.42));
+  transition: transform 320ms ease, filter 320ms ease;
+}
+
+@keyframes sealSubtlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.028); }
+}
+
+/* Rising Blink-Blink Starlight & Pearl Bokeh Motes Floating Bottom -> Top */
+.envelopeSparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  overflow: hidden;
   transition: opacity 240ms ease;
 }
 
-.opener:enabled:focus-visible {
-  outline: 2px solid #8a683d;
-  outline-offset: 0.48rem;
+.risingParticle {
+  position: absolute;
+  bottom: -28px;
+  left: var(--p-left, 50%);
+  width: var(--p-size, 16px);
+  height: var(--p-size, 16px);
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: particleRiseUp var(--p-dur, 6.5s) var(--p-delay, 0s) linear infinite;
 }
 
-.opener:disabled {
-  cursor: default;
-  opacity: 0;
+.risingStarCore {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter:
+    drop-shadow(0 0 5px rgba(255, 252, 255, 0.96))
+    drop-shadow(0 0 12px rgba(246, 232, 248, 0.85));
+  animation: sparkleTwinkle var(--p-blink, 1.5s) ease-in-out infinite;
+}
+
+.risingStarCore::before,
+.risingStarCore::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+
+.risingStarCore::before {
+  width: 100%;
+  height: 14%;
+  background: linear-gradient(90deg, transparent, #ffffff 50%, transparent);
+}
+
+.risingStarCore::after {
+  width: 14%;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #ffffff 50%, transparent);
+}
+
+.risingOrbCore {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    rgba(255, 248, 255, 0.9) 42%,
+    rgba(244, 228, 246, 0.35) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px 2px rgba(255, 250, 255, 0.82);
+  animation: orbTwinkle var(--p-blink, 1.8s) ease-in-out infinite;
+}
+
+@keyframes particleRiseUp {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  35% {
+    transform: translate3d(var(--p-drift, 10px), -36svh, 0);
+  }
+  70% {
+    transform: translate3d(calc(var(--p-drift, 10px) * -0.7), -74svh, 0);
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(calc(var(--p-drift, 10px) * 0.4), -110svh, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    opacity: 0.22;
+    transform: scale(0.45) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18) rotate(28deg);
+  }
+}
+
+@keyframes orbTwinkle {
+  0%, 100% {
+    opacity: 0.28;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.98;
+    transform: scale(1.22);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SPARKLES, GUEST BADGE & TAP TRIGGER
+   ═══════════════════════════════════════════════ */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.guestBadge {
+  position: absolute;
+  top: max(1.5rem, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  max-width: calc(100% - 2.5rem);
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(244, 238, 243, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 250, 254, 0.65);
+  box-shadow: 0 8px 24px rgba(60, 48, 60, 0.16);
+  color: #453e4b;
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  text-align: center;
   pointer-events: none;
 }
 
-@media (hover: hover) {
-  .stage:hover .wax {
-    box-shadow:
-      0 0 28px rgba(235, 190, 80, 0.95),
-      0 0 55px rgba(255, 235, 140, 0.8),
-      0 0 80px rgba(255, 245, 190, 0.55),
-      inset 0.08rem 0.15rem 0.35rem #fffdf5,
-      inset -0.22rem -0.34rem 0.5rem #86705075,
-      0.2rem 0.7rem 1.1rem #71543389;
-    filter: brightness(1.12);
-  }
-
-  .stage:hover .waxGlowHalo {
-    transform: translate(-50%, -50%) scale(1.38);
-    opacity: 1;
-    filter: blur(12px);
-  }
-
-  .stage:hover .waxLogoImg {
-    filter: drop-shadow(0 0 10px rgba(255, 248, 200, 1)) drop-shadow(0 0 22px rgba(235, 185, 80, 0.95));
-    transform: scale(1.08);
-  }
+.guestLine strong {
+  font-weight: 600;
+  color: #352d3b;
 }
 
-.bloom {
-  z-index: 4;
-  opacity: 0;
-  background:
-    radial-gradient(ellipse at 51% 52%, #fffdf8 10%, #fffdf8ba 46%, #fffdfa24 76%, transparent 90%),
-    linear-gradient(155deg, #fffdf850, transparent 30%, transparent 68%, #fffaf6b3);
+.inviterLine {
+  font-size: 0.76rem;
+  color: #6a5e70;
+  font-style: italic;
 }
 
-.bloom::after {
+.tapHint {
   position: absolute;
-  inset: 1% -15% -28%;
-  border-radius: 40% 55% 45% 50%;
-  transform: rotate(-13deg);
-  background: linear-gradient(168deg, transparent 49%, #fffdfa4d 58%, #fffdf7c9 61%, transparent 70%);
-  content: '';
+  bottom: max(2rem, calc(env(safe-area-inset-bottom) + 1.25rem));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: clamp(0.45rem, 1svh, 0.7rem) clamp(1.15rem, 2.2vw, 1.75rem);
+  border-radius: 999px;
+  background: rgba(69, 62, 75, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 250, 254, 0.32);
+  color: #f8f4f8;
+  font-family: var(--font-sans);
+  font-size: clamp(0.68rem, min(1.5vw, 1.45svh), 0.88rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintFloat 2.8s ease-in-out infinite;
 }
 
-.experience:not([data-phase='sealed']) .drift {
-  animation-play-state: paused;
+.tapHintDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 248, 254, 0.85);
 }
 
-.experience:not([data-phase='sealed']) .envelope {
-  transform: translateY(35%) scale(1.045);
+@keyframes hintFloat {
+  0%, 100% { transform: translate(-50%, 0); opacity: 0.82; }
+  50% { transform: translate(-50%, -4px); opacity: 1; }
 }
 
-.experience:not([data-phase='sealed']) .back {
-  box-shadow: 0 1.45rem 2.9rem #51402b3e, .2rem .48rem .7rem #59463031;
+.openerBtn {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.experience:not([data-phase='sealed']) .flap {
-  transform: translateZ(-6px);
+.openerBtn:disabled {
+  pointer-events: none;
+  cursor: default;
 }
 
-.experience:not([data-phase='sealed']) .flapHinge {
-  transform: rotateX(126deg);
+@media (hover: hover) {
+  .folioStage:hover .waxSealImg {
+    transform: scale(1.045);
+    filter:
+      drop-shadow(-6px 16px 22px rgba(24, 15, 22, 0.7))
+      drop-shadow(0 0 16px rgba(244, 232, 240, 0.36));
+  }
 }
 
-.experience:not([data-phase='sealed']) .card {
-  opacity: 1;
-  transform: translateY(-24%);
+/* The seal travels with the lid. The lower pocket slides down cleanly along the V-flap fold. */
+.experience[data-phase='opening'] .topFlapPivot {
+  transform: rotateX(147deg);
+}
+.experience[data-phase='opening'] .paperPocket {
+  transform: translateY(104%);
 }
 
-.experience:not([data-phase='sealed']) .sideLeft {
-  clip-path: polygon(0 46%, 73% 94%, 0 100%);
+/* Both organza panels draw away from the knot before their corners follow. */
+.experience[data-phase='opening'] .veilPanelLeft {
+  transform: translateX(-102%) scaleX(.82);
+  animation: foldLeft 1500ms 3080ms ease-in-out both;
 }
-
-.experience:not([data-phase='sealed']) .sideRight {
-  clip-path: polygon(100% 46%, 27% 94%, 100% 100%);
+.experience[data-phase='opening'] .veilPanelRight {
+  transform: translateX(102%) scaleX(.82);
+  animation: foldRight 1500ms 3080ms ease-in-out both;
 }
-
-.experience:not([data-phase='sealed']) .fold {
-  clip-path: polygon(0 100%, 36% 77%, 43% 74%, 50% 73%, 57% 74%, 64% 77%, 100% 100%);
+@keyframes foldLeft {
+  from { clip-path: polygon(0 0,100% 0,100% 50%,100% 100%,0 100%); }
+  to { clip-path: polygon(0 0,100% 0,5% 50%,100% 100%,0 100%); }
 }
-
-.experience:not([data-phase='sealed']) .pocketSprig {
-  opacity: .17;
+@keyframes foldRight {
+  from { clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 50%); }
+  to { clip-path: polygon(0 0,100% 0,100% 100%,0 100%,95% 50%); }
 }
-
-.experience:not([data-phase='sealed']) .sealAssembly {
-  animation: releaseSeal 620ms ease both;
-}
-
-.experience[data-phase='reveal'] .room,
-.experience[data-phase='reveal'] .back,
-.experience[data-phase='reveal'] .flap,
-.experience[data-phase='reveal'] .pocket,
-.experience[data-phase='reveal'] .envelopeSparkles {
+.guestBadge { transition: opacity 160ms ease; }
+.experience[data-phase='opening'] .guestBadge,
+.experience[data-phase='opening'] .envelopeSparkles {
   opacity: 0;
 }
-
-.experience[data-phase='reveal'] .heading {
-  opacity: 0;
-  transform: translate(-50%, -.75rem);
-}
-
-.experience[data-phase='reveal'] .pocket {
-  transform: translateY(10%) translateZ(13px);
-}
-
-.experience[data-phase='reveal'] .cardTrack {
-  transform: translateZ(32px);
-  clip-path: none;
-}
-
-.experience[data-phase='reveal'] .card {
-  opacity: 0;
-  transform: translateY(-41%) scale(1.54);
-  transition: opacity 1050ms 310ms ease, transform 1290ms var(--opening-ease) var(--card-copy-fade);
-}
-
-.experience[data-phase='reveal'] .cardCopy {
-  opacity: 0;
-}
-
-.experience[data-phase='reveal'] .bloom {
-  animation: bloomIntoHero 1560ms ease both;
-}
-
-@keyframes floatDust {
-  from { opacity: .12; transform: translate3d(0, 0, 0); }
-  to { opacity: .81; transform: translate3d(.52rem, -1.35rem, 0); }
-}
-
-@keyframes hoverEnvelope {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-.27rem); }
-}
-
-@keyframes shimmerWax {
-  0%, 100% { opacity: .25; }
-  50% { opacity: .73; }
-}
-
-@keyframes releaseSeal {
-  0% { opacity: 1; transform: translateZ(33px); }
-  21% { opacity: 1; filter: brightness(1.15); transform: translateZ(49px) scale(1.026); }
-  100% { opacity: 0; transform: translate3d(0, 5%, 50px) scale(.98); }
-}
-
-@keyframes bloomIntoHero {
-  0% { opacity: 0; transform: scale(.9); }
-  38% { opacity: .84; }
-  66% { opacity: .50; }
-  100% { opacity: 0; transform: scale(1.16); }
-}
-
-/* Tablet & iPad Pro (11", 12.9", 13") Styling */
-@media (min-width: 768px) and (max-width: 1366px) {
-  .heading {
-    top: clamp(4.5rem, 11svh, 8.5rem);
-    width: min(92%, 46rem);
-  }
-
-  .heading h1 {
-    font-size: clamp(2.1rem, 3.8vw, 2.85rem);
-    letter-spacing: 0.35em;
-    padding-inline-start: 0.35em;
-  }
-
-  .heading p {
-    font-size: clamp(1.1rem, 2.1vw, 1.38rem);
-    line-height: 1.7;
-    max-width: 38rem;
-    margin-top: 0.85rem;
-    letter-spacing: 0.22em;
-  }
-
-  .heading .personalization {
-    font-size: clamp(1.15rem, 2.2vw, 1.35rem);
-    margin-top: 0.75rem;
-    gap: 0.35rem 1.2rem;
-  }
-
-  .headingRule {
-    margin-top: 1.2rem;
-    width: min(65%, 22rem);
-  }
-
-  .stage {
-    width: min(88vw, 48rem, calc((100svh - 13rem) * 1.75));
-    top: 53%;
-  }
-
-  .cardMonogram {
-    width: clamp(3.8rem, 16cqw, 5.6rem);
-  }
-
-  .cardLabel {
-    font-size: clamp(1.15rem, 3.5cqw, 1.45rem);
-    letter-spacing: 0.34em;
-  }
-
-  .cardDate {
-    font-size: clamp(1.05rem, 3.2cqw, 1.35rem);
-    padding: 0.55em 1.45em;
-  }
-
-  .branch {
-    width: clamp(20rem, 32vw, 29rem);
-  }
-
-  .branchUpper {
-    top: clamp(-1rem, -1vh, 0);
-    left: clamp(-1rem, -1vw, 0);
-  }
-
-  .branchLower {
-    right: clamp(-1rem, -1vw, 0);
-    bottom: clamp(-1rem, -1vh, 0);
-  }
-
-  .fabric::before {
-    top: -20%;
-    right: -25%;
-    width: 95%;
-  }
-
-  .fabric::after {
-    bottom: -25%;
-    left: -20%;
-    width: 95%;
-  }
-}
-
-@media (max-width: 767px) {
-  .heading {
-    top: max(calc(env(safe-area-inset-top, 0px) + 2.85rem), 10.5svh);
-    width: min(calc(100% - 2.5rem), 32rem);
-    padding: 0 0.5rem;
-  }
-
-  .heading h1 {
-    font-size: clamp(1.45rem, 6.2vw, 1.85rem);
-    font-weight: 600;
-    letter-spacing: 0.28em;
-    padding-inline-start: 0.28em;
-    line-height: 1.35;
-  }
-
-  .heading p {
-    margin: 0.65rem auto 0;
-    font-size: clamp(0.9rem, 3.6vw, 1.05rem);
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    line-height: 1.6;
-    max-width: 25rem;
-    text-wrap: balance;
-  }
-
-  .heading .personalization {
-    margin-top: 0.5rem;
-    font-size: clamp(0.92rem, 3.8vw, 1.05rem);
-    letter-spacing: 0.05em;
-  }
-
-  .headingRule {
-    margin: 0.75rem auto 0;
-    width: min(60%, 15rem);
-  }
-
-  .stage {
-    --envelope-perspective: 950px;
-    top: 53.5%;
-    width: min(94vw, 32rem, calc((100svh - 9rem) * 1.75));
-  }
-
-  .cardCopy {
-    gap: 3.2cqw;
-    padding: 4.5cqw 5% 4%;
-  }
-
-  .cardMonogram {
-    width: clamp(2.8rem, 16cqw, 4.2rem);
-  }
-
-  .cardLabel {
-    font-size: clamp(0.95rem, 3.8cqw, 1.2rem);
-    letter-spacing: 0.28em;
-  }
-
-  .cardDate {
-    font-size: clamp(0.88rem, 3.4cqw, 1.12rem);
-    padding: 0.52em 1.25em;
-  }
-
-  .branch {
-    width: clamp(12rem, 48vw, 20rem);
-  }
-
-  .branchUpper {
-    top: -4%;
-    left: -12%;
-  }
-
-  .branchLower {
-    right: -10%;
-    bottom: -4%;
-  }
-
-  .petalLeft {
-    top: 73%;
-    left: 12%;
-  }
-
-  .petalRight {
-    top: 30%;
-  }
-
-  .fabric::before {
-    top: -12%;
-    width: 118%;
-  }
-
-  .fabric::after {
-    bottom: -16%;
-    width: 123%;
-  }
-}
-
-@media (max-width: 480px) {
-  .heading {
-    top: max(calc(env(safe-area-inset-top, 0px) + 2.6rem), 10svh);
-    width: calc(100% - 1.75rem);
-  }
-
-  .heading h1 {
-    font-size: clamp(1.35rem, 5.8vw, 1.65rem);
-    letter-spacing: 0.25em;
-    padding-inline-start: 0.25em;
-  }
-
-  .heading p {
-    font-size: clamp(0.85rem, 3.4vw, 0.98rem);
-    letter-spacing: 0.1em;
-    line-height: 1.55;
-    max-width: 23rem;
-    text-wrap: balance;
-  }
-
-  .stage {
-    top: 54%;
-    width: min(94vw, 28rem, calc((100svh - 8.5rem) * 1.75));
-  }
-
-  .cardCopy {
-    gap: 2.8cqw;
-    padding-inline: 4%;
-  }
-
-  .cardMonogram {
-    width: clamp(2.6rem, 16cqw, 3.8rem);
-  }
-
-  .cardLabel {
-    font-size: clamp(0.92rem, 3.7cqw, 1.15rem);
-    letter-spacing: 0.24em;
-  }
-
-  .cardDate {
-    font-size: clamp(0.82rem, 3.3cqw, 1.05rem);
-    padding: 0.48em 1.15em;
-  }
-}
-
-@media (max-height: 600px) and (min-width: 650px) {
-  .heading {
-    top: max(env(safe-area-inset-top), 3.9svh);
-  }
-
-  .headingRule {
-    margin-top: .35rem;
-  }
-
-  .stage {
-    top: 53%;
-    width: min(65vw, calc((100svh - 9.25rem) * 1.75));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .drift,
-  .dust i,
-  .wax::after,
-  .experience:not([data-phase='sealed']) .sealAssembly,
-  .experience[data-phase='reveal'] .bloom {
-    animation: none;
-  }
-
-  .experience:not([data-phase='sealed']) .sealAssembly {
-    opacity: 0;
-  }
+  .waxSealWrap, .risingParticle, .risingStarCore, .risingOrbCore, .petalSatinSheen { animation: none; }
+  .paperPocket, .topFlapPivot, .veilPanel { transition: none; }
 }

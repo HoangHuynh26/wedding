@@ -13,6 +13,12 @@ function getSecondsLeft() {
   return seconds > 0 ? seconds : 0;
 }
 
+/**
+ * Step 5A — Twilight Dusty Slate-Lavender Countdown Band (Images 9, 10, 11)
+ * Features an ornate vintage scalloped pale-mauve plaque over a muted slate-plum backdrop,
+ * signed off with delicate italic calligraphy ("Hẹn sớm gặp bạn!" / "See you soon!"),
+ * plus a harmonious frosted slate-mauve sticky bar when scrolled past.
+ */
 export default function Countdown() {
   const { t } = useLanguage();
   const [secondsLeft, setSecondsLeft] = useState(getSecondsLeft);
@@ -28,18 +34,15 @@ export default function Countdown() {
     return () => window.clearInterval(interval);
   }, []);
 
-  // Monitor scroll to stick countdown bar to top once user scrolls past countdown section
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
-      // Stick when top of countdown section reaches or passes top of viewport
-      setIsSticky(rect.top <= 0);
+      setIsSticky(rect.bottom <= 48);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -58,36 +61,45 @@ export default function Countdown() {
     <>
       <section
         ref={sectionRef}
-        className={`section ${styles.countdownSection}`}
+        className={styles.countdownSection}
         id="countdown"
-        aria-label={t.countdown.tag}
+        aria-label={t.countdown.heading || t.countdown.tag}
       >
-        <div className={styles.countdownHeader}>
-          <h3 className={styles.countdownTitle}>{t.countdown.tag}</h3>
-        </div>
-        <div className={styles.timerTrack} role="timer">
-          {timeUnits.map(({ key, value }) => (
-            <div key={key} className={styles.unitColumn}>
-              <span className={styles.digitValue}>{String(value).padStart(2, '0')}</span>
-              <span className={styles.unitLabel}>{t.countdown[key]}</span>
+        <div className={styles.innerContainer}>
+
+          <div className={styles.plaqueWrapper}>
+            <div className={styles.timerTrack} role="timer">
+              {timeUnits.map(({ key, value }) => (
+                <div key={key} className={styles.unitColumn}>
+                  <span className={styles.digitValue}>
+                    {key === 'days' ? value : String(value).padStart(2, '0')}
+                  </span>
+                  <span className={styles.unitLabel}>{t.countdown[key]}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <p className={styles.seeYouScript}>
+            {t.countdown.seeYouSoon || 'Hẹn sớm gặp bạn!'}
+          </p>
         </div>
       </section>
 
-      {/* Khung ngày giờ phút giây dính theo khi cuộn xuống dưới cùng */}
+      {/* Sticky Mini Countdown Bar in matching Twilight Slate-Mauve Glass */}
       <div
         className={`${styles.stickyCountdown} ${isSticky ? styles.stickyVisible : ''}`}
         onClick={scrollToCountdown}
         role="timer"
         aria-live="polite"
-        aria-label="Đếm ngược đến ngày cưới"
-        title="Chạm để cuộn về phần đếm ngược"
+        aria-label={t.countdown.heading || 'Đếm ngược đến ngày cưới'}
       >
         <div className={styles.stickyTrack}>
           {timeUnits.map(({ key, value }) => (
             <div key={key} className={styles.stickyColumn}>
-              <span className={styles.stickyValue}>{String(value).padStart(2, '0')}</span>
+              <span className={styles.stickyValue}>
+                {key === 'days' ? value : String(value).padStart(2, '0')}
+              </span>
               <span className={styles.stickyLabel}>{t.countdown[key]}</span>
             </div>
           ))}

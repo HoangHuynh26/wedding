@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const DEFAULTS = {
-    color: "#cbd5e1",
+    color: "#c7b8c6",
     rounded: 50,
     thickness: 3,
     borderSize: 35,

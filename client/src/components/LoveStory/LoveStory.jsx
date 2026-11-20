@@ -4,7 +4,7 @@ import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './LoveStory.module.css';
 
-function TimelineMilestoneItem({ milestone, index, fallbackImage }) {
+function TimelineMilestoneItem({ milestone, index, fallbackImage, fallbackPosition }) {
   const itemRef = useRef(null);
 
   // Track the item's scroll progress through the window viewport
@@ -62,6 +62,7 @@ function TimelineMilestoneItem({ milestone, index, fallbackImage }) {
               src={fallbackImage}
               alt={milestone.title}
               className={styles.itemImage}
+              style={{ objectPosition: fallbackPosition || '50% 26%' }}
               loading="lazy"
             />
           </div>
@@ -96,6 +97,7 @@ export default function LoveStory() {
           {/* Timeline Items */}
           {milestones.map((milestone, index) => {
             const fallbackImage = weddingConfig.story[index]?.image;
+            const fallbackPosition = weddingConfig.story[index]?.position;
 
             return (
               <TimelineMilestoneItem
@@ -103,6 +105,7 @@ export default function LoveStory() {
                 milestone={milestone}
                 index={index}
                 fallbackImage={fallbackImage}
+                fallbackPosition={fallbackPosition}
               />
             );
           })}

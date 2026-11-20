@@ -33,6 +33,51 @@ export function AudioProvider({ children }) {
   const [currentTrack, setCurrentTrack] = useState(getTrackFromQuery);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const fadeRafRef = useRef(null);
+  const currentTrackRef = useRef(currentTrack);
+  const isPlayingRef = useRef(false);
+
+  useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  const stopFade = useCallback(() => {
+    if (fadeRafRef.current) {
+      cancelAnimationFrame(fadeRafRef.current);
+      fadeRafRef.current = null;
+    }
+  }, []);
+
+  // Gentle studio volume swell on desktop/Android browsers (iOS uses the file's baked-in qsin fade)
+  const rampVolume = useCallback((audio, from = 0.25, to = 1, durationMs = 1100) => {
+    stopFade();
+    try {
+      audio.volume = from;
+    } catch {
+      return;
+    }
+    const startedAt = performance.now();
+    const tick = (now) => {
+      const progress = Math.min(1, (now - startedAt) / durationMs);
+      const eased = progress * progress * (3 - 2 * progress);
+      try {
+        audio.volume = from + (to - from) * eased;
+      } catch {
+        fadeRafRef.current = null;
+        return;
+      }
+      if (progress < 1 && !audio.paused) {
+        fadeRafRef.current = requestAnimationFrame(tick);
+      } else {
+        fadeRafRef.current = null;
+      }
+    };
+    fadeRafRef.current = requestAnimationFrame(tick);
+  }, [stopFade]);
 
   // Initialize Audio instance once
   useEffect(() => {
@@ -44,11 +89,12 @@ export function AudioProvider({ children }) {
 
     audio.onerror = () => {
       console.warn('Primary music source failed, attempting fallback...');
-      const fallback = currentTrack?.fallbackSrc || defaultTrack.fallbackSrc;
+      const active = currentTrackRef.current;
+      const fallback = active?.fallbackSrc || defaultTrack.fallbackSrc;
       if (fallback && audio.src !== fallback) {
         audio.src = fallback;
         audio.load();
-        if (isPlaying) {
+        if (isPlayingRef.current) {
           audio.play().catch(() => {});
         }
       }
@@ -61,6 +107,7 @@ export function AudioProvider({ children }) {
     audioRef.current = audio;
 
     return () => {
+      stopFade();
       audio.pause();
       audio.src = '';
     };
@@ -106,10 +153,19 @@ export function AudioProvider({ children }) {
     }
   }, [playlist, defaultTrack]);
 
-  const playAudio = async () => {
+  const playAudio = async (options = {}) => {
+    const { fromStart = false, fadeMs = 1150 } = options || {};
     if (audioRef.current) {
       try {
+        if (fromStart) {
+          try {
+            audioRef.current.currentTime = 0;
+          } catch {
+            // Ignore seek before metadata is loaded
+          }
+        }
         await audioRef.current.play();
+        rampVolume(audioRef.current, fromStart ? 0.18 : 0.45, 1, fadeMs);
         setIsPlaying(true);
         return true;
       } catch (err) {
@@ -121,6 +177,7 @@ export function AudioProvider({ children }) {
   };
 
   const pauseAudio = () => {
+    stopFade();
     if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);

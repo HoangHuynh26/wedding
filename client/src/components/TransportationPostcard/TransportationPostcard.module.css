@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEP 8 — MOTHER-OF-PEARL TRANSPORTATION POSTCARD (Image 15)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.postcardSection {
+  position: relative;
+  width: 100%;
+  padding: clamp(3.25rem, 8vw, 5.5rem) 1.25rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #d5c7d0;
+}
+
+.nacreBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.nacreVeil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(255, 251, 255, 0.16) 0%,
+    rgba(164, 148, 164, 0.22) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.postcardSheet {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 440px);
+  padding: 2rem 1.75rem 2.75rem;
+  background:
+    linear-gradient(165deg, rgba(242, 236, 243, 0.96) 0%, rgba(232, 224, 234, 0.96) 100%);
+  border: 1px solid rgba(255, 250, 254, 0.65);
+  box-shadow:
+    0 24px 56px rgba(52, 42, 58, 0.22),
+    0 4px 12px rgba(52, 42, 58, 0.1);
+  color: #463e4d;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .postcardSheet {
+    width: 490px;
+    padding: 2.5rem 2.75rem 3.25rem;
+  }
+}
+
+.postalHeader {
+  display: flex;
+  justify-content: center;
+  margin: -0.35rem auto 0.65rem;
+}
+
+.postalSvg {
+  width: min(210px, 72%);
+  height: auto;
+  opacity: 0.86;
+}
+
+.postcardHeading {
+  margin: 0.25rem 0 1.35rem;
+  font-family: var(--font-script, 'Great Vibes', cursive);
+  font-size: clamp(2.25rem, 8.2vw, 3.1rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #463e4d;
+}
+
+:global(html[lang="zh-CN"]) .postcardHeading {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+  letter-spacing: 0.16em;
+}
+
+.postcardCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.postcardCopy p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(0.96rem, 3.2vw, 1.08rem);
+  line-height: 1.65;
+  color: #5b5265;
+  text-wrap: balance;
+}
+
+/* Signature Double-Border Rectangular Outlined Button (Image 15) */
+.doubleBorderBtn {
+  display: inline-block;
+  padding: 4px;
+  border: 1px solid rgba(78, 68, 88, 0.45);
+  background: rgba(246, 241, 247, 0.45);
+  color: #463e4d;
+  text-decoration: none;
+  min-width: min(250px, 88%);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doubleBorderInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.82rem 1.85rem;
+  border: 1px solid rgba(78, 68, 88, 0.3);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.35s ease;
+}
+
+.doubleBorderBtn:hover {
+  background: #5f6478;
+  border-color: #5f6478;
+  color: #f6f2f6;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(68, 60, 78, 0.22);
+}
+
+.doubleBorderBtn:hover .doubleBorderInner {
+  border-color: rgba(246, 242, 246, 0.45);
+}

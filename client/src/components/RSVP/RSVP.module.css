@@ -1,414 +1,536 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   COUTURE PHYSICAL COTTON-PAPER WEDDING RSVP CARD
+   Stacked real-paper card feel, wax seal crest, fountain-pen fill-in lines,
+   double-bordered letterpress CTA button (zero SaaS inputs, zero neon glow)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .rsvpSection {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  color: var(--text-dark);
   position: relative;
+  width: 100%;
+  padding: clamp(3.5rem, 8vw, 5.5rem) 1rem clamp(4.5rem, 10vw, 6.5rem);
+  color: #453e4b;
   overflow: hidden;
-  padding-bottom: 6rem;
+  isolation: isolate;
+  background: #d5c7d0;
 }
 
-/* Ambient silver gradient glow */
-.ambientGlow {
+.tableBackdrop {
   position: absolute;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 500px;
-  background: radial-gradient(ellipse, rgba(148, 163, 184, 0.12) 0%, transparent 65%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   pointer-events: none;
-  animation: glowPulse 8s ease infinite;
+  user-select: none;
+  z-index: 0;
+  filter: brightness(0.95) saturate(0.92);
 }
 
-/* Cinematic reveal header */
+.tableVeil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    rgba(244, 238, 245, 0.24) 0%,
+    rgba(138, 122, 138, 0.28) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.rsvpContainer {
+  position: relative;
+  z-index: 2;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
 .revealIntro {
   text-align: center;
-  max-width: 640px;
-  margin: 0 auto 3.5rem;
-}
-
-.revealPrompt {
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--silver-primary);
-  font-weight: 600;
-  display: block;
-  margin-bottom: 0.85rem;
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+  padding: 0 0.5rem;
 }
 
 .revealSubtext {
+  margin: 0;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.45rem;
-  color: var(--text-dark);
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .revealSubtext {
-    font-size: 1.85rem;
-  }
-}
-
-.revealHeading {
-  font-family: var(--font-sans);
-  font-size: 0.92rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: #0f172a;
-  font-weight: 700;
+  font-size: clamp(1.12rem, 4vw, 1.48rem);
+  line-height: 1.55;
+  color: #3f3646;
+  text-shadow: 0 1px 12px rgba(255, 250, 254, 0.85);
 }
 
 /* ═══════════════════════════════════════════════
-   RSVP Form — Frosted Crystalline Glass Panel
+   PHYSICAL STACKED STATIONERY CARDS
    ═══════════════════════════════════════════════ */
-
-.formCard {
-  max-width: 540px;
-  margin: 0 auto;
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1.5px solid var(--glass-border);
-  border-radius: var(--border-radius-lg);
-  padding: 2.5rem 1.75rem;
-  box-shadow: var(--shadow-lg), 0 0 60px rgba(148, 163, 184, 0.1);
+.cardStack {
   position: relative;
-  z-index: 10;
-  transition: border-color 0.5s ease;
+  width: 100%;
+  padding-top: 28px; /* Room for stamped wax seal protruding slightly over top paper edge */
 }
 
-.formCard:hover {
-  border-color: var(--glass-border-hover);
+/* Second tilted cardstock sheet peeking gently underneath */
+.underCardBack {
+  position: absolute;
+  inset: 34px 4px -6px 4px;
+  background: linear-gradient(155deg, #d7cbd6 0%, #c8bac8 100%);
+  border: 1px solid rgba(255, 250, 254, 0.45);
+  border-radius: 3px;
+  transform: rotate(-1.7deg) translate(-4px, 4px);
+  box-shadow: 0 22px 48px rgba(48, 38, 56, 0.24);
+  pointer-events: none;
+  z-index: 1;
 }
 
-@media (min-width: 768px) {
-  .formCard {
-    padding: 3rem 2.5rem;
+.underCardMid {
+  position: absolute;
+  inset: 31px 2px -2px 2px;
+  background: linear-gradient(155deg, #e5dce6 0%, #d8cdd9 100%);
+  border: 1px solid rgba(255, 250, 254, 0.58);
+  border-radius: 3px;
+  transform: rotate(0.95deg) translate(3px, 2px);
+  box-shadow: 0 14px 32px rgba(48, 38, 56, 0.16);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Main Thick Handcrafted Cotton-Paper Stationery Card */
+.stationeryCard {
+  --cotton-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.065'/%3E%3C/svg%3E");
+  position: relative;
+  z-index: 3;
+  padding: 12px;
+  border-radius: 3px;
+  background:
+    var(--cotton-grain),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 252, 255, 0.92) 0%, transparent 65%),
+    linear-gradient(168deg, #f5f0f6 0%, #ede6ef 52%, #e5dce8 100%);
+  /* Crisp real cardstock thickness edge + soft tabletop drop shadow */
+  border: 1px solid rgba(255, 252, 255, 0.85);
+  box-shadow:
+    0 24px 56px rgba(48, 38, 56, 0.24),
+    0 6px 16px rgba(48, 38, 56, 0.12),
+    0 1px 0 rgba(128, 112, 134, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(145, 130, 150, 0.22);
+}
+
+/* Real Metallic Mauve-Pewter HH Wax Seal Pressed at Top Crest */
+.crestSealWrap {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62px;
+  height: 62px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.crestSealImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter:
+    drop-shadow(0 6px 12px rgba(46, 35, 50, 0.34))
+    drop-shadow(0 1px 2px rgba(46, 35, 50, 0.24));
+}
+
+/* Debossed Letterpress Inner Stationery Frame */
+.letterpressFrame {
+  position: relative;
+  padding: 2.85rem 1.35rem 2.15rem;
+  border: 1px solid rgba(102, 88, 112, 0.36);
+  box-shadow:
+    inset 0 0 0 4px rgba(246, 241, 247, 0.65),
+    inset 0 0 0 5px rgba(102, 88, 112, 0.18);
+}
+
+@media (min-width: 540px) {
+  .stationeryCard {
+    padding: 16px;
+  }
+
+  .letterpressFrame {
+    padding: 3.25rem 2.35rem 2.5rem;
   }
 }
 
-.formTitle {
-  font-family: var(--font-serif);
-  font-size: 2rem;
-  text-align: center;
-  color: var(--text-dark);
-  margin-bottom: 0.5rem;
+/* Ornate Corner Filigree L-Brackets */
+.cornerOrnament {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(94, 80, 104, 0.55);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
 }
 
-.formSubtitle {
+.cTL { top: 9px; left: 9px; border-top-width: 1.4px; border-left-width: 1.4px; }
+.cTR { top: 9px; right: 9px; border-top-width: 1.4px; border-right-width: 1.4px; }
+.cBL { bottom: 9px; left: 9px; border-bottom-width: 1.4px; border-left-width: 1.4px; }
+.cBR { bottom: 9px; right: 9px; border-bottom-width: 1.4px; border-right-width: 1.4px; }
+
+/* Card Header */
+.cardHeader {
   text-align: center;
-  font-size: 0.88rem;
-  color: var(--text-dark-secondary);
   margin-bottom: 2rem;
 }
 
-.inputGroup {
-  margin-bottom: 1.5rem;
-}
-
-.label {
+.rsvpEyebrow {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.36em;
+  color: #7c7185;
   text-transform: uppercase;
-  color: var(--silver-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
-/* White glass input fields */
-.inputField {
-  width: 100%;
-  padding: 1rem 1.15rem;
-  border: 1.5px solid rgba(148, 163, 184, 0.35);
-  border-radius: var(--border-radius-sm);
-  background-color: #ffffff;
-  color: #0f172a;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.inputField::placeholder {
-  color: var(--text-muted);
-}
-
-.inputField:focus {
-  border-color: var(--silver-primary);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
-  outline: none;
-}
-
-/* White glass textarea */
-.textareaField {
-  width: 100%;
-  padding: 0.95rem 1.15rem;
-  border: 1.5px solid rgba(148, 163, 184, 0.35);
-  border-radius: var(--border-radius-sm);
-  background-color: #ffffff;
-  color: #0f172a;
-  font-size: 0.95rem;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 85px;
-  line-height: 1.5;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.textareaField::placeholder {
-  color: var(--text-muted);
-}
-
-.textareaField:focus {
-  border-color: var(--silver-primary);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
-  outline: none;
-}
-
-/* ═══════════════════════════════════════════════
-   POPDOWN SELECTOR (BẠN LÀ KHÁCH CỦA AI)
-   ═══════════════════════════════════════════════ */
-
-.popdownContainer {
-  position: relative;
-  width: 100%;
-  margin-top: 0.35rem;
-}
-
-.popdownTrigger {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.95rem 1.25rem;
-  background-color: rgba(248, 250, 252, 0.85);
-  border: 1.5px solid rgba(148, 163, 184, 0.35);
-  border-radius: var(--border-radius-sm);
-  font-family: inherit;
-  font-size: 0.95rem;
-  color: var(--text-dark);
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.25s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-}
-
-.popdownTrigger:hover {
-  background-color: #ffffff;
-  border-color: var(--silver-primary);
-}
-
-.popdownTriggerActive {
-  background-color: #ffffff;
-  border-color: var(--silver-primary);
-  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
-}
-
-.popdownSelectedValue {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-weight: 500;
-}
-
-.popdownOptionIcon {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
-.popdownOptionText {
-  color: var(--text-dark);
-  letter-spacing: 0.01em;
-}
-
-.popdownChevron {
-  color: var(--text-muted);
-  transition: transform 0.25s ease, color 0.25s ease;
-  flex-shrink: 0;
-}
-
-.popdownChevronRotated {
-  transform: rotate(180deg);
-  color: var(--silver-primary);
-}
-
-.popdownMenu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: #ffffff;
-  border: 1.5px solid rgba(148, 163, 184, 0.35);
-  border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(148, 163, 184, 0.12);
-  padding: 0.4rem;
+.formTitle {
   margin: 0;
-  list-style: none;
-  overflow: hidden;
+  font-family: var(--font-script, 'Great Vibes', cursive);
+  font-size: clamp(2.25rem, 8.4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #423949;
 }
 
-.popdownItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  user-select: none;
+:global(html[lang="zh-CN"]) .formTitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.6rem, 5.5vw, 2.05rem);
+  letter-spacing: 0.16em;
 }
 
-.popdownItem:hover {
-  background: rgba(241, 245, 249, 0.85);
-}
-
-.popdownItemActive {
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%);
-  font-weight: 600;
-}
-
-.popdownItemContent {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.popdownItemLabel {
-  font-size: 0.92rem;
-  color: var(--text-dark);
-}
-
-.popdownCheckIcon {
-  color: var(--silver-primary);
-  flex-shrink: 0;
-}
-
-.inputError {
-  border-color: #e74c3c !important;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12) !important;
-}
-
-.errorText {
-  color: #e74c3c;
-  font-size: 0.78rem;
-  margin-top: 0.4rem;
-  display: block;
-}
-
-/* Metallic Platinum Submit Button */
-.submitButton {
-  width: 100%;
-  padding: 1.1rem 1.5rem;
-  background: linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%);
-  color: #ffffff;
-  border-radius: var(--border-radius-pill);
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+.headerRule {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.2), 0 0 30px rgba(148, 163, 184, 0.3);
-  transition: all 0.4s var(--ease-luxury);
-  margin-top: 0;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  gap: 0.65rem;
+  width: min(170px, 60%);
+  margin: 0.7rem auto 0.9rem;
+  color: #84778d;
 }
 
-.submitButton:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.3), 0 0 45px rgba(148, 163, 184, 0.5);
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+.headerRule span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(114, 102, 122, 0.48), transparent);
 }
 
-.submitButton:disabled {
+.headerRule i {
+  font-style: normal;
+  font-size: 0.68rem;
+}
+
+.formSubtitle {
+  margin: 0 auto;
+  max-width: 340px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(0.92rem, 3.1vw, 1.02rem);
+  line-height: 1.55;
+  color: #63596d;
+}
+
+.serverErrorBox {
+  background: rgba(176, 86, 98, 0.1);
+  border: 1px solid rgba(176, 86, 98, 0.45);
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 1.25rem;
+  color: #933a48;
+  font-size: 0.84rem;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════
+   PRINTED STATIONERY FILL-IN LINES (FOUNTAIN PEN FEEL)
+   ═══════════════════════════════════════════════ */
+.fieldRow {
+  margin-bottom: 1.55rem;
+  text-align: left;
+}
+
+.fieldLabel {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6b6175;
+  margin-bottom: 0.35rem;
+}
+
+.paperInput {
+  width: 100%;
+  padding: 0.55rem 0.2rem 0.5rem;
+  border: 0;
+  border-bottom: 1px solid rgba(94, 80, 104, 0.36);
+  border-radius: 0;
+  background: transparent;
+  color: #3f3647;
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: border-color 0.28s ease, background-color 0.28s ease;
+}
+
+.paperInput::placeholder {
+  color: #9c91a4;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.paperInput:focus {
+  border-bottom-color: #4f5469;
+  box-shadow: 0 1px 0 0 #4f5469;
+  outline: none;
+}
+
+/* Printed Ruled-Paper Letterpress Textarea */
+.ruledTextarea {
+  width: 100%;
+  padding: 0.45rem 0.2rem;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(94, 80, 104, 0.28) 31px,
+    rgba(94, 80, 104, 0.28) 32px
+  );
+  background-attachment: local;
+  color: #3f3647;
+  font-family: var(--font-serif);
+  font-size: 1.06rem;
+  font-style: italic;
+  line-height: 32px;
+  min-height: 96px;
+  resize: vertical;
+  transition: border-color 0.28s ease;
+}
+
+.ruledTextarea::placeholder {
+  color: #9c91a4;
+  font-style: italic;
+}
+
+.ruledTextarea:focus {
+  outline: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(79, 84, 105, 0.52) 31px,
+    rgba(79, 84, 105, 0.52) 32px
+  );
+}
+
+/* Printed RSVP Checkbox Chips (Refined Editorial Radio Buttons) */
+.sideChoices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+}
+
+.sideChoiceBtn {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.58rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(102, 88, 112, 0.28);
+  background: rgba(255, 252, 255, 0.4);
+  color: #4c4354;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sideChoiceBtn:hover {
+  border-color: rgba(88, 93, 114, 0.55);
+  background: rgba(255, 252, 255, 0.72);
+}
+
+.sideChoiceActive {
+  border-color: #5e6378;
+  background: rgba(107, 112, 132, 0.12);
+  color: #383040;
+}
+
+.checkboxBox {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  border: 1px solid rgba(94, 80, 104, 0.55);
+  display: grid;
+  place-items: center;
+  background: rgba(255, 252, 255, 0.85);
+  color: #f6f2f6;
+  transition: all 0.22s ease;
+}
+
+.sideChoiceActive .checkboxBox {
+  background: #5f6478;
+  border-color: #5f6478;
+}
+
+.sideChoiceText {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.inputError {
+  border-bottom-color: #b45362 !important;
+  box-shadow: 0 1px 0 0 #b45362 !important;
+}
+
+.errorText {
+  display: block;
+  margin-top: 0.35rem;
+  color: #a64452;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SIGNATURE COUTURE DOUBLE-BORDER RECTANGULAR CTA
+   ═══════════════════════════════════════════════ */
+.submitWrap {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.doubleBorderSubmit {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid rgba(79, 84, 105, 0.58);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doubleBorderSubmitInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.92rem 1.5rem;
+  background: linear-gradient(135deg, #696e83 0%, #585d71 100%);
+  border: 1px solid rgba(246, 242, 246, 0.25);
+  color: #f6f2f6;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: all 0.32s ease;
+}
+
+.doubleBorderSubmit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #4a4f63;
+  box-shadow: 0 12px 26px rgba(54, 46, 66, 0.22);
+}
+
+.doubleBorderSubmit:hover:not(:disabled) .doubleBorderSubmitInner {
+  background: linear-gradient(135deg, #5c6176 0%, #4b5064 100%);
+}
+
+.doubleBorderSubmit:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
 
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  width: 15px;
+  height: 15px;
+  border: 1.8px solid rgba(246, 242, 246, 0.35);
+  border-top-color: #f6f2f6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
+}
+
+.cardBottomMark {
+  margin-top: 1.65rem;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  color: #84788d;
 }
 
 /* ═══════════════════════════════════════════════
-   SUCCESS STATE — Glass Celebration Card
+   WAX-SEALED KEEPSAKE CONFIRMATION CARD
    ═══════════════════════════════════════════════ */
-
 .successCard {
   text-align: center;
-  padding: 1rem 0;
-}
-
-.successIconRing {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(148, 163, 184, 0.15);
-  border: 2px solid var(--silver-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: #0f172a;
-  box-shadow: 0 0 35px var(--silver-glow);
-  animation: glowPulse 3s ease infinite;
+  padding: 0.75rem 0 0.25rem;
 }
 
 .successHeading {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 0.82rem;
-  letter-spacing: 0.3em;
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--silver-primary);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  color: #6b7084;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
 }
 
 .successGuestName {
-  font-family: var(--font-serif);
-  font-size: 2.2rem;
-  color: #0f172a;
-  margin-bottom: 1rem;
+  margin: 0;
+  font-family: var(--font-script, 'Great Vibes', cursive);
+  font-size: clamp(2.1rem, 7.5vw, 2.75rem);
+  font-weight: 400;
+  color: #423949;
 }
 
 .successMessage {
-  font-size: 0.95rem;
-  color: var(--text-dark-secondary);
-  line-height: 1.7;
-  max-width: 420px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: #5f5568;
+  line-height: 1.65;
+  max-width: 390px;
   margin: 0 auto 1.5rem;
 }
 
 .guestSummary {
-  background: #f1f5f9;
-  border-radius: var(--border-radius-sm);
-  padding: 1rem;
-  border: 1px dashed rgba(148, 163, 184, 0.4);
+  text-align: left;
+  background: rgba(255, 252, 255, 0.52);
+  padding: 1.05rem 1.15rem;
+  border: 1px dashed rgba(102, 88, 112, 0.4);
   margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-  color: var(--text-dark-secondary);
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  color: #584e62;
 }
 
 .guestSummary div {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
 }
 
 .guestSummary div:last-child {
@@ -416,31 +538,198 @@
 }
 
 .guestSummary strong {
-  color: #0f172a;
+  color: #3f3647;
+  font-weight: 600;
 }
 
 .summaryMessageRow {
   font-style: italic;
-  color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.85);
+  color: #453e4b;
+  background: rgba(244, 238, 245, 0.72);
   padding: 0.45rem 0.75rem;
-  border-radius: 6px;
-  margin-top: 0.4rem;
+  margin-top: 0.45rem;
   line-height: 1.45;
-  border-left: 2.5px solid var(--silver-primary);
+  border-left: 2px solid #6b7084;
 }
 
-.resetButton {
-  display: inline-block;
-  font-size: 0.82rem;
-  color: var(--silver-primary);
+.resetLinkBtn {
+  min-height: 36px;
+  padding: 0.4rem 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.96rem;
+  color: #5e6378;
   text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: color 0.3s ease;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(94, 99, 120, 0.45);
+  transition: color 0.25s ease;
 }
 
-.resetButton:hover {
-  color: #0f172a;
+.resetLinkBtn:hover {
+  color: #3c3444;
+}
+
+/* ═══════════════════════════════════════════════
+   COMPACT BOUTIQUE REPLY CARD PROPORTIONS ON DESKTOP
+   ═══════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .rsvpSection {
+    padding: 2.75rem 1rem 3.25rem;
+  }
+
+  .rsvpContainer {
+    max-width: 420px;
+  }
+
+  .revealIntro {
+    max-width: 410px;
+    margin-bottom: 1.35rem;
+  }
+
+  .revealSubtext {
+    font-size: 1.12rem;
+    line-height: 1.48;
+  }
+
+  .cardStack {
+    padding-top: 22px;
+  }
+
+  .underCardBack {
+    inset: 28px 4px -5px 4px;
+  }
+
+  .underCardMid {
+    inset: 25px 2px -2px 2px;
+  }
+
+  .crestSealWrap {
+    top: -22px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .stationeryCard {
+    padding: 11px;
+  }
+
+  .letterpressFrame {
+    padding: 2.1rem 1.65rem 1.45rem;
+  }
+
+  .cornerOrnament {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cardHeader {
+    margin-bottom: 1.1rem;
+  }
+
+  .formTitle {
+    font-size: 2.15rem;
+  }
+
+  :global(html[lang="zh-CN"]) .formTitle {
+    font-size: 1.55rem;
+  }
+
+  .headerRule {
+    width: 136px;
+    margin: 0.42rem auto 0.55rem;
+  }
+
+  .formSubtitle {
+    max-width: 300px;
+    font-size: 0.87rem;
+    line-height: 1.45;
+  }
+
+  .fieldRow {
+    margin-bottom: 0.95rem;
+  }
+
+  .fieldLabel {
+    font-size: 0.58rem;
+    letter-spacing: 0.17em;
+    margin-bottom: 0.2rem;
+  }
+
+  .paperInput {
+    padding: 0.34rem 0.15rem 0.32rem;
+    font-size: 0.94rem;
+  }
+
+  .sideChoices {
+    gap: 0.38rem;
+    margin-top: 0.32rem;
+  }
+
+  .sideChoiceBtn {
+    min-height: 32px;
+    padding: 0.36rem 0.68rem;
+    gap: 0.55rem;
+  }
+
+  .checkboxBox {
+    width: 15px;
+    height: 15px;
+  }
+
+  .sideChoiceText {
+    font-size: 0.89rem;
+  }
+
+  .ruledTextarea {
+    padding: 0.25rem 0.15rem;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 25px,
+      rgba(94, 80, 104, 0.28) 25px,
+      rgba(94, 80, 104, 0.28) 26px
+    );
+    font-size: 0.92rem;
+    line-height: 26px;
+    min-height: 62px;
+  }
+
+  .ruledTextarea:focus {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 25px,
+      rgba(79, 84, 105, 0.52) 25px,
+      rgba(79, 84, 105, 0.52) 26px
+    );
+  }
+
+  .submitWrap {
+    margin-top: 1.25rem;
+  }
+
+  .doubleBorderSubmitInner {
+    padding: 0.68rem 1.2rem;
+    font-size: 0.68rem;
+  }
+
+  .cardBottomMark {
+    margin-top: 1rem;
+    font-size: 0.76rem;
+  }
+
+  .successGuestName {
+    font-size: 2.05rem;
+  }
+
+  .successMessage {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .guestSummary {
+    padding: 0.8rem 0.95rem;
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+  }
 }

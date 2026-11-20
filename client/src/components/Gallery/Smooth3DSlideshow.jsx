@@ -43,12 +43,13 @@ export default function Smooth3DSlideshow({
   cardHeight: propCardHeight,
   tilt = 12,
   sideTilt = 7,
-  gap = 7.5,
+  gap,
   opacity = 60,
   transition = { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 3.5 },
   autoplay = false,
   autoplayDirection = 'rightToLeft',
   showControls = true,
+  labels = {},
   style = {},
 }) {
   const list = slides && slides.length > 0 ? slides : [];
@@ -74,13 +75,14 @@ export default function Smooth3DSlideshow({
   // Responsive sizing & mobile / tablet swipe-only detection
   const getLayoutMetrics = () => {
     if (typeof window === 'undefined') {
-      return { width: 420, height: 560, gap: 7.2, depth: 220, isMobile: true, isTouch: true };
+      return { width: 320, height: 428, gap: 5.4, depth: 185, isMobile: true, isTouch: true };
     }
     const w = window.innerWidth;
-    const isTouchOrTablet =
-      w <= 1366 ||
-      ('ontouchstart' in window) ||
-      (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    const h = window.innerHeight || 800;
+    const isCoarseTouch =
+      typeof window.matchMedia === 'function'
+        ? window.matchMedia('(hover: none) and (pointer: coarse)').matches
+        : ('ontouchstart' in window) && (navigator.maxTouchPoints > 0);
 
     if (w < 480) {
       // Mobile screen: card takes comfortable width, clean 3:4 aspect ratio
@@ -93,13 +95,24 @@ export default function Smooth3DSlideshow({
       const cw = Math.floor(rawW / 2) * 2;
       const ch = Math.round(cw * 1.34);
       return { width: cw, height: ch, gap: 5.6, depth: 180, isMobile: true, isTouch: true };
-    } else if (w <= 1366) {
-      // iPad, iPad Air, iPad Pro 11", iPad Pro 12.9" & 13" (portrait & landscape)
-      const cw = w <= 1024 ? 420 : 460;
-      const ch = Math.round(cw * 1.34);
-      return { width: cw, height: ch, gap: 6.8, depth: 215, isMobile: true, isTouch: true };
+    } else if (w < 1024) {
+      // Tablet portrait
+      const ch = Math.min(440, Math.max(360, Math.round(h * 0.54)));
+      const cw = Math.floor(ch / 1.34 / 2) * 2;
+      return { width: cw, height: ch, gap: 5.4, depth: 185, isMobile: true, isTouch: true };
     } else {
-      return { width: 440, height: 590, gap: 7.5, depth: 225, isMobile: isTouchOrTablet, isTouch: isTouchOrTablet };
+      // Balanced desktop & laptop coverflow — slightly larger presence while fitting comfortably in one viewport
+      const ch = Math.min(490, Math.max(380, Math.round(h * 0.64)));
+      const cw = Math.floor(ch / 1.34 / 2) * 2;
+      const desktopGap = Number((cw / 58).toFixed(2));
+      return {
+        width: cw,
+        height: ch,
+        gap: desktopGap,
+        depth: 195,
+        isMobile: isCoarseTouch,
+        isTouch: isCoarseTouch,
+      };
     }
   };
 
@@ -159,8 +172,9 @@ export default function Smooth3DSlideshow({
     [n, lock, setActive]
   );
 
-  // Track whether user just swiped so touchend doesn't trigger accidental card click
+  // Track whether user just swiped or is actively touching so autoplay & click behave cleanly
   const didSwipeRef = useRef(false);
+  const isTouchingRef = useRef(false);
 
   const handleCardClick = useCallback(
     (i) => {
@@ -168,7 +182,7 @@ export default function Smooth3DSlideshow({
         didSwipeRef.current = false;
         return;
       }
-      if (autoplay || lockRef.current) return;
+      if (lockRef.current) return;
       if (i === active) {
         if (onOpenLightbox) {
           onOpenLightbox(i);
@@ -178,18 +192,22 @@ export default function Smooth3DSlideshow({
       lock(220);
       setActive(i);
     },
-    [autoplay, active, lock, setActive, onOpenLightbox]
+    [active, lock, setActive, onOpenLightbox]
   );
 
-  // Autoplay
-  const delay = transition && typeof transition.delay === 'number' ? transition.delay : 3.0;
+  // Autoplay every 4s (resets cleanly whenever active slide changes via swipe/click)
+  const delay = transition && typeof transition.delay === 'number' ? transition.delay : 4.0;
   useEffect(() => {
     if (!autoplay || n < 2) return;
-    const ms = Math.max(0.3, delay) * 1000;
+    const ms = Math.max(0.5, delay) * 1000;
     const dir = autoplayDirection === 'leftToRight' ? -1 : 1;
-    const id = window.setInterval(() => step(dir, 300), ms);
+    const id = window.setInterval(() => {
+      if (!isTouchingRef.current) {
+        step(dir, 260);
+      }
+    }, ms);
     return () => window.clearInterval(id);
-  }, [autoplay, autoplayDirection, delay, n, step]);
+  }, [autoplay, autoplayDirection, delay, n, active, step]);
 
   // Keyboard navigation
   const onKeyDown = useCallback(
@@ -212,6 +230,7 @@ export default function Smooth3DSlideshow({
   const touchDeltaY = useRef(0);
 
   const handleTouchStart = (e) => {
+    isTouchingRef.current = true;
     if (!e.touches || e.touches.length === 0) return;
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
@@ -227,6 +246,7 @@ export default function Smooth3DSlideshow({
   };
 
   const handleTouchEnd = () => {
+    isTouchingRef.current = false;
     const dx = touchDeltaX.current;
     const dy = touchDeltaY.current;
     // Trigger horizontal swipe when horizontal gesture exceeds 26px and dominates vertical scroll
@@ -278,7 +298,7 @@ export default function Smooth3DSlideshow({
       tabIndex={0}
       role="region"
       aria-roledescription="carousel"
-      aria-label="3D Wedding Photo Slideshow"
+      aria-label={labels.carousel || '3D Wedding Photo Slideshow'}
       onKeyDown={onKeyDown}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -336,15 +356,9 @@ export default function Smooth3DSlideshow({
             opacity: visible ? 1 : 0,
             cursor: isActive ? 'zoom-in' : 'pointer',
             pointerEvents: visible ? 'auto' : 'none',
-            backgroundColor: '#0f172a',
+            backgroundColor: '#e2dae3',
             zIndex: 10 - ax,
-            boxShadow: isMobile
-              ? (isActive
-                ? '0 16px 40px rgba(0, 0, 0, 0.32)'
-                : '0 8px 20px rgba(0, 0, 0, 0.22)')
-              : (isActive
-                ? '0 25px 60px rgba(15, 23, 42, 0.42)'
-                : '0 12px 30px rgba(15, 23, 42, 0.3)'),
+            boxShadow: 'none',
             border: 'none',
           };
 
@@ -371,6 +385,7 @@ export default function Smooth3DSlideshow({
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    objectPosition: slide.position || '50% 28%',
                     display: 'block',
                     userSelect: 'none',
                     pointerEvents: 'none',
@@ -402,44 +417,44 @@ export default function Smooth3DSlideshow({
                     type="button"
                     className={styles.expandIconBtn}
                     onClick={() => onOpenLightbox && onOpenLightbox(active)}
-                    aria-label="Expand image"
+                    aria-label={labels.expand || 'Expand image'}
                   >
                     <Maximize2 size={15} />
                   </button>
                 </div>
               )}
-
-              {/* Active Card Left & Right Navigation Arrows — Desktop Only */}
-              {!isMobile && isActive && showControls && n > 1 && (
-                <>
-                  <button
-                    type="button"
-                    className={`${styles.mainNavBtn} ${styles.mainNavPrev}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      step(-1, 220);
-                    }}
-                    aria-label="Previous photo"
-                  >
-                    <ChevronLeft size={26} />
-                  </button>
-                  <button
-                    type="button"
-                    className={`${styles.mainNavBtn} ${styles.mainNavNext}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      step(1, 220);
-                    }}
-                    aria-label="Next photo"
-                  >
-                    <ChevronRight size={26} />
-                  </button>
-                </>
-              )}
             </div>
           );
         })}
       </div>
+
+      {/* Left & Right Navigation Arrows placed cleanly OUTSIDE the photos on Desktop */}
+      {!isMobile && showControls && n > 1 && (
+        <>
+          <button
+            type="button"
+            className={`${styles.mainNavBtn} ${styles.mainNavPrev}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              step(-1, 220);
+            }}
+            aria-label={labels.prev || 'Previous photo'}
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            type="button"
+            className={`${styles.mainNavBtn} ${styles.mainNavNext}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              step(1, 220);
+            }}
+            aria-label={labels.next || 'Next photo'}
+          >
+            <ChevronRight size={24} />
+          </button>
+        </>
+      )}
     </div>
   );
 }

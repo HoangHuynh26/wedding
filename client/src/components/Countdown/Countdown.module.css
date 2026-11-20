@@ -1,101 +1,105 @@
-:global(.section).countdownSection {
-  padding: clamp(2rem, 5vw, 3.5rem) 0.5rem;
-  background: var(--bg-dark);
-  color: var(--text-dark);
-}
-
-.countdownHeader {
+.countdownSection {
+  position: relative;
+  width: 100%;
+  padding: clamp(2rem, 5vw, 3.75rem) 1rem clamp(1.65rem, 4vw, 3rem);
   text-align: center;
-  margin-bottom: clamp(1.4rem, 4vw, 2.4rem);
-  padding: 0 1rem;
+  color: #f2edf3;
+  background-color: #686b80;
+  background-image:
+    radial-gradient(ellipse at 26% 0%, rgb(222 221 236 / 12%), transparent 65%),
+    linear-gradient(125deg, #8d91a7, #7e8298 55%, #77788d),
+    url('/mauve-theme/curtain-wall-tile.webp');
+  background-size: cover, cover, 228px auto;
+  background-blend-mode: normal, multiply, normal;
+  box-shadow: inset 0 1px rgb(239 235 245 / 22%), inset 0 -1px rgb(53 49 69 / 32%);
 }
 
-.countdownTitle {
-  font-family: var(--font-serif);
-  font-size: clamp(0.95rem, 3.2vw, 1.35rem);
-  font-weight: 600;
-  letter-spacing: clamp(0.12em, 0.4vw, 0.22em);
-  text-transform: uppercase;
-  color: var(--text-dark, #0f172a);
-  margin: 0 auto;
-  display: inline-flex;
+.innerContainer {
+  max-width: 440px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: clamp(0.5rem, 2vw, 1.2rem);
-  line-height: 1.4;
-  text-wrap: balance;
 }
 
-.countdownTitle::before,
-.countdownTitle::after {
-  content: '';
-  display: inline-block;
-  width: clamp(1.2rem, 3.5vw, 2.5rem);
-  height: 1px;
-  background: currentColor;
-  opacity: 0.35;
-  flex-shrink: 0;
+.countdownHeading {
+  margin: 0 0 clamp(.8rem, 3vw, 1.25rem);
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: .05em;
+  color: #f4eff4;
+  text-shadow: 0 1px 1px rgb(44 41 60 / 38%);
+}
+
+.plaqueWrapper {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 440px);
+  aspect-ratio: 1320 / 344;
+  min-height: 4.6rem;
+  background: url('./countdown-plaque.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 1px 1px rgb(39 31 44 / 40%))
+          drop-shadow(0 4px 3px rgb(38 32 47 / 23%));
 }
 
 .timerTrack {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-inline-size: 35rem;
-  margin-inline: auto;
-  text-align: center;
+  align-items: center;
+  width: 83%;
 }
 
 .unitColumn {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 0.35rem;
-  min-inline-size: 0;
-}
-
-.unitColumn + .unitColumn::before {
-  position: absolute;
-  inset-block-start: 17%;
-  inset-inline-start: 0;
-  inline-size: 1px;
-  block-size: 58%;
-  background: var(--border-light);
-  content: '';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .18rem;
+  min-width: 0;
 }
 
 .digitValue {
-  font: 600 clamp(2.2rem, 8vw, 4rem) / 1 var(--font-serif);
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 6.5vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1;
   font-variant-numeric: lining-nums tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: .02em;
+  color: #433b49;
+  text-shadow: 0 1px rgb(255 251 253 / 64%);
 }
 
 .unitLabel {
-  color: var(--text-muted);
-  font: 600 clamp(0.58rem, 1.8vw, 0.72rem) / 1.35 var(--font-sans);
-  letter-spacing: clamp(0.045em, 0.2vw, 0.125em);
+  font-family: var(--font-sans);
+  font-size: clamp(.56rem, 2.1vw, .68rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: .10em;
   text-transform: uppercase;
   white-space: nowrap;
+  color: #584e5d;
 }
 
-@media (min-width: 768px) {
-  .countdownTitle {
-    font-size: 1.35rem;
-    letter-spacing: 0.16em;
-  }
-  .timerTrack {
-    max-inline-size: 42rem;
-  }
-  .digitValue {
-    font-size: 4.2rem;
-  }
-  .unitLabel {
-    font-size: 0.95rem;
-    letter-spacing: 0.16em;
-  }
+.seeYouScript {
+  margin: clamp(.75rem, 2.8vw, 1.15rem) 0 0;
+  font-family: var(--font-script, 'Great Vibes', cursive);
+  font-size: clamp(1.75rem, 5.5vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: .02em;
+  color: #eee7f0;
+  text-shadow: 0 1px 1px rgb(44 41 60 / 35%);
+}
+
+:global(html[lang="zh-CN"]) .seeYouScript {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.15rem;
+  letter-spacing: .18em;
 }
 
 /* ==========================================================================
-   Sticky Floating Countdown (follows user to bottom of page)
+   Sticky Floating Countdown Bar (Twilight Slate-Mauve Frosted Glass)
    ========================================================================== */
 .stickyCountdown {
   position: fixed;
@@ -103,20 +107,16 @@
   left: 0;
   right: 0;
   z-index: 900;
-  background: rgba(255, 255, 255, 0.94);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(212, 168, 83, 0.32);
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08),
-              0 1px 3px rgba(212, 168, 83, 0.12);
+  background: rgba(98, 103, 122, 0.9);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(236, 228, 237, 0.25);
+  box-shadow: 0 6px 22px rgba(45, 42, 56, 0.18);
   padding: calc(env(safe-area-inset-top, 0px) + 0.38rem) 1rem 0.42rem;
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.3s ease,
-              background 0.25s ease,
-              box-shadow 0.25s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -128,16 +128,10 @@
   pointer-events: auto;
 }
 
-.stickyCountdown:hover {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12),
-              0 2px 6px rgba(212, 168, 83, 0.2);
-}
-
 .stickyTrack {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-width: 22rem;
+  max-width: 21rem;
   margin: 0 auto;
   text-align: center;
   align-items: center;
@@ -148,7 +142,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 1px;
   min-width: 0;
 }
@@ -157,49 +150,85 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 15%;
-  height: 70%;
+  top: 18%;
+  height: 64%;
   width: 1px;
-  background: rgba(212, 168, 83, 0.35);
+  background: rgba(238, 230, 239, 0.28);
 }
 
 .stickyValue {
   font-family: var(--font-serif);
-  font-size: clamp(1.15rem, 4.2vw, 1.45rem);
-  font-weight: 600;
+  font-size: clamp(1.1rem, 4vw, 1.38rem);
+  font-weight: 500;
   line-height: 1.1;
-  color: var(--text-dark, #0f172a);
+  color: #f6f1f7;
   font-variant-numeric: lining-nums tabular-nums;
-  letter-spacing: -0.02em;
 }
 
 .stickyLabel {
   font-family: var(--font-sans);
-  font-size: clamp(0.52rem, 1.8vw, 0.65rem);
-  font-weight: 600;
-  color: var(--text-muted, #64748b);
-  letter-spacing: clamp(0.05em, 0.2vw, 0.1em);
+  font-size: clamp(0.48rem, 1.7vw, 0.6rem);
+  font-weight: 500;
+  color: rgba(239, 232, 241, 0.78);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
+/* iPad & Tablet Portrait (including iPad Pro 13: 1032 × 1376) — larger, proportional top bar */
+@media (min-width: 744px) and (max-aspect-ratio: 1099/1000) {
+  .innerContainer,
+  .plaqueWrapper {
+    max-width: 520px;
+  }
+
   .stickyCountdown {
-    padding-top: 0.55rem;
-    padding-bottom: 0.55rem;
+    padding: calc(env(safe-area-inset-top, 0px) + 0.62rem) 1.5rem 0.68rem;
   }
 
   .stickyTrack {
-    max-width: 28rem;
+    max-width: clamp(25rem, 48vw, 32rem);
+  }
+
+  .stickyColumn {
+    gap: 3px;
   }
 
   .stickyValue {
-    font-size: 1.6rem;
+    font-size: clamp(1.5rem, 2.55vw, 1.82rem);
+    line-height: 1.1;
   }
 
   .stickyLabel {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: clamp(0.66rem, 1.05vw, 0.78rem);
+    letter-spacing: 0.14em;
+    line-height: 1.25;
   }
 }
 
+/* Slim, unobtrusive sticky countdown bar on Widescreen Desktop / Laptop only */
+@media (min-width: 1024px) and (min-aspect-ratio: 11/10) {
+  .stickyCountdown {
+    padding: 0.24rem 1rem 0.26rem;
+    box-shadow: 0 3px 12px rgba(45, 42, 56, 0.14);
+  }
+
+  .stickyTrack {
+    max-width: 16.5rem;
+  }
+
+  .stickyColumn {
+    gap: 0;
+  }
+
+  .stickyValue {
+    font-size: 0.96rem;
+    line-height: 1.08;
+  }
+
+  .stickyLabel {
+    font-size: 0.46rem;
+    letter-spacing: 0.11em;
+    line-height: 1.2;
+  }
+}

@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, CheckCircle2, ChevronDown, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import rsvpService from '../../services/rsvpService';
 import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
 import { triggerCelebrationFireworks } from '../Fireworks/Fireworks';
-import NeonButton from '../NeonButton/NeonButton';
 import styles from './RSVP.module.css';
 
 export default function RSVP() {
-  const { t } = useLanguage();
+  const { t, language, bride, groom } = useLanguage();
   const { guestName, inviterName } = useInvitationParams();
 
-  // Determine smart default sideId ('bride' for Lễ Vu Quy unless inviter explicitly indicates Groom)
   const defaultSideId = useMemo(() => {
     if (inviterName) {
       const lower = inviterName.toLowerCase();
-      if (lower.includes('chú rể') || lower.includes('nhà trai') || lower.includes('groom') || lower.includes('đình huy')) {
-        if (!lower.includes('thu hiền') && !lower.includes('cô dâu')) {
+      if (/chú rể|nhà trai|groom|đình huy|dinh huy|新郎|男方|廷辉/.test(lower)) {
+        if (!/thu hiền|thu hien|cô dâu|bride|新娘|女方|秋贤/.test(lower)) {
           return 'groom';
         }
       }
@@ -32,25 +30,6 @@ export default function RSVP() {
     message: '',
   });
 
-  const [isPopdownOpen, setIsPopdownOpen] = useState(false);
-  const popdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (popdownRef.current && !popdownRef.current.contains(e.target)) {
-        setIsPopdownOpen(false);
-      }
-    };
-    if (isPopdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, [isPopdownOpen]);
-
   useEffect(() => {
     if (guestName && !formData.fullName) {
       setFormData((prev) => ({ ...prev, fullName: guestName }));
@@ -63,24 +42,12 @@ export default function RSVP() {
   const [confirmedGuest, setConfirmedGuest] = useState(null);
   const [serverError, setServerError] = useState('');
 
-  // Bride's Side first (Lễ bên nhà gái)
+  // Refined stationery options — no cartoon emojis, crisp editorial labels
   const sideOptions = useMemo(
     () => [
-      {
-        id: 'bride',
-        label: t.rsvp.sideBride,
-        icon: '👰',
-      },
-      {
-        id: 'groom',
-        label: t.rsvp.sideGroom,
-        icon: '🤵',
-      },
-      {
-        id: 'mutual',
-        label: t.rsvp.sideMutual,
-        icon: '💍',
-      },
+      { id: 'bride', label: t.rsvp.sideBride },
+      { id: 'groom', label: t.rsvp.sideGroom },
+      { id: 'mutual', label: t.rsvp.sideMutual },
     ],
     [t]
   );
@@ -129,7 +96,6 @@ export default function RSVP() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validate()) return;
 
     setIsSubmitting(true);
@@ -154,12 +120,10 @@ export default function RSVP() {
         }
       );
       setSubmitSuccess(true);
-
-      // Trigger wedding celebration fireworks
       triggerCelebrationFireworks();
     } catch (err) {
       console.error('RSVP submission error:', err);
-      setServerError(err.message || t.rsvp.serverErrorFallback);
+      setServerError(language === 'vi' ? err.message || t.rsvp.serverErrorFallback : t.rsvp.serverErrorFallback);
     } finally {
       setIsSubmitting(false);
     }
@@ -174,256 +138,248 @@ export default function RSVP() {
   };
 
   return (
-    <section className={`section ${styles.rsvpSection}`} id="rsvp" aria-label="RSVP Form">
-      <div className={styles.ambientGlow} />
+    <section className={styles.rsvpSection} id="rsvp" aria-label={t.rsvp.formTitle}>
+      {/* Iridescent dusty-mauve stationery tabletop backdrop */}
+      <img
+        src="/mauve-theme/mother-of-pearl.webp"
+        alt=""
+        className={styles.tableBackdrop}
+        loading="lazy"
+        decoding="async"
+      />
+      <div className={styles.tableVeil} aria-hidden="true" />
 
-      <div className="container">
-        {/* Cinematic Transition & Reveal Header */}
+      <div className={styles.rsvpContainer}>
+        {/* Poetic Quote Above the Physical Card */}
         <motion.div
           className={styles.revealIntro}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.75 }}
         >
           <p className={styles.revealSubtext}>{t.rsvp.quote}</p>
         </motion.div>
 
-        {/* Form Container with Framer Motion Reveal */}
+        {/* Physical Stacked Cotton-Paper Stationery RSVP Card */}
         <motion.div
-          className={styles.formCard}
-          initial={{ opacity: 0, y: 40 }}
+          className={styles.cardStack}
+          initial={{ opacity: 0, y: 34 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.9, delay: 0.2 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          <AnimatePresence mode="wait">
-            {!submitSuccess ? (
-              <motion.form
-                key="rsvp-form"
-                onSubmit={handleSubmit}
-                noValidate
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <h3 className={styles.formTitle}>{t.rsvp.formTitle}</h3>
-                <p className={styles.formSubtitle}>{t.rsvp.formSubtitle}</p>
+          {/* Tilted backing stationery sheet underneath for authentic tactile card-stack depth */}
+          <div className={styles.underCardBack} aria-hidden="true" />
+          <div className={styles.underCardMid} aria-hidden="true" />
 
-                {serverError && (
-                  <div
-                    style={{
-                      backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                      border: '1px solid #e74c3c',
-                      borderRadius: '8px',
-                      padding: '0.75rem',
-                      marginBottom: '1.25rem',
-                      color: '#c0392b',
-                      fontSize: '0.85rem',
-                      textAlign: 'center',
-                    }}
+          {/* Main Thick Cotton-Paper Reply Card */}
+          <div className={styles.stationeryCard}>
+            {/* Real metallic mauve-pewter HH Wax Seal stamped at the top crest */}
+            <div className={styles.crestSealWrap} aria-hidden="true">
+              <img
+                src="/mauve-theme/wax-seal-hh.webp"
+                alt=""
+                className={styles.crestSealImg}
+                draggable={false}
+              />
+            </div>
+
+            {/* Embossed Letterpress Inner Frame with 4 Delicate Corner Filigrees */}
+            <div className={styles.letterpressFrame}>
+              <span className={`${styles.cornerOrnament} ${styles.cTL}`} aria-hidden="true" />
+              <span className={`${styles.cornerOrnament} ${styles.cTR}`} aria-hidden="true" />
+              <span className={`${styles.cornerOrnament} ${styles.cBL}`} aria-hidden="true" />
+              <span className={`${styles.cornerOrnament} ${styles.cBR}`} aria-hidden="true" />
+
+              <AnimatePresence mode="wait">
+                {!submitSuccess ? (
+                  <motion.form
+                    key="rsvp-form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                   >
-                    {serverError}
-                  </div>
-                )}
-
-                {/* 1. Full Name */}
-                <div className={styles.inputGroup}>
-                  <label htmlFor="fullName" className={styles.label}>
-                    {t.rsvp.nameLabel}
-                  </label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder={t.rsvp.namePlaceholder}
-                    className={`${styles.inputField} ${errors.fullName ? styles.inputError : ''}`}
-                    disabled={isSubmitting}
-                    autoComplete="name"
-                    required
-                  />
-                  {errors.fullName && <span className={styles.errorText}>{errors.fullName}</span>}
-                </div>
-
-                {/* 2. Location / City */}
-                <div className={styles.inputGroup}>
-                  <label htmlFor="location" className={styles.label}>
-                    {t.rsvp.locationLabel}
-                  </label>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    placeholder={t.rsvp.locationPlaceholder}
-                    className={`${styles.inputField} ${errors.location ? styles.inputError : ''}`}
-                    disabled={isSubmitting}
-                    required
-                  />
-                  {errors.location && <span className={styles.errorText}>{errors.location}</span>}
-                </div>
-
-                {/* 3. Whose Guest Are You? (Pop-down Selector) */}
-                <div className={styles.inputGroup} ref={popdownRef}>
-                  <label htmlFor="side-popdown-btn" className={styles.label}>
-                    {t.rsvp.sideLabel}
-                  </label>
-                  <div className={styles.popdownContainer}>
-                    <button
-                      id="side-popdown-btn"
-                      type="button"
-                      className={`${styles.popdownTrigger} ${isPopdownOpen ? styles.popdownTriggerActive : ''}`}
-                      onClick={() => setIsPopdownOpen((prev) => !prev)}
-                      aria-haspopup="listbox"
-                      aria-expanded={isPopdownOpen}
-                    >
-                      <div className={styles.popdownSelectedValue}>
-                        <span className={styles.popdownOptionIcon}>{selectedOption.icon}</span>
-                        <span className={styles.popdownOptionText}>{selectedOption.label}</span>
+                    <header className={styles.cardHeader}>
+                      <h3 className={styles.formTitle}>{t.rsvp.formTitle}</h3>
+                      <div className={styles.headerRule} aria-hidden="true">
+                        <span />
+                        <i>✦</i>
+                        <span />
                       </div>
-                      <ChevronDown
-                        size={18}
-                        className={`${styles.popdownChevron} ${isPopdownOpen ? styles.popdownChevronRotated : ''}`}
+                      <p className={styles.formSubtitle}>{t.rsvp.formSubtitle}</p>
+                    </header>
+
+                    {serverError && (
+                      <div className={styles.serverErrorBox}>
+                        {serverError}
+                      </div>
+                    )}
+
+                    {/* 1. Full Name — Printed Letterpress Fill-In Line */}
+                    <div className={styles.fieldRow}>
+                      <label htmlFor="fullName" className={styles.fieldLabel}>
+                        {t.rsvp.nameLabel}
+                      </label>
+                      <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder={t.rsvp.namePlaceholder}
+                        className={`${styles.paperInput} ${errors.fullName ? styles.inputError : ''}`}
+                        disabled={isSubmitting}
+                        autoComplete="name"
+                        required
                       />
-                    </button>
-
-                    <AnimatePresence>
-                      {isPopdownOpen && (
-                        <motion.ul
-                          className={styles.popdownMenu}
-                          role="listbox"
-                          initial={{ opacity: 0, y: -6, scale: 0.98 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -4, scale: 0.98 }}
-                          transition={{ duration: 0.16, ease: 'easeOut' }}
-                        >
-                          {sideOptions.map((option) => {
-                            const isSelected = formData.sideId === option.id;
-                            return (
-                              <li
-                                key={option.id}
-                                role="option"
-                                aria-selected={isSelected}
-                                className={`${styles.popdownItem} ${isSelected ? styles.popdownItemActive : ''}`}
-                                onClick={() => {
-                                  handleSelectSide(option.id);
-                                  setIsPopdownOpen(false);
-                                }}
-                              >
-                                <div className={styles.popdownItemContent}>
-                                  <span className={styles.popdownOptionIcon}>{option.icon}</span>
-                                  <span className={styles.popdownItemLabel}>{option.label}</span>
-                                </div>
-                                {isSelected && <Check size={16} className={styles.popdownCheckIcon} />}
-                              </li>
-                            );
-                          })}
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                {/* 4. Leave a Message / Wedding Wish */}
-                <div className={styles.inputGroup}>
-                  <label htmlFor="message" className={styles.label}>
-                    {t.rsvp.messageLabel}
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder={t.rsvp.messagePlaceholder}
-                    className={styles.textareaField}
-                    rows={3}
-                    disabled={isSubmitting}
-                  />
-                </div>
-
-                {/* Submit Button with Neon Border */}
-                <NeonButton
-                  type="submit"
-                  id="rsvp-submit-btn"
-                  variant="primary"
-                  disabled={isSubmitting}
-                  aria-label={t.rsvp.submitBtn}
-                  fullWidth
-                  thickness={2.6}
-                  borderSize={45}
-                  glow={85}
-                  speed={16}
-                  style={{ marginTop: '1.75rem' }}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className={styles.spinner} />
-                      <span>{t.rsvp.confirming}</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>{t.rsvp.submitBtn}</span>
-                      <Heart size={16} fill="currentColor" />
-                    </>
-                  )}
-                </NeonButton>
-              </motion.form>
-            ) : (
-              /* Success Celebration State */
-              <motion.div
-                key="rsvp-success"
-                className={styles.successCard}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className={styles.successIconRing}>
-                  <CheckCircle2 size={40} color="var(--gold-dark)" />
-                </div>
-
-                <span className={styles.successHeading}>{t.rsvp.successHeading}</span>
-                <h3 className={styles.successGuestName}>
-                  {t.rsvp.thankYou} {confirmedGuest?.fullName || ''} ♡
-                </h3>
-
-                <p className={styles.successMessage}>{t.rsvp.successMsg}</p>
-
-                <div className={styles.guestSummary}>
-                  <div>
-                    <strong>{t.rsvp.guestLabel}</strong> {confirmedGuest?.fullName}
-                  </div>
-                  <div>
-                    <strong>{t.rsvp.fromLabel}</strong> {confirmedGuest?.location || formData.location}
-                  </div>
-                  <div>
-                    <strong>{t.rsvp.sideSummary}</strong>{' '}
-                    {confirmedGuest?.side || selectedOption.label}
-                  </div>
-                  {confirmedGuest?.message && (
-                    <div className={styles.summaryMessageRow}>
-                      <strong>{t.rsvp.messageSummary}</strong> “{confirmedGuest.message}”
+                      {errors.fullName && <span className={styles.errorText}>{errors.fullName}</span>}
                     </div>
-                  )}
-                  <div>
-                    <strong>{t.rsvp.statusLabel}</strong> {t.rsvp.statusConfirmed}
-                  </div>
-                </div>
 
-                <NeonButton
-                  type="button"
-                  onClick={handleReset}
-                  variant="secondary"
-                  style={{ marginTop: '1.5rem' }}
-                >
-                  <span>{t.rsvp.resetBtn}</span>
-                </NeonButton>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                    {/* 2. Location — Printed Letterpress Fill-In Line */}
+                    <div className={styles.fieldRow}>
+                      <label htmlFor="location" className={styles.fieldLabel}>
+                        {t.rsvp.locationLabel}
+                      </label>
+                      <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        placeholder={t.rsvp.locationPlaceholder}
+                        className={`${styles.paperInput} ${errors.location ? styles.inputError : ''}`}
+                        disabled={isSubmitting}
+                        required
+                      />
+                      {errors.location && <span className={styles.errorText}>{errors.location}</span>}
+                    </div>
+
+                    {/* 3. Guest Side — Printed RSVP Checkbox Chips (No Cartoon Emojis) */}
+                    <div className={styles.fieldRow}>
+                      <span className={styles.fieldLabel}>{t.rsvp.sideLabel}</span>
+                      <div className={styles.sideChoices} role="radiogroup" aria-label={t.rsvp.sideLabel}>
+                        {sideOptions.map((option) => {
+                          const isSelected = formData.sideId === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              role="radio"
+                              aria-checked={isSelected}
+                              className={`${styles.sideChoiceBtn} ${isSelected ? styles.sideChoiceActive : ''}`}
+                              onClick={() => handleSelectSide(option.id)}
+                              disabled={isSubmitting}
+                            >
+                              <span className={styles.checkboxBox} aria-hidden="true">
+                                {isSelected && <Check size={11} strokeWidth={2.5} />}
+                              </span>
+                              <span className={styles.sideChoiceText}>{option.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* 4. Wedding Wish — Ruled Fine Cotton Letter Paper */}
+                    <div className={styles.fieldRow}>
+                      <label htmlFor="message" className={styles.fieldLabel}>
+                        {t.rsvp.messageLabel}
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder={t.rsvp.messagePlaceholder}
+                        className={styles.ruledTextarea}
+                        rows={3}
+                        disabled={isSubmitting}
+                      />
+                    </div>
+
+                    {/* Signature Couture Double-Border Rectangular Letterpress CTA Button (No Yellow Neon) */}
+                    <div className={styles.submitWrap}>
+                      <button
+                        type="submit"
+                        id="rsvp-submit-btn"
+                        className={styles.doubleBorderSubmit}
+                        disabled={isSubmitting}
+                        aria-label={t.rsvp.submitBtn}
+                      >
+                        <span className={styles.doubleBorderSubmitInner}>
+                          {isSubmitting ? (
+                            <>
+                              <span className={styles.spinner} />
+                              <span>{t.rsvp.confirming}</span>
+                            </>
+                          ) : (
+                            <span>{t.rsvp.submitBtn}</span>
+                          )}
+                        </span>
+                      </button>
+                    </div>
+
+                    <footer className={styles.cardBottomMark} aria-hidden="true">
+                      <span>{bride.shortName} &amp; {groom.shortName} · 17.01.2027</span>
+                    </footer>
+                  </motion.form>
+                ) : (
+                  /* Wax-Sealed Keepsake Confirmation Card */
+                  <motion.div
+                    key="rsvp-success"
+                    className={styles.successCard}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.55 }}
+                  >
+                    <span className={styles.successHeading}>{t.rsvp.successHeading}</span>
+                    <h3 className={styles.successGuestName}>
+                      {t.rsvp.thankYou} {confirmedGuest?.fullName || ''}
+                    </h3>
+                    <div className={styles.headerRule} aria-hidden="true">
+                      <span />
+                      <i>♡</i>
+                      <span />
+                    </div>
+                    <p className={styles.successMessage}>{t.rsvp.successMsg}</p>
+
+                    <div className={styles.guestSummary}>
+                      <div>
+                        <strong>{t.rsvp.guestLabel}</strong> {confirmedGuest?.fullName}
+                      </div>
+                      <div>
+                        <strong>{t.rsvp.fromLabel}</strong> {confirmedGuest?.location || formData.location}
+                      </div>
+                      <div>
+                        <strong>{t.rsvp.sideSummary}</strong>{' '}
+                        {confirmedGuest?.side || selectedOption.label}
+                      </div>
+                      {confirmedGuest?.message && (
+                        <div className={styles.summaryMessageRow}>
+                          <strong>{t.rsvp.messageSummary}</strong> “{confirmedGuest.message}”
+                        </div>
+                      )}
+                      <div>
+                        <strong>{t.rsvp.statusLabel}</strong> {t.rsvp.statusConfirmed}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className={styles.resetLinkBtn}
+                    >
+                      {t.rsvp.resetBtn}
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

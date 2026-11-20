@@ -10,20 +10,20 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(244, 239, 245, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(148, 163, 184, 0.45);
+  border: 1px solid rgba(114, 102, 122, 0.38);
   border-radius: 999px;
   padding: 3px 4px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 14px rgba(58, 48, 66, 0.1);
   transition: all 0.3s ease;
   user-select: none;
 }
 
 .toggleButton:hover {
-  border-color: var(--silver-primary);
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12), 0 0 10px rgba(148, 163, 184, 0.3);
+  border-color: #6b7084;
+  box-shadow: 0 4px 18px rgba(58, 48, 66, 0.16);
 }
 
 .optionPill {
@@ -39,16 +39,16 @@
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: var(--text-dark-secondary);
+  color: #62596a;
   transition: all 0.25s ease;
   line-height: 1;
 }
 
 .optionPill.active {
-  color: #ffffff;
-  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+  color: #f6f2f6;
+  background: linear-gradient(135deg, #6d7286 0%, #585d70 100%);
   font-weight: 700;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+  box-shadow: 0 2px 6px rgba(58, 52, 72, 0.22);
 }
 
 .optionPill:focus-visible {

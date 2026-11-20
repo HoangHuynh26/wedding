@@ -6,8 +6,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import styles from './MobileQuickActions.module.css';
 
 export default function MobileQuickActions() {
-  const { groom, bride, venue } = weddingConfig;
-  const { t } = useLanguage();
+  const { venue } = weddingConfig;
+  const { t, bride, groom } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [isCallOpen, setIsCallOpen] = useState(false);
 

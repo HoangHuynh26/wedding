@@ -1,88 +1,109 @@
 :root {
   /* ═══════════════════════════════════════════════
-     LUMINOUS SILVER & WHITE — Luxury Wedding Palette
+     DUSTY MAUVE, PEARL LILAC & TWILIGHT SLATE
+     Haute-Couture Embossed Stationery Wedding Palette
      ═══════════════════════════════════════════════ */
 
-  /* Backgrounds — Pure luminous whites & frosted pearl mist */
-  --bg-dark: #ffffff;
-  --bg-dark-secondary: #f8fafc;
-  --bg-dark-tertiary: #f1f5f9;
-  --bg-section-alt: #f8fafc;
-  --bg-light: #ffffff;
-  --bg-ivory: #fcfcfd;
-  --bg-cream: #f8fafc;
+  /* Core Couture Mauve Tokens */
+  --mauve-paper-base: #dad0d8;
+  --mauve-paper-soft: #e7e0e7;
+  --mauve-paper-pale: #efeaf0;
+  --mauve-paper-curtain: #e1d9e1;
+  --mauve-paper-deep: #c7b9c3;
 
-  /* Glass surfaces — Frosted crystalline white glass panels */
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-bg-strong: rgba(255, 255, 255, 0.94);
-  --glass-bg-subtle: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(148, 163, 184, 0.35);
-  --glass-border-hover: rgba(100, 116, 139, 0.65);
-  --glass-blur: 20px;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-card-dark: #ffffff;
+  --slate-plum: #6b7084;
+  --slate-plum-deep: #555a6d;
+  --slate-plum-soft: #81869a;
 
-  /* Text — Deep charcoal chrome & slate for ultra-crisp legibility */
-  --text-dark: #0f172a;
-  --text-dark-secondary: #475569;
-  --text-light: #0f172a;
-  --text-light-secondary: #334155;
-  --text-muted: #64748b;
-  --text-on-dark: #ffffff;
+  --ink-primary: #453e4b;
+  --ink-secondary: #62596a;
+  --ink-muted: #847a8c;
+  --ink-on-slate: #f4eff4;
 
-  /* Silver & Metallic Palette (mapped to existing --gold-* tokens for seamless compatibility) */
-  --gold-primary: #526071;
-  --gold-light: #1e293b;
-  --gold-lighter: #f8fafc;
-  --gold-dark: #334155;
-  --gold-deep: #0f172a;
-  --gold-glow: rgba(148, 163, 184, 0.35);
-  --gold-glow-intense: rgba(100, 116, 139, 0.45);
-  --gold-gradient: linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #94a3b8 70%, #64748b 100%);
-  --gold-shimmer: linear-gradient(90deg, #64748b 0%, #cbd5e1 30%, #ffffff 50%, #cbd5e1 70%, #64748b 100%);
-  --gold-gradient-text: linear-gradient(135deg, #0f172a 0%, #475569 45%, #94a3b8 75%, #1e293b 100%);
+  --mauve-accent: #8f7e89;
+  --mauve-accent-dark: #6b5b66;
+  --mauve-accent-light: #b8a7b2;
 
-  /* Explicit Silver & Metallic aliases */
-  --silver-primary: #526071;
-  --silver-light: #1e293b;
-  --silver-lighter: #f8fafc;
-  --silver-dark: #334155;
-  --silver-glow: rgba(148, 163, 184, 0.35);
-  --silver-glow-intense: rgba(100, 116, 139, 0.45);
-  --silver-gradient: linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #94a3b8 70%, #64748b 100%);
-  --silver-shimmer: linear-gradient(90deg, #64748b 0%, #cbd5e1 30%, #ffffff 50%, #cbd5e1 70%, #64748b 100%);
-  --silver-gradient-text: linear-gradient(135deg, #0f172a 0%, #475569 45%, #94a3b8 75%, #1e293b 100%);
+  /* Mapped Background Surfaces */
+  --bg-dark: #eae3ea;
+  --bg-dark-secondary: #e2dae2;
+  --bg-dark-tertiary: #d8ced8;
+  --bg-section-alt: #e6dfe6;
+  --bg-light: #f2edf2;
+  --bg-ivory: #ece6ec;
+  --bg-cream: #e5dde5;
+
+  /* Frosted Pearl-Mauve Glass Surfaces */
+  --glass-bg: rgba(244, 239, 244, 0.78);
+  --glass-bg-strong: rgba(246, 242, 246, 0.9);
+  --glass-bg-subtle: rgba(242, 236, 242, 0.62);
+  --glass-border: rgba(114, 102, 122, 0.28);
+  --glass-border-hover: rgba(84, 74, 94, 0.52);
+  --glass-blur: 18px;
+  --bg-card: rgba(243, 238, 243, 0.88);
+  --bg-card-dark: #ece6ec;
+
+  /* Ink & Typography Hierarchy */
+  --text-dark: #453e4b;
+  --text-dark-secondary: #62596a;
+  --text-light: #453e4b;
+  --text-light-secondary: #5e5566;
+  --text-muted: #83798b;
+  --text-on-dark: #f6f2f6;
+
+  /* Metallic Mauve-Pewter & Pearl Aliases (legacy token compatibility) */
+  --gold-primary: #7c6d7a;
+  --gold-secondary: #9a8896;
+  --gold-light: #564c5e;
+  --gold-lighter: #f4eff4;
+  --gold-dark: #453e4b;
+  --gold-deep: #37303d;
+  --gold-glow: rgba(143, 126, 137, 0.32);
+  --gold-glow-intense: rgba(107, 112, 132, 0.42);
+  --gold-gradient: linear-gradient(135deg, #f3edf2 0%, #d8cbd4 38%, #a695a2 74%, #7b6b78 100%);
+  --gold-shimmer: linear-gradient(90deg, #8c7b88 0%, #dfd5dd 35%, #f8f4f7 50%, #dfd5dd 65%, #8c7b88 100%);
+  --gold-gradient-text: linear-gradient(135deg, #453e4b 0%, #6b7084 48%, #8f7e89 80%, #453e4b 100%);
+
+  --silver-primary: #6b7084;
+  --silver-light: #453e4b;
+  --silver-lighter: #f2edf2;
+  --silver-dark: #54596b;
+  --silver-glow: rgba(139, 125, 140, 0.3);
+  --silver-glow-intense: rgba(107, 112, 132, 0.44);
+  --silver-gradient: linear-gradient(135deg, #f3eef3 0%, #d6cad3 40%, #a596a3 75%, #6b7084 100%);
+  --silver-shimmer: linear-gradient(90deg, #867783 0%, #ded5dd 32%, #f8f4f8 50%, #ded5dd 68%, #867783 100%);
+  --silver-gradient-text: linear-gradient(135deg, #453e4b 0%, #6b7084 50%, #8f7e89 100%);
 
   /* Accent */
-  --rose-subtle: rgba(226, 232, 240, 0.4);
-  
-  /* Borders — Silver foil & hairline borders */
-  --border-gold: rgba(148, 163, 184, 0.35);
-  --border-gold-solid: #94a3b8;
-  --border-gold-hover: rgba(71, 85, 105, 0.6);
-  --border-light: rgba(148, 163, 184, 0.25);
-  --border-dark: rgba(148, 163, 184, 0.35);
+  --rose-subtle: rgba(212, 198, 208, 0.45);
+
+  /* Borders */
+  --border-gold: rgba(114, 102, 122, 0.3);
+  --border-gold-solid: #9e8f9c;
+  --border-gold-hover: rgba(74, 65, 82, 0.55);
+  --border-light: rgba(114, 102, 122, 0.22);
+  --border-dark: rgba(94, 83, 102, 0.36);
 
   /* Typography */
   --font-serif: 'Cormorant Garamond', 'Noto Serif SC', 'Songti SC', Georgia, serif;
-  --font-sans: 'Montserrat', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
-  --font-script: 'Pinyon Script', 'Great Vibes', 'Alex Brush', cursive;
-  --font-number: 'Cinzel', 'Playfair Display', 'Montserrat', serif;
+  --font-sans: 'Montserrat', 'Be Vietnam Pro', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-script: 'Great Vibes', 'Alex Brush', 'Pinyon Script', cursive;
+  --font-number: 'Cormorant Garamond', 'Cinzel', 'Playfair Display', serif;
 
-  /* Shadows — Soft, elegant slate & silver depth */
-  --shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 12px 36px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
-  --shadow-gold: 0 12px 35px rgba(148, 163, 184, 0.25);
-  --shadow-gold-intense: 0 0 45px rgba(148, 163, 184, 0.4);
-  --glow-gold: 0 0 30px rgba(148, 163, 184, 0.3);
-  --glow-gold-lg: 0 0 60px rgba(148, 163, 184, 0.25);
+  /* Shadows — Soft velvety cool-mauve depth */
+  --shadow-sm: 0 4px 16px rgba(69, 62, 75, 0.06);
+  --shadow-md: 0 12px 34px rgba(69, 62, 75, 0.09), 0 1px 3px rgba(69, 62, 75, 0.05);
+  --shadow-lg: 0 22px 54px rgba(58, 50, 66, 0.13), 0 4px 12px rgba(58, 50, 66, 0.05);
+  --shadow-gold: 0 12px 32px rgba(125, 112, 128, 0.22);
+  --shadow-gold-intense: 0 0 42px rgba(125, 112, 128, 0.35);
+  --glow-gold: 0 0 28px rgba(154, 138, 152, 0.28);
+  --glow-gold-lg: 0 0 56px rgba(154, 138, 152, 0.22);
 
-  /* Spacing */
-  --touch-target: 48px;
-  --border-radius-sm: 10px;
-  --border-radius-md: 18px;
-  --border-radius-lg: 26px;
+  /* Spacing & Radii */
+  --touch-target: 44px;
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
   --border-radius-pill: 9999px;
 
   /* Transitions */
@@ -107,17 +128,17 @@
 
 @keyframes subtleFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-7px); }
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
+  0%, 100% { opacity: 0.65; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.04); }
 }
 
 @keyframes borderGlow {
-  0%, 100% { border-color: rgba(148, 163, 184, 0.3); box-shadow: 0 0 20px rgba(148, 163, 184, 0.15); }
-  50% { border-color: rgba(100, 116, 139, 0.6); box-shadow: 0 0 35px rgba(148, 163, 184, 0.35); }
+  0%, 100% { border-color: rgba(139, 125, 140, 0.3); box-shadow: 0 0 18px rgba(139, 125, 140, 0.14); }
+  50% { border-color: rgba(107, 112, 132, 0.58); box-shadow: 0 0 32px rgba(139, 125, 140, 0.32); }
 }
 
 @keyframes rotateRing {
@@ -126,7 +147,7 @@
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(26px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -136,7 +157,6 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Metallic silver gradient text utility */
 .text-gold-gradient,
 .text-silver-gradient {
   background: var(--gold-gradient-text);
@@ -144,5 +164,5 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: silverShimmer 4s linear infinite;
+  animation: silverShimmer 5s linear infinite;
 }

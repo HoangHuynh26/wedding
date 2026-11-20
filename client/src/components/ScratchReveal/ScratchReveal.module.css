@@ -1,0 +1,383 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEP 5B — PHOTOREALISTIC JEWELED MOTHER-OF-PEARL SCRATCH-TO-REVEAL (Images 9–11)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.scratchSection {
+  position: relative;
+  width: 100%;
+  padding: clamp(1.25rem, 4vw, 3.25rem) 0 clamp(1.5rem, 4vw, 3.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #cfc0cb;
+}
+
+.nacreBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  filter: brightness(0.96) contrast(1.03);
+}
+
+.nacreOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(255, 251, 254, 0.08) 0%,
+    rgba(130, 114, 128, 0.2) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Transparent Photorealistic Hand-Set Crystal & Pearl Frame directly over main Mother-of-Pearl */
+.jeweledStage {
+  position: relative;
+  z-index: 2;
+  width: min(100vw, 480px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
+@media (min-width: 520px) {
+  .jeweledStage {
+    width: min(92vw, 480px);
+  }
+}
+
+.jeweledFrameImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  filter:
+    drop-shadow(0 5px 9px rgba(48, 36, 52, 0.28))
+    drop-shadow(0 1px 2px rgba(48, 36, 52, 0.2));
+}
+
+/* Subtle twinkling diamond starlight glints right on the real crystal facets */
+.crystalGlint {
+  position: absolute;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: diamondGlint 4.6s ease-in-out infinite;
+}
+
+.crystalGlint::before,
+.crystalGlint::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.96), transparent);
+  transform: translate(-50%, -50%);
+}
+
+.crystalGlint::before {
+  width: 100%;
+  height: 1.5px;
+}
+
+.crystalGlint::after {
+  width: 1.5px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.96), transparent);
+}
+
+.glint1 { top: 8.5%; left: 19%; animation-delay: 0.2s; }
+.glint2 { top: 8.5%; left: 81%; animation-delay: 1.9s; }
+.glint3 { top: 91.5%; left: 29%; animation-delay: 3.1s; }
+.glint4 { top: 60%; left: 91.5%; animation-delay: 1.1s; }
+
+@keyframes diamondGlint {
+  0%, 72%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+  }
+  84% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.15) rotate(22deg);
+  }
+  92% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.75) rotate(45deg);
+  }
+}
+
+/* Sculpted 3D Royal Diamond & Seed-Pearl Oval Cameo Locket Medallion */
+.ovalOuterRing {
+  position: relative;
+  z-index: 3;
+  width: 47%;
+  aspect-ratio: 3 / 4;
+  border-radius: 50% / 50%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ovalRevealed {
+  transform: scale(1.02);
+}
+
+/* Photorealistic 3D Diamond & Seed-Pearl Royal Tiara Oval Bezel Wrapping the Cameo */
+.ovalCameoFrameImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120.8%;
+  height: 120.8%;
+  max-width: none;
+  max-height: none;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  z-index: 6;
+  filter:
+    drop-shadow(0 12px 24px rgba(42, 30, 48, 0.36))
+    drop-shadow(0 3px 7px rgba(42, 30, 48, 0.24));
+}
+
+/* Twinkling diamond starlight glints on the oval cameo tiara & cardinal gems */
+.ovalGlintTop { top: -6.5%; left: 50%; animation-delay: 0.6s; z-index: 7; }
+.ovalGlintBot { top: 106.5%; left: 50%; animation-delay: 2.3s; z-index: 7; }
+.ovalGlintLeft { top: 34%; left: -4.5%; animation-delay: 1.4s; z-index: 7; }
+.ovalGlintRight { top: 66%; left: 104.5%; animation-delay: 3.5s; z-index: 7; }
+
+.ovalInnerFrame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% / 50%;
+  overflow: hidden;
+  background: #c8bac6;
+  isolation: isolate;
+}
+
+.couplePortrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 48% 8%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transform: scale(var(--cameo-zoom, 1));
+  transform-origin: center 32%;
+  will-change: transform, opacity;
+}
+
+.couplePortraitPrev {
+  z-index: 0;
+  transform: scale(calc(var(--cameo-zoom, 1) * 1.055));
+}
+
+.couplePortraitActive {
+  z-index: 1;
+  animation: cameoSlideFadeIn 1.15s cubic-bezier(0.22, 0.61, 0.36, 1) both,
+             cameoVideoBreathe 4.2s ease-out both;
+}
+
+.couplePortraitStatic {
+  z-index: 1;
+}
+
+@keyframes cameoSlideFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cameoVideoBreathe {
+  from {
+    transform: scale(var(--cameo-zoom, 1));
+  }
+  to {
+    transform: scale(calc(var(--cameo-zoom, 1) * 1.055));
+  }
+}
+
+.cameoInnerShadow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 4px 12px rgba(42, 32, 46, 0.36),
+    inset 0 -2px 8px rgba(255, 250, 254, 0.24);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scratchCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 720ms ease;
+}
+
+.scratchCanvas:active {
+  cursor: grabbing;
+}
+
+.canvasCleared {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Minimalist Fine-Line Back-and-Forth Swipe Gesture Indicator (Text-Free) */
+.swipeHintOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+  user-select: none;
+  color: #4b4252;
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+
+.swipeHintHidden {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.swipeArrowsSvg {
+  width: clamp(58px, 34%, 76px);
+  height: auto;
+  overflow: visible;
+  opacity: 0.78;
+  filter: drop-shadow(0 1px 0 rgba(255, 250, 254, 0.55));
+}
+
+.swipeHandTrack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -4px;
+  animation: swipeGlide 2.2s ease-in-out infinite;
+}
+
+.swipeTouchHalo {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(75, 66, 82, 0.34);
+  background: radial-gradient(circle, rgba(255, 250, 254, 0.65) 0%, transparent 72%);
+  animation: touchRipple 2.2s ease-in-out infinite;
+}
+
+.swipeHandIcon {
+  width: clamp(28px, 7.5vw, 35px);
+  height: clamp(28px, 7.5vw, 35px);
+  color: #4b4252;
+  filter: drop-shadow(0 1px 0 rgba(255, 250, 254, 0.5));
+}
+
+@keyframes swipeGlide {
+  0%, 100% {
+    transform: translateX(-14px) rotate(-8deg);
+  }
+  50% {
+    transform: translateX(14px) rotate(8deg);
+  }
+}
+
+@keyframes touchRipple {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipeHandTrack,
+  .swipeTouchHalo {
+    animation: none;
+  }
+}
+
+.scratchFooter {
+  position: relative;
+  z-index: 2;
+  margin-top: 1.15rem;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quickRevealBtn {
+  min-height: 30px;
+  padding: 0.3rem 1.05rem;
+  border-radius: 999px;
+  border: 1px solid rgba(72, 62, 78, 0.36);
+  background: rgba(246, 240, 246, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #453e4b;
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(54, 42, 58, 0.12);
+  transition: all 0.25s ease;
+}
+
+.quickRevealBtn:hover {
+  background: rgba(250, 246, 251, 0.95);
+  border-color: rgba(72, 62, 78, 0.6);
+}
+
+.revealedCaption {
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(246, 240, 246, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.96rem;
+  color: #453e4b;
+  letter-spacing: 0.04em;
+}

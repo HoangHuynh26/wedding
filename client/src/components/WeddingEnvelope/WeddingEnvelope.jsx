@@ -1,72 +1,49 @@
 import React, { useId } from 'react';
-import { CalendarDays } from 'lucide-react';
+import { formatChineseInviter, formatEnglishInviter } from '../../config/chineseInvitation';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
-import { BotanicalSprig, WeddingMonogram } from './WeddingOrnaments';
-import Sparkles from '../Sparkles/Sparkles';
-import OceanWavesBackground from './OceanWavesBackground';
+import OrganzaBow from './OrganzaBow';
 import styles from './WeddingEnvelope.module.css';
 
-const { event, invitation } = weddingConfig;
-
-const dust = [
-  [11, 38, 3, 2], [23, 20, 2, 6], [16, 74, 4, 9], [32, 88, 3, 4], [38, 12, 2, 8],
-  [69, 19, 4, 3], [76, 82, 2, 7], [89, 30, 3, 5], [87, 68, 4, 1], [96, 49, 2, 8],
+// Ethereal rising blink-blink starlight & pearl bokeh motes floating upward from bottom to top
+const RISING_SPARKLES = [
+  { id: 's1', kind: 'star', left: '12%', size: 15, dur: '6.8s', delay: '-1.2s', blink: '1.6s', drift: '10px' },
+  { id: 's2', kind: 'orb', left: '22%', size: 6, dur: '7.4s', delay: '-4.1s', blink: '1.9s', drift: '-12px' },
+  { id: 's3', kind: 'star', left: '30%', size: 20, dur: '6.2s', delay: '-2.7s', blink: '1.4s', drift: '14px' },
+  { id: 's4', kind: 'orb', left: '38%', size: 7, dur: '8.1s', delay: '-5.8s', blink: '2.1s', drift: '-8px' },
+  { id: 's5', kind: 'star', left: '45%', size: 18, dur: '5.8s', delay: '-0.6s', blink: '1.3s', drift: '12px' },
+  { id: 's6', kind: 'orb', left: '49%', size: 8, dur: '6.6s', delay: '-3.4s', blink: '1.7s', drift: '-10px' },
+  { id: 's7', kind: 'star', left: '53%', size: 22, dur: '6.4s', delay: '-4.9s', blink: '1.5s', drift: '-13px' },
+  { id: 's8', kind: 'orb', left: '59%', size: 6, dur: '7.2s', delay: '-1.9s', blink: '1.8s', drift: '11px' },
+  { id: 's9', kind: 'star', left: '66%', size: 17, dur: '5.9s', delay: '-3.8s', blink: '1.4s', drift: '-14px' },
+  { id: 's10', kind: 'orb', left: '74%', size: 7, dur: '7.8s', delay: '-0.9s', blink: '2.0s', drift: '9px' },
+  { id: 's11', kind: 'star', left: '82%', size: 19, dur: '6.5s', delay: '-2.3s', blink: '1.5s', drift: '-11px' },
+  { id: 's12', kind: 'orb', left: '90%', size: 5, dur: '7.1s', delay: '-5.1s', blink: '1.7s', drift: '8px' },
+  { id: 's13', kind: 'star', left: '18%', size: 13, dur: '7.6s', delay: '-6.2s', blink: '1.8s', drift: '-9px' },
+  { id: 's14', kind: 'orb', left: '34%', size: 5, dur: '6.3s', delay: '-1.5s', blink: '1.6s', drift: '10px' },
+  { id: 's15', kind: 'star', left: '42%', size: 16, dur: '7.0s', delay: '-4.4s', blink: '1.45s', drift: '-12px' },
+  { id: 's16', kind: 'star', left: '57%', size: 15, dur: '5.6s', delay: '-2.9s', blink: '1.35s', drift: '13px' },
+  { id: 's17', kind: 'orb', left: '63%', size: 7, dur: '8.3s', delay: '-6.7s', blink: '2.2s', drift: '-9px' },
+  { id: 's18', kind: 'star', left: '78%', size: 14, dur: '6.9s', delay: '-5.4s', blink: '1.65s', drift: '12px' },
+  { id: 's19', kind: 'orb', left: '47%', size: 5, dur: '5.5s', delay: '-2.1s', blink: '1.3s', drift: '7px' },
+  { id: 's20', kind: 'star', left: '51%', size: 14, dur: '7.3s', delay: '-6.0s', blink: '1.55s', drift: '-8px' },
+  { id: 's21', kind: 'orb', left: '26%', size: 6, dur: '8.0s', delay: '-3.1s', blink: '1.9s', drift: '11px' },
+  { id: 's22', kind: 'star', left: '71%', size: 16, dur: '6.1s', delay: '-0.4s', blink: '1.4s', drift: '-10px' },
 ];
 
-function FloatingParticles() {
-  return (
-    <div className={styles.dust} aria-hidden="true">
-      {dust.map(([x, y, size, delay]) => (
-        <i key={x} style={{ left: `${x}%`, top: `${y}%`, '--size': `${size}px`, '--delay': `${-delay}s` }} />
-      ))}
-    </div>
-  );
-}
-
-function WaxSeal() {
-  return (
-    <div className={styles.sealAssembly} aria-hidden="true">
-      <span className={`${styles.ribbon} ${styles.ribbonLeft}`} />
-      <span className={`${styles.ribbon} ${styles.ribbonRight}`} />
-      <span className={styles.waxGlowHalo} />
-      <span className={styles.wax}>
-        <span className={styles.waxInnerGlow} />
-        <img src="/logo.png" alt="Monogram Logo" className={styles.waxLogoImg} />
-      </span>
-    </div>
-  );
-}
-
-function InvitationCard({ ceremonyLabel, hidden }) {
-  return (
-    <div className={styles.card} aria-hidden={hidden}>
-      <BotanicalSprig className={`${styles.cardSprig} ${styles.cardSprigLeft}`} />
-      <BotanicalSprig className={`${styles.cardSprig} ${styles.cardSprigRight}`} />
-      <div className={styles.cardCopy}>
-        <WeddingMonogram className={styles.cardMonogram} />
-        <p className={styles.cardLabel}>{ceremonyLabel}</p>
-        <time className={styles.cardDate} dateTime={event.isoDate}>
-          <CalendarDays aria-hidden="true" size={13} strokeWidth={1.5} />
-          {event.dateDisplay} · {event.timeDisplay}
-        </time>
-      </div>
-    </div>
-  );
-}
-
-export default function WeddingEnvelope({ phase, onOpen }) {
+export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
   const headingId = useId();
   const { language, t } = useLanguage();
   const { guestName, inviterName } = useInvitationParams();
+  const inviterLabel =
+    language === 'zh'
+      ? formatChineseInviter(inviterName)
+      : language === 'en'
+        ? formatEnglishInviter(inviterName)
+        : inviterName;
   const sealed = phase === 'sealed';
-  const words = language === 'vi' ? invitation : {
-    title: t.envelope.header,
-    subtitle: t.envelope.invitation,
-    openLabel: t.envelope.tapToOpen,
-    ceremonyLabel: t.envelope.ceremonyHeading,
-  };
+  const tapLabel = t.envelope?.tapToOpen || weddingConfig.invitation.openLabel;
 
   return (
     <section
@@ -74,93 +51,118 @@ export default function WeddingEnvelope({ phase, onOpen }) {
       data-phase={phase}
       aria-labelledby={headingId}
     >
-      <div className={styles.room} aria-hidden="true">
-        {/* Nền sóng biển dập dềnh chạy vào bờ cát vàng nhiệt đới */}
-        <OceanWavesBackground phase={phase} />
-        <FloatingParticles />
-      </div>
+      <div className={styles.folioStage}>
+        <div className={styles.silkVeilSystem} aria-hidden="true">
+          <div className={`${styles.veilPanel} ${styles.veilPanelLeft}`} />
+          <div
+            className={`${styles.veilPanel} ${styles.veilPanelRight}`}
+            onTransitionEnd={(event) => {
+              if (!sealed && event.target === event.currentTarget && event.propertyName === 'transform') onOpened();
+            }}
+          />
+          <OrganzaBow opening={!sealed} />
+        </div>
 
-      {/* Hiệu ứng kim tuyến bay bổng lấp lánh ngoài phong bì & thiệp */}
-      <Sparkles count={38} className={styles.envelopeSparkles} />
-
-      <header className={styles.heading}>
-        <h1 id={headingId}>{words.title}</h1>
-        <p>{words.subtitle}</p>
-        {(guestName || inviterName) && (
-          <p className={styles.personalization}>
-            {guestName && <span>{t.envelope.salutation} <strong>{guestName}</strong></span>}
-            {inviterName && <span>{inviterName}</span>}
-          </p>
-        )}
-        <span className={styles.headingRule} aria-hidden="true"><i /></span>
-      </header>
-
-      <div className={styles.stage}>
-        <div className={styles.drift}>
-          <div className={styles.envelope}>
-            <div className={styles.back} aria-hidden="true" />
-            <div className={styles.cardTrack}>
-              <InvitationCard ceremonyLabel={words.ceremonyLabel} hidden={sealed} />
-            </div>
-            <div className={styles.pocket} aria-hidden="true">
-              <span className={`${styles.side} ${styles.sideLeft}`} />
-              <span className={`${styles.side} ${styles.sideRight}`} />
-              <span className={styles.fold} />
-              <BotanicalSprig className={`${styles.pocketSprig} ${styles.pocketSprigLeft}`} />
-              <BotanicalSprig className={`${styles.pocketSprig} ${styles.pocketSprigRight}`} />
-            </div>
-            <div className={styles.flap} aria-hidden="true">
-              <div className={styles.flapHinge}>
-                <span className={`${styles.flapFace} ${styles.flapFront}`} />
-                <span className={`${styles.flapFace} ${styles.flapBack}`} />
-              </div>
-            </div>
-            <WaxSeal />
+        {/* LAYER 3: Sculpted 3D Veined Ginkgo-Petal Envelope & Organic Oval Mauve-Taupe HH Wax Seal */}
+        <div className={styles.envelopeShell} aria-hidden="true">
+          {/* Lower envelope pocket (slides smoothly downward on open) */}
+          <div className={styles.paperPocket}>
+            <picture className={styles.envelopePicture}>
+              <source
+                media="(min-aspect-ratio: 105/100)"
+                srcSet="/mauve-theme/petal-envelope-wide.webp?v=3"
+              />
+              <img
+                src="/mauve-theme/petal-envelope.webp?v=3"
+                alt=""
+                className={styles.pocketImg}
+                fetchPriority="high"
+                decoding="async"
+                draggable={false}
+              />
+            </picture>
+            <div className={styles.petalSatinSheen} />
           </div>
 
-          {/* Nghệ thuật hoa cưới: Cẩm tú cầu trắng, Lan hồ điệp & Dây amaranthus rủ */}
-          <div className={styles.floralArrangement} aria-hidden="true">
-            <img
-              src="/flowers/flower_cluster_left.png"
-              alt="Cẩm tú cầu và lan hồ điệp"
-              className={`${styles.floralImage} ${styles.floralBottomLeft}`}
-              loading="eager"
-              decoding="async"
-            />
-            <img
-              src="/flowers/flower_cluster_right.png"
-              alt="Cẩm tú cầu, rum trắng và lan hồ điệp"
-              className={`${styles.floralImage} ${styles.floralRight}`}
-              loading="eager"
-              decoding="async"
-            />
-            <img
-              src="/flowers/orchid_bud.png"
-              alt="Nhánh lan hồ điệp"
-              className={`${styles.floralImage} ${styles.floralTopLeft}`}
-              loading="eager"
-              decoding="async"
-            />
-            <img
-              src="/flowers/falling_petal.png"
-              alt="Cánh hoa rơi"
-              className={`${styles.floralImage} ${styles.floralDriftingPetal}`}
-              loading="eager"
-              decoding="async"
-            />
+          {/* Top hinged V-flap — lifts upward carrying the organic oval HH wax seal */}
+          <div className={styles.topFlapPivot}>
+            <div className={styles.flapTop}>
+              <picture className={styles.envelopePicture}>
+                <source
+                  media="(min-aspect-ratio: 105/100)"
+                  srcSet="/mauve-theme/petal-flap-top-wide.webp?v=3"
+                />
+                <img
+                  src="/mauve-theme/petal-flap-top.webp?v=3"
+                  alt=""
+                  className={styles.topFlapImg}
+                  fetchPriority="high"
+                  decoding="async"
+                  draggable={false}
+                />
+              </picture>
+              <div className={styles.flapTopShade} />
+            </div>
+
+            {/* Organic Vertical-Oval Satin Mauve-Taupe Wax Seal HH at the V-flap tip */}
+            <div className={styles.waxSealAnchor}>
+              <div className={styles.waxSealWrap}>
+                <img
+                  src="/mauve-theme/wax-seal-hh.webp?v=3"
+                  alt=""
+                  className={styles.waxSealImg}
+                  draggable={false}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Ethereal twinkling "blink blink" light particles rising smoothly from bottom to top */}
+          <div className={styles.envelopeSparkles} aria-hidden="true">
+            {RISING_SPARKLES.map((p) => (
+              <span
+                key={p.id}
+                className={styles.risingParticle}
+                style={{
+                  '--p-left': p.left,
+                  '--p-size': `${p.size}px`,
+                  '--p-dur': p.dur,
+                  '--p-delay': p.delay,
+                  '--p-blink': p.blink,
+                  '--p-drift': p.drift,
+                }}
+              >
+                <span className={p.kind === 'star' ? styles.risingStarCore : styles.risingOrbCore} />
+              </span>
+            ))}
           </div>
         </div>
 
+        {/* Screen-reader title + optional subtle personalization badge when ?to=... is provided */}
+        <h1 id={headingId} className={styles.srOnly}>
+          {t.envelope?.header || weddingConfig.invitation.title}
+        </h1>
+
+        {(guestName || inviterLabel) && (
+          <div className={styles.guestBadge}>
+            {guestName && (
+              <span className={styles.guestLine}>
+                {t.envelope.salutation} <strong>{guestName}</strong>
+              </span>
+            )}
+            {inviterLabel && <span className={styles.inviterLine}>{inviterLabel}</span>}
+          </div>
+        )}
+
+        {/* Full accessible tap trigger over the sealed envelope & wax seal */}
         <button
-          className={styles.opener}
           type="button"
+          className={styles.openerBtn}
           onClick={onOpen}
           disabled={!sealed}
-          aria-label={words.openLabel || 'Mở thiệp cưới'}
+          aria-label={tapLabel}
         />
       </div>
-
-      <div className={styles.bloom} aria-hidden="true" />
     </section>
   );
 }

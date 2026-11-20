@@ -1,0 +1,10 @@
+.bow {
+  position: absolute;
+  width: 102%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -43.4%);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgb(60 36 54 / 16%));
+}
