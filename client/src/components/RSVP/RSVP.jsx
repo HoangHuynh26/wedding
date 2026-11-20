@@ -51,14 +51,21 @@ export default function RSVP() {
   const [confirmedGuest, setConfirmedGuest] = useState(null);
   const [serverError, setServerError] = useState('');
 
-  // Refined stationery options — no cartoon emojis, crisp editorial labels
+  // Refined stationery options — Groom's side listed first on Groom's page
   const sideOptions = useMemo(
-    () => [
-      { id: 'bride', label: t.rsvp.sideBride },
-      { id: 'groom', label: t.rsvp.sideGroom },
-      { id: 'mutual', label: t.rsvp.sideMutual },
-    ],
-    [t]
+    () =>
+      isGroomSide
+        ? [
+            { id: 'groom', label: t.rsvp.sideGroom },
+            { id: 'bride', label: t.rsvp.sideBride },
+            { id: 'mutual', label: t.rsvp.sideMutual },
+          ]
+        : [
+            { id: 'bride', label: t.rsvp.sideBride },
+            { id: 'groom', label: t.rsvp.sideGroom },
+            { id: 'mutual', label: t.rsvp.sideMutual },
+          ],
+    [t, isGroomSide]
   );
 
   const selectedOption = useMemo(() => {
@@ -332,7 +339,11 @@ export default function RSVP() {
                     </div>
 
                     <footer className={styles.cardBottomMark} aria-hidden="true">
-                      <span>{bride.shortName} &amp; {groom.shortName} · 17.01.2027</span>
+                      <span>
+                        {isGroomSide ? groom.shortName : bride.shortName} &amp;{' '}
+                        {isGroomSide ? bride.shortName : groom.shortName} ·{' '}
+                        {t.hero?.date || (isGroomSide ? '24.01.2027' : '17.01.2027')}
+                      </span>
                     </footer>
                   </motion.form>
                 ) : (

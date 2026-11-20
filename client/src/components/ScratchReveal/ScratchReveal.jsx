@@ -52,7 +52,7 @@ function shuffleOrder(total, avoidFirst) {
  * framing a royal diamond-and-pearl oval cameo locket that plays a 4-second randomized couple video-slideshow once revealed.
  */
 export default function ScratchReveal() {
-  const { t, bride, groom } = useLanguage();
+  const { t, bride, groom, isGroomSide } = useLanguage();
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef(null);
@@ -308,7 +308,7 @@ export default function ScratchReveal() {
             <img
               key={`active-${activeSlide.key}`}
               src={activeSlide.src}
-              alt={`${bride.name} & ${groom.name}`}
+              alt={isGroomSide ? `${groom.name} & ${bride.name}` : `${bride.name} & ${groom.name}`}
               className={`${styles.couplePortrait} ${
                 isRevealed ? styles.couplePortraitActive : styles.couplePortraitStatic
               }`}

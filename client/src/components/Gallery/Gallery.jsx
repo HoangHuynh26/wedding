@@ -97,7 +97,7 @@ const PHOTO_I18N = {
 };
 
 export default function Gallery() {
-  const { t, language, bride, groom } = useLanguage();
+  const { t, language, bride, groom, isGroomSide } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(null);
@@ -114,7 +114,9 @@ export default function Gallery() {
 
   // Assemble full photo collection — strictly all 40 studio "file le" photos (Couple shots first, AB 15 TO excluded)
   const allPhotos = useMemo(() => {
-    const coupleFallback = `${bride.shortName} & ${groom.shortName}`;
+    const coupleFallback = isGroomSide
+      ? `${groom.shortName} & ${bride.shortName}`
+      : `${bride.shortName} & ${groom.shortName}`;
     return weddingConfig.gallery.map((photo) => {
       let localizedTitle = language === 'zh' ? '婚纱纪念照' : photo.title || coupleFallback;
       let localizedCaption = language === 'zh' ? '' : photo.caption || '';
