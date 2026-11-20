@@ -284,7 +284,7 @@ export default function Admin() {
       if (selectedLang === 'en') {
         msg = `Dear ${cleanGuest},
 
-Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet on Sunday, January 24, 2027 at 06:00 PM!
+Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet at White Palace on Sunday, January 24, 2027 at 06:00 PM!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -294,7 +294,7 @@ Your presence and warm blessings would mean the world to us!`;
       } else if (selectedLang === 'zh') {
         msg = `${cleanGuest} 您好：
 
-谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临参加我们的新婚晚宴（2027年01月24日 星期日 晚上18:00）！
+谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临 White Palace 宴会厅参加我们的新婚晚宴（2027年01月24日 星期日 晚上18:00）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
@@ -302,7 +302,7 @@ ${generatedUrl}
 
 衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
       } else {
-        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền (18:00 tối Chủ Nhật, ngày 24/01/2027)!
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace (18:00 tối Chủ Nhật, ngày 24/01/2027)!
 
 🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
 ✨ Xem thiệp mời cưới online tại đây:

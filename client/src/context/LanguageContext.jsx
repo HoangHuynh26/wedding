@@ -81,17 +81,29 @@ export const groomEventConfig = {
   isoDate: '2027-01-24T18:00:00+07:00',
 };
 
+export const groomVenueConfig = {
+  name: 'NHÀ HÀNG WHITE PALACE',
+  hall: 'Nhà Hàng White Palace',
+  address: '194 Hoàng Văn Thụ, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh',
+  addressShort: '194 Hoàng Văn Thụ, P. 9, Q. Phú Nhuận, TP. HCM',
+  phone: '(+84) 28 3844 7266',
+  coordinates: { latitude: 10.79977, longitude: 106.67289 },
+  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=White+Palace+194+Hoang+Van+Thu+Phu+Nhuan+Ho+Chi+Minh',
+  embedMapUrl: 'https://www.google.com/maps?q=White+Palace+194+Hoang+Van+Thu+Phu+Nhuan+Ho+Chi+Minh&z=16&output=embed',
+};
+
 export const groomTranslations = {
   vi: {
     pageTitle: 'Lễ Tân Hôn | Đình Huy & Thu Hiền • 24.01.2027',
     envelope: {
       header: 'THIỆP MỜI LỄ TÂN HÔN',
       ceremonyHeading: 'LỄ TÂN HÔN',
-      invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Tân Hôn của chúng mình.',
+      invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Tân Hôn của chúng mình tại Nhà Hàng White Palace.',
     },
     hero: {
       date: '24.01.2027',
-      venueTitle: 'Tư Gia Nhà Trai',
+      venueTitle: 'Nhà Hàng White Palace',
+      cityCaps: 'WHITE PALACE • TP. HỒ CHÍ MINH',
     },
     formal: {
       saveTheDate: 'LỄ TÂN HÔN • TRÂN TRỌNG KÍNH MỜI',
@@ -102,12 +114,14 @@ export const groomTranslations = {
       dayNumber: '24',
       yearBox: 'NĂM 2027',
       lunarDate: '( Tức ngày 17 tháng 12 năm Bính Ngọ )',
-      venueHostName: 'TƯ GIA NHÀ TRAI',
+      venueHostName: 'NHÀ HÀNG WHITE PALACE',
+      venueAddress: '194 Hoàng Văn Thụ, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh',
       receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ TÂN HÔN',
       fullDate: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
       time: '18:00 PM',
-      venueName: 'TƯ GIA NHÀ TRAI',
-      hallName: 'Tư Gia Nhà Trai',
+      venueName: 'NHÀ HÀNG WHITE PALACE',
+      hallName: 'Nhà Hàng Tiệc Cưới White Palace',
+      address: '194 Hoàng Văn Thụ, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh',
     },
     countdown: {
       fullDate: 'Chủ Nhật, 24 Tháng 01, 2027 • 18:00 PM',
@@ -119,7 +133,7 @@ export const groomTranslations = {
     theDay: {
       headingTop: 'Lịch',
       headingBottom: 'Trình',
-      intro: 'Hành trình ngày trọng đại từ lễ gia tiên rước dâu đến đêm tiệc mừng Lễ Tân Hôn.',
+      intro: 'Hành trình ngày trọng đại từ lễ gia tiên rước dâu đến đêm tiệc mừng tại White Palace.',
       items: [
         {
           time: '08:00 AM',
@@ -133,12 +147,12 @@ export const groomTranslations = {
         },
         {
           time: '17:30 PM',
-          title: 'ĐÓN TIẾP QUAN KHÁCH TIỆC TỐI',
-          detail: 'Đón khách, dùng trà bánh khai vị & chụp ảnh lưu niệm buổi tối',
+          title: 'ĐÓN TIẾP QUAN KHÁCH TẠI WHITE PALACE',
+          detail: 'Đón khách, dùng trà bánh khai vị & chụp ảnh lưu niệm tại sảnh tiệc tối',
         },
         {
           time: '18:00 PM',
-          title: 'LỄ TÂN HÔN & TIỆC CƯỚI BUỔI TỐI',
+          title: 'LỄ TÂN HÔN & TIỆC TỐI TẠI WHITE PALACE',
           detail: 'Khai tiệc mừng Lễ Tân Hôn & nâng ly chúc phúc bên gia đình, bạn bè',
         },
       ],
@@ -147,26 +161,29 @@ export const groomTranslations = {
       stamp1: 'LỄ TÂN HÔN',
       stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hiền',
-      para2: 'Lễ Tân Hôn được tổ chức vào buổi tối tại Tư Gia Nhà Trai với khu vực đón tiếp và chỗ đỗ xe rộng rãi cho cả ô tô lẫn xe máy.',
-      para3: 'Gia đình kính mời quý khách thu xếp đến từ 17:30 PM tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
+      stamp3: 'WHITE PALACE',
+      para2: 'Tiệc tối mừng Lễ Tân Hôn được tổ chức tại Nhà Hàng Tiệc Cưới White Palace — 194 Hoàng Văn Thụ, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh, với sảnh đón tiếp sang trọng và khu vực đỗ xe rộng rãi.',
+      para3: 'Gia đình kính mời quý khách thu xếp đến từ 17:30 PM tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) tại White Palace để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
     },
     gallery: {
       intro: 'Những khoảnh khắc đong đầy yêu thương của Đình Huy & Thu Hiền.',
     },
     venue: {
-      brideVenueTag: 'Địa điểm tổ chức Lễ Tân Hôn (Bên Nhà Trai)',
-      hall: 'Tư Gia Nhà Trai',
-      para1: 'Tọa lạc tại không gian ấm cúng của gia đình, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Tân Hôn.',
-      para2: 'Gia đình kính mời quý khách đến từ 17:30 tối Chủ Nhật 24.01.2027 để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ buổi tối bắt đầu.',
+      brideVenueTag: 'Địa điểm tổ chức Tiệc Cưới Nhà Trai (Lễ Tân Hôn)',
+      hall: 'Nhà Hàng White Palace',
+      regionCaps: '194 HOÀNG VĂN THỤ, PHÚ NHUẬN, TP. HỒ CHÍ MINH',
+      para1: 'Tọa lạc tại không gian sảnh tiệc sang trọng bậc nhất của Nhà Hàng Tiệc Cưới White Palace, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Tân Hôn.',
+      para2: 'Gia đình kính mời quý khách đến từ 17:30 tối Chủ Nhật 24.01.2027 tại sảnh tiệc White Palace để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ buổi tối bắt đầu.',
       timeDetail: '18:00 PM, Chủ Nhật — 24.01.2027',
+      addressText: 'Nhà Hàng White Palace — 194 Hoàng Văn Thụ, Phường 9, Quận Phú Nhuận, TP. Hồ Chí Minh',
       schedule: [
         '08:00 - Lễ gia tiên bên nhà gái & Rước dâu về nhà trai',
-        '17:30 - Đón tiếp quan khách tiệc tối & Chụp ảnh lưu niệm',
-        '18:00 - Khai tiệc tối & Nghi lễ Tân Hôn trang trọng',
+        '17:30 - Đón tiếp quan khách tại sảnh tiệc White Palace',
+        '18:00 - Khai tiệc tối & Nghi lễ Tân Hôn tại White Palace',
       ],
     },
     rsvp: {
-      formSubtitle: 'Để gia đình chuẩn bị chu đáo nhất cho buổi tiệc tối, xin quý khách vui lòng xác nhận trước ngày 10.01.2027.',
+      formSubtitle: 'Để gia đình chuẩn bị chu đáo nhất cho buổi tiệc tối tại White Palace, xin quý khách vui lòng xác nhận trước ngày 10.01.2027.',
     },
   },
   en: {
@@ -177,7 +194,8 @@ export const groomTranslations = {
     },
     hero: {
       date: '24.01.2027',
-      venueTitle: "Groom's Family Residence",
+      venueTitle: 'White Palace Convention Center',
+      cityCaps: 'WHITE PALACE • HO CHI MINH CITY',
     },
     formal: {
       timeDayHeader: '06:00 PM, SUNDAY',
@@ -185,10 +203,13 @@ export const groomTranslations = {
       dayNumber: '24',
       yearBox: '2027',
       lunarDate: '( 17th Day of the 12th Lunar Month, Year of the Horse )',
-      venueHostName: "GROOM'S FAMILY RESIDENCE",
+      venueHostName: 'WHITE PALACE RESTAURANT',
+      venueAddress: '194 Hoang Van Thu, Ward 9, Phu Nhuan District, Ho Chi Minh City',
       fullDate: 'Sunday, January 24, 2027',
       time: '06:00 PM',
-      venueName: "GROOM'S FAMILY RESIDENCE",
+      venueName: 'WHITE PALACE RESTAURANT',
+      hallName: 'White Palace Convention Center',
+      address: '194 Hoang Van Thu, Ward 9, Phu Nhuan District, Ho Chi Minh City',
     },
     countdown: {
       fullDate: 'Sunday, January 24, 2027 • 06:00 PM',
@@ -200,7 +221,7 @@ export const groomTranslations = {
     theDay: {
       headingTop: 'The',
       headingBottom: 'Day',
-      intro: 'From traditional morning bridal procession to our evening wedding celebration.',
+      intro: 'From traditional morning bridal procession to our evening banquet at White Palace.',
       items: [
         {
           time: '08:00 AM',
@@ -214,12 +235,12 @@ export const groomTranslations = {
         },
         {
           time: '05:30 PM',
-          title: 'EVENING RECEPTION & WELCOME',
-          detail: 'Warm evening welcome, refreshments & commemorative photos with guests',
+          title: 'EVENING RECEPTION AT WHITE PALACE',
+          detail: 'Warm evening welcome, refreshments & commemorative photos at White Palace',
         },
         {
           time: '06:00 PM',
-          title: 'EVENING WEDDING BANQUET',
+          title: 'EVENING BANQUET AT WHITE PALACE',
           detail: 'Evening wedding ceremony, heartfelt toasts & celebration dinner',
         },
       ],
@@ -228,26 +249,29 @@ export const groomTranslations = {
       stamp1: 'WEDDING NIGHT',
       stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hien',
-      para2: "Our evening wedding celebration takes place at the Groom's Family Residence, with welcoming reception and spacious parking for both cars and motorbikes.",
-      para3: 'We kindly recommend arriving from 05:30 PM on Sunday, January 24, 2027, giving you plenty of time to settle in before the evening banquet begins.',
+      stamp3: 'WHITE PALACE',
+      para2: 'Our evening wedding celebration takes place at White Palace — 194 Hoang Van Thu, Ward 9, Phu Nhuan District, Ho Chi Minh City, featuring an elegant grand hall and spacious parking.',
+      para3: 'We kindly recommend arriving from 05:30 PM on Sunday, January 24, 2027 at White Palace, giving you plenty of time to settle in before the evening banquet begins.',
     },
     gallery: {
       intro: 'Cherished memories of Dinh Huy & Thu Hien.',
     },
     venue: {
-      brideVenueTag: "Groom's Family Evening Wedding Venue",
-      hall: "Groom's Family Residence",
-      para1: "Set in the warm embrace of the Groom's family home, surrounded by loving family and heartfelt blessings for our evening wedding celebration.",
-      para2: 'We recommend arriving around 05:30 PM on Sunday, January 24, 2027 to enjoy the evening reception and take photos before the ceremony begins.',
+      brideVenueTag: "Groom's Evening Wedding Banquet Venue",
+      hall: 'White Palace',
+      regionCaps: '194 HOANG VAN THU, PHU NHUAN, HO CHI MINH CITY',
+      para1: 'Set in the refined elegance of White Palace Convention Center, surrounded by loving family and heartfelt blessings for our evening wedding celebration.',
+      para2: 'We recommend arriving around 05:30 PM on Sunday, January 24, 2027 at White Palace to enjoy the evening reception and take photos before the ceremony begins.',
       timeDetail: '06:00 PM, Sunday — January 24, 2027',
+      addressText: 'White Palace — 194 Hoang Van Thu, Ward 9, Phu Nhuan District, Ho Chi Minh City',
       schedule: [
         "08:00 AM - Ancestral Ceremony at Bride's Home & Bridal Procession",
-        '05:30 PM - Evening Welcome Reception & Commemorative Photos',
-        '06:00 PM - Evening Wedding Ceremony & Banquet Dinner',
+        '05:30 PM - Evening Welcome Reception at White Palace',
+        '06:00 PM - Evening Wedding Ceremony & Banquet at White Palace',
       ],
     },
     rsvp: {
-      formSubtitle: 'To help our family prepare warmly for the evening banquet, please kindly confirm by January 10, 2027.',
+      formSubtitle: 'To help our family prepare warmly for the evening banquet at White Palace, please kindly confirm by January 10, 2027.',
       messagePlaceholder: 'Send your warmest wishes to Dinh Huy & Thu Hien...',
     },
   },
@@ -256,11 +280,12 @@ export const groomTranslations = {
     envelope: {
       header: '新婚喜宴请柬',
       ceremonyHeading: '新婚喜宴',
-      invitation: '谨以满怀喜悦之心，诚邀您拨冗莅临参加我们的新婚晚宴，共证幸福时刻。',
+      invitation: '谨以满怀喜悦之心，诚邀您拨冗莅临 White Palace 宴会厅参加我们的新婚晚宴，共证幸福时刻。',
     },
     hero: {
       date: '24.01.2027',
-      venueTitle: '男方府邸',
+      venueTitle: 'White Palace 宴会中心',
+      cityCaps: 'WHITE PALACE · 胡志明市',
     },
     formal: {
       title: '新婚喜宴请柬',
@@ -270,10 +295,13 @@ export const groomTranslations = {
       dayNumber: '24',
       yearBox: '2027年',
       lunarDate: '（农历丙午年腊月十七）',
-      venueHostName: '男方府邸',
+      venueHostName: 'WHITE PALACE 婚礼宴会厅',
+      venueAddress: '胡志明市富润郡第9坊黄文树街 194 号 (White Palace)',
       fullDate: '2027年01月24日（星期日）',
       time: '晚上 18:00',
-      venueName: '男方府邸',
+      venueName: 'WHITE PALACE 婚礼宴会厅',
+      hallName: 'White Palace 宴会中心',
+      address: '胡志明市富润郡第9坊黄文树街 194 号 (White Palace)',
     },
     countdown: {
       fullDate: '2027年01月24日 星期日 • 晚上 18:00',
@@ -285,7 +313,7 @@ export const groomTranslations = {
     theDay: {
       headingTop: '婚礼',
       headingBottom: '流程',
-      intro: '从晨间传统迎亲祭祖至晚间新婚喜宴的每一个珍贵时刻。',
+      intro: '从晨间传统迎亲祭祖至晚间 White Palace 新婚喜宴的每一个珍贵时刻。',
       items: [
         {
           time: '08:00 AM',
@@ -299,12 +327,12 @@ export const groomTranslations = {
         },
         {
           time: '05:30 PM',
-          title: '晚宴迎宾签到',
-          detail: '喜迎宾客莅临晚宴，敬备茶点并合影留念',
+          title: 'WHITE PALACE 晚宴迎宾',
+          detail: '于 White Palace 宴会厅喜迎宾客，敬备茶点并合影留念',
         },
         {
           time: '06:00 PM',
-          title: '新婚典礼与晚宴开席',
+          title: 'WHITE PALACE 新婚晚宴开席',
           detail: '举行新婚庆典仪式，与至亲好友举杯共庆美好晚宴',
         },
       ],
@@ -313,23 +341,26 @@ export const groomTranslations = {
       stamp1: '新婚晚宴',
       stamp2: '24 · 01 · 2027',
       stampNames: `${chineseNames.groom.shortName} & ${chineseNames.bride.shortName}`,
-      para2: '新婚晚宴席设于男方府邸，现场设有专属迎宾接待区及宽敞停车位。',
-      para3: '诚邀您于 2027年01月24日（农历丙午年腊月十七）傍晚 17:30 起莅临入席，共赴喜悦之约。',
+      stamp3: 'WHITE PALACE',
+      para2: '新婚晚宴席设于 White Palace 婚礼宴会中心（胡志明市富润郡第9坊黄文树街194号），现场设有典雅迎宾大厅及宽敞停车位。',
+      para3: '诚邀您于 2027年01月24日（农历丙午年腊月十七）傍晚 17:30 起莅临 White Palace 入席，共赴喜悦之约。',
     },
     venue: {
-      brideVenueTag: '新婚晚宴举办地点（男方府邸）',
-      hall: '男方府邸',
-      para1: '席设于温馨典雅的男方府邸，璀璨灯火与亲友的真挚祝福将伴随我们开启幸福新篇章。',
-      para2: '诚邀您于 2027年01月24日（星期日）傍晚 17:30 起莅临，合影留念并共度温馨愉悦的晚宴迎宾时光。',
+      brideVenueTag: '新婚晚宴举办地点（White Palace 宴会中心）',
+      hall: 'White Palace 宴会厅',
+      regionCaps: '胡志明市 · 富润郡黄文树街 194 号',
+      para1: '席设于高雅璀璨的 White Palace 婚礼宴会中心，温馨灯火与亲友的真挚祝福将伴随我们开启幸福新篇章。',
+      para2: '诚邀您于 2027年01月24日（星期日）傍晚 17:30 起莅临 White Palace 宴会厅，合影留念并共度温馨愉悦的晚宴迎宾时光。',
       timeDetail: '2027年01月24日（星期日）晚上 18:00',
+      addressText: 'White Palace — 胡志明市富润郡第9坊黄文树街 194 号',
       schedule: [
         '08:00 - 前往女方府邸祭祖 & 迎娶新娘回男方府邸',
-        '17:30 - 晚宴迎宾签到 & 合影留念',
-        '18:00 - 新婚典礼与晚宴正式开席',
+        '17:30 - White Palace 晚宴迎宾签到 & 合影留念',
+        '18:00 - White Palace 新婚典礼与晚宴正式开席',
       ],
     },
     rsvp: {
-      formSubtitle: '为便于家人周全准备晚宴席位与招待，烦请您于 2027年01月10日 前确认出席。',
+      formSubtitle: '为便于家人周全准备 White Palace 晚宴席位与招待，烦请您于 2027年01月10日 前确认出席。',
     },
   },
 };
@@ -1280,6 +1311,7 @@ export function LanguageProvider({ children }) {
   const side = resolveInvitationSide(location.pathname, location.search);
   const isGroomSide = side === 'groom';
   const eventConfig = isGroomSide ? groomEventConfig : weddingConfig.event;
+  const venueConfig = isGroomSide ? groomVenueConfig : weddingConfig.venue;
 
   // Automatically sync language whenever URL search query changes (?lang=en | zh | vi)
   useEffect(() => {
@@ -1339,6 +1371,7 @@ export function LanguageProvider({ children }) {
         side,
         isGroomSide,
         eventConfig,
+        venueConfig,
       }}
     >
       {children}

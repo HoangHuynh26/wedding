@@ -11,8 +11,8 @@ import styles from './Venue.module.css';
  * and minimalist double-bordered rectangular "GET DIRECTIONS / CHỈ ĐƯỜNG" button.
  */
 export default function Venue() {
-  const { venue } = weddingConfig;
-  const { t } = useLanguage();
+  const { t, venueConfig } = useLanguage();
+  const venue = venueConfig || weddingConfig.venue;
   const [showMap, setShowMap] = useState(false);
 
   return (

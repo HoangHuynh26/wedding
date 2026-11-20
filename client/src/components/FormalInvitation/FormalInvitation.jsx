@@ -24,8 +24,8 @@ function renderWithNumHighlight(text) {
 }
 
 export default function FormalInvitation() {
-  const { venue } = weddingConfig;
-  const { t, bride, groom, isGroomSide } = useLanguage();
+  const { t, bride, groom, isGroomSide, venueConfig } = useLanguage();
+  const venue = venueConfig || weddingConfig.venue;
   const { guestName, hasPersonalization } = useInvitationParams();
 
   const firstPersonName = isGroomSide ? groom.name : bride.name;
