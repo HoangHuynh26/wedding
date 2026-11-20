@@ -51,13 +51,14 @@ function CrystalInlay() {
  * scalloped baroque medallion with airy plum-charcoal editorial & calligraphy typography.
  */
 export default function WeddingHero({ phase, children }) {
-  const { event } = weddingConfig;
-  const { language, t, bride, groom } = useLanguage();
+  const { language, t, bride, groom, isGroomSide, eventConfig } = useLanguage();
   // Reveal text content ONLY after the bow & silk veil curtains have completely finished opening
   const isRevealed = phase === 'open';
 
   const brideDisplay = language === 'zh' ? bride.shortName : (bride.shortName || bride.name);
   const groomDisplay = language === 'zh' ? groom.shortName : (groom.shortName || groom.name);
+  const firstDisplay = isGroomSide ? groomDisplay : brideDisplay;
+  const secondDisplay = isGroomSide ? brideDisplay : groomDisplay;
 
   return (
     <section
@@ -98,12 +99,12 @@ export default function WeddingHero({ phase, children }) {
           </p>
 
           <h1 className={styles.coupleNames} id="wedding-title" tabIndex={-1}>
-            <span className={styles.nameScript}>{brideDisplay}</span>
+            <span className={styles.nameScript}>{firstDisplay}</span>
             <span className={styles.ampersand} aria-hidden="true">&amp;</span>
-            <span className={styles.nameScript}>{groomDisplay}</span>
+            <span className={styles.nameScript}>{secondDisplay}</span>
           </h1>
 
-          <time className={styles.dateText} dateTime={event.isoDate}>
+          <time className={styles.dateText} dateTime={eventConfig?.isoDate || weddingConfig.event.isoDate}>
             {t.hero.date || '17.01.2027'}
           </time>
 

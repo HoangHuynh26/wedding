@@ -48,6 +48,306 @@ export function resolveUrlLanguage(search = '') {
   return 'vi';
 }
 
+/**
+ * Resolve which wedding side ('bride' | 'groom') is active from pathname or ?side=...
+ */
+export function resolveInvitationSide(pathname = '', search = '') {
+  const cleanPath = String(pathname || '').toLowerCase();
+  if (
+    /^\/(chu-re|nha-trai|groom)(\/|$)/.test(cleanPath) ||
+    /^\/admin\/(chu-re|nha-trai|groom)(\/|$)/.test(cleanPath)
+  ) {
+    return 'groom';
+  }
+  try {
+    const params = new URLSearchParams(search);
+    const rawSide = (params.get('side') || '').trim().toLowerCase();
+    if (rawSide === 'groom' || rawSide === 'chu-re' || rawSide === 'nha-trai') {
+      return 'groom';
+    }
+  } catch {
+    // ignore
+  }
+  return 'bride';
+}
+
+export const groomEventConfig = {
+  dateDisplay: '24 · 11 · 2027',
+  fullDateDisplay: 'Thứ Tư, ngày 24 tháng 11 năm 2027',
+  timeDisplay: '18:00 PM',
+  receptionTime: '17:30 - Đón khách & Tiệc trà khai vị buổi tối',
+  ceremonyTime: '18:00 - Nghi lễ Tân Hôn & Khai tiệc tối',
+  dinnerTime: '18:30 - Tiệc mừng buổi tối bên gia đình, bạn bè',
+  isoDate: '2027-11-24T18:00:00+07:00',
+};
+
+export const groomTranslations = {
+  vi: {
+    pageTitle: 'Lễ Tân Hôn | Đình Huy & Thu Hiền • 24.11.2027',
+    envelope: {
+      header: 'THIỆP MỜI LỄ TÂN HÔN',
+      ceremonyHeading: 'LỄ TÂN HÔN',
+      invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Tân Hôn của chúng mình.',
+    },
+    hero: {
+      date: '24.11.2027',
+      venueTitle: 'Tư Gia Nhà Trai',
+    },
+    formal: {
+      saveTheDate: 'LỄ TÂN HÔN • TRÂN TRỌNG KÍNH MỜI',
+      title: 'THIỆP MỜI LỄ TÂN HÔN',
+      welcome: 'Trân trọng kính mời quý khách đến dự bữa tiệc thân mật mừng Lễ Tân Hôn của hai con chúng tôi',
+      timeDayHeader: '18:00 PM, THỨ TƯ',
+      monthBox: 'THÁNG 11',
+      dayNumber: '24',
+      yearBox: 'NĂM 2027',
+      lunarDate: '( Tức ngày 27 tháng 10 năm Đinh Mùi )',
+      venueHostName: 'TƯ GIA NHÀ TRAI',
+      receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ TÂN HÔN',
+      fullDate: 'Thứ Tư, ngày 24 tháng 11 năm 2027',
+      time: '18:00 PM',
+      venueName: 'TƯ GIA NHÀ TRAI',
+      hallName: 'Tư Gia Nhà Trai',
+    },
+    countdown: {
+      fullDate: 'Thứ Tư, 24 Tháng 11, 2027 • 18:00 PM',
+      ceremonyNote: 'Lễ Tân Hôn • Đình Huy ♡ Thu Hiền',
+    },
+    scratch: {
+      revealedCaption: 'Khoảnh khắc chung đôi • Đình Huy & Thu Hiền',
+    },
+    theDay: {
+      headingTop: 'Lịch',
+      headingBottom: 'Trình',
+      intro: 'Hành trình ngày trọng đại từ lễ gia tiên rước dâu đến đêm tiệc mừng Lễ Tân Hôn.',
+      items: [
+        {
+          time: '08:00 AM',
+          title: 'LỄ GIA TIÊN & XIN DÂU BÊN NHÀ GÁI',
+          detail: 'Đoàn nhà trai sang tư gia nhà gái làm lễ gia tiên & rước dâu trang trọng',
+        },
+        {
+          time: '10:30 AM',
+          title: 'RƯỚC DÂU VỀ NHÀ TRAI & LỄ GIA TIÊN',
+          detail: 'Đón cô dâu về tư gia nhà trai, cử hành lễ gia tiên & ra mắt hai họ',
+        },
+        {
+          time: '17:30 PM',
+          title: 'ĐÓN TIẾP QUAN KHÁCH TIỆC TỐI',
+          detail: 'Đón khách, dùng trà bánh khai vị & chụp ảnh lưu niệm buổi tối',
+        },
+        {
+          time: '18:00 PM',
+          title: 'LỄ TÂN HÔN & TIỆC CƯỚI BUỔI TỐI',
+          detail: 'Khai tiệc mừng Lễ Tân Hôn & nâng ly chúc phúc bên gia đình, bạn bè',
+        },
+      ],
+    },
+    transportation: {
+      stamp1: 'LỄ TÂN HÔN',
+      stamp2: '24 · 11 · 2027',
+      stampNames: 'Huy & Hiền',
+      para2: 'Lễ Tân Hôn được tổ chức vào buổi tối tại Tư Gia Nhà Trai với khu vực đón tiếp và chỗ đỗ xe rộng rãi cho cả ô tô lẫn xe máy.',
+      para3: 'Gia đình kính mời quý khách thu xếp đến từ 17:30 PM tối Thứ Tư 24.11.2027 (tức 27/10 năm Đinh Mùi) để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
+    },
+    gallery: {
+      intro: 'Những khoảnh khắc đong đầy yêu thương của Đình Huy & Thu Hiền.',
+    },
+    venue: {
+      brideVenueTag: 'Địa điểm tổ chức Lễ Tân Hôn (Bên Nhà Trai)',
+      hall: 'Tư Gia Nhà Trai',
+      para1: 'Tọa lạc tại không gian ấm cúng của gia đình, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Tân Hôn.',
+      para2: 'Gia đình kính mời quý khách đến từ 17:30 tối Thứ Tư 24.11.2027 để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ buổi tối bắt đầu.',
+      timeDetail: '18:00 PM, Thứ Tư — 24.11.2027',
+      schedule: [
+        '08:00 - Lễ gia tiên bên nhà gái & Rước dâu về nhà trai',
+        '17:30 - Đón tiếp quan khách tiệc tối & Chụp ảnh lưu niệm',
+        '18:00 - Khai tiệc tối & Nghi lễ Tân Hôn trang trọng',
+      ],
+    },
+    rsvp: {
+      formSubtitle: 'Để gia đình chuẩn bị chu đáo nhất cho buổi tiệc tối, xin quý khách vui lòng xác nhận trước ngày 10.11.2027.',
+    },
+  },
+  en: {
+    pageTitle: 'Wedding Celebration | Dinh Huy & Thu Hien • 24.11.2027',
+    envelope: {
+      header: 'WEDDING INVITATION',
+      ceremonyHeading: "GROOM'S WEDDING CEREMONY",
+    },
+    hero: {
+      date: '24.11.2027',
+      venueTitle: "Groom's Family Residence",
+    },
+    formal: {
+      timeDayHeader: '06:00 PM, WEDNESDAY',
+      monthBox: 'NOVEMBER',
+      dayNumber: '24',
+      yearBox: '2027',
+      lunarDate: '( 27th Day of the 10th Lunar Month, Year of the Goat )',
+      venueHostName: "GROOM'S FAMILY RESIDENCE",
+      fullDate: 'Wednesday, November 24, 2027',
+      time: '06:00 PM',
+      venueName: "GROOM'S FAMILY RESIDENCE",
+    },
+    countdown: {
+      fullDate: 'Wednesday, November 24, 2027 • 06:00 PM',
+      ceremonyNote: "Groom's Ceremony • Dinh Huy ♡ Thu Hien",
+    },
+    scratch: {
+      revealedCaption: 'Cherished Moments • Dinh Huy & Thu Hien',
+    },
+    theDay: {
+      headingTop: 'The',
+      headingBottom: 'Day',
+      intro: 'From traditional morning bridal procession to our evening wedding celebration.',
+      items: [
+        {
+          time: '08:00 AM',
+          title: "ANCESTRAL CEREMONY AT BRIDE'S HOME",
+          detail: "Groom's procession arrives at Bride's residence for ancestral rituals & bridal pickup",
+        },
+        {
+          time: '10:30 AM',
+          title: "PROCESSION BACK TO GROOM'S HOME",
+          detail: "Welcoming the Bride home to Groom's residence & ancestral ceremony before both families",
+        },
+        {
+          time: '05:30 PM',
+          title: 'EVENING RECEPTION & WELCOME',
+          detail: 'Warm evening welcome, refreshments & commemorative photos with guests',
+        },
+        {
+          time: '06:00 PM',
+          title: 'EVENING WEDDING BANQUET',
+          detail: 'Evening wedding ceremony, heartfelt toasts & celebration dinner',
+        },
+      ],
+    },
+    transportation: {
+      stamp1: 'WEDDING NIGHT',
+      stamp2: '24 · 11 · 2027',
+      stampNames: 'Huy & Hien',
+      para2: "Our evening wedding celebration takes place at the Groom's Family Residence, with welcoming reception and spacious parking for both cars and motorbikes.",
+      para3: 'We kindly recommend arriving from 05:30 PM on Wednesday, November 24, 2027, giving you plenty of time to settle in before the evening banquet begins.',
+    },
+    gallery: {
+      intro: 'Cherished memories of Dinh Huy & Thu Hien.',
+    },
+    venue: {
+      brideVenueTag: "Groom's Family Evening Wedding Venue",
+      hall: "Groom's Family Residence",
+      para1: "Set in the warm embrace of the Groom's family home, surrounded by loving family and heartfelt blessings for our evening wedding celebration.",
+      para2: 'We recommend arriving around 05:30 PM on Wednesday, November 24, 2027 to enjoy the evening reception and take photos before the ceremony begins.',
+      timeDetail: '06:00 PM, Wednesday — November 24, 2027',
+      schedule: [
+        "08:00 AM - Ancestral Ceremony at Bride's Home & Bridal Procession",
+        '05:30 PM - Evening Welcome Reception & Commemorative Photos',
+        '06:00 PM - Evening Wedding Ceremony & Banquet Dinner',
+      ],
+    },
+    rsvp: {
+      formSubtitle: 'To help our family prepare warmly for the evening banquet, please kindly confirm by November 10, 2027.',
+      messagePlaceholder: 'Send your warmest wishes to Dinh Huy & Thu Hien...',
+    },
+  },
+  zh: {
+    pageTitle: `新婚喜宴请柬｜${chineseNames.groom.shortName}与${chineseNames.bride.shortName} · 2027.11.24`,
+    envelope: {
+      header: '新婚喜宴请柬',
+      ceremonyHeading: '新婚喜宴',
+      invitation: '谨以满怀喜悦之心，诚邀您拨冗莅临参加我们的新婚晚宴，共证幸福时刻。',
+    },
+    hero: {
+      date: '24.11.2027',
+      venueTitle: '男方府邸',
+    },
+    formal: {
+      title: '新婚喜宴请柬',
+      welcome: '谨詹于良辰吉日，为长子与佳媳举行新婚晚宴，诚挚敬邀您莅临共襄盛举',
+      timeDayHeader: '晚上 18:00 · 星期三',
+      monthBox: '11月',
+      dayNumber: '24',
+      yearBox: '2027年',
+      lunarDate: '（农历丁未年十月廿七）',
+      venueHostName: '男方府邸',
+      fullDate: '2027年11月24日（星期三）',
+      time: '晚上 18:00',
+      venueName: '男方府邸',
+    },
+    countdown: {
+      fullDate: '2027年11月24日 星期三 • 晚上 18:00',
+      ceremonyNote: `新婚喜宴 · ${chineseNames.groom.shortName} ♡ ${chineseNames.bride.shortName}`,
+    },
+    scratch: {
+      revealedCaption: `幸福瞬间 · ${chineseNames.groom.shortName} & ${chineseNames.bride.shortName}`,
+    },
+    theDay: {
+      headingTop: '婚礼',
+      headingBottom: '流程',
+      intro: '从晨间传统迎亲祭祖至晚间新婚喜宴的每一个珍贵时刻。',
+      items: [
+        {
+          time: '08:00 AM',
+          title: '女方府邸祭祖与迎亲',
+          detail: '男方迎亲队伍前往女方府邸举行庄重祭祖与迎亲仪式',
+        },
+        {
+          time: '10:30 AM',
+          title: '迎娶新娘回男方府邸',
+          detail: '迎娶新娘返回男方府邸，举行男方祭祖家礼与敬茶仪式',
+        },
+        {
+          time: '05:30 PM',
+          title: '晚宴迎宾签到',
+          detail: '喜迎宾客莅临晚宴，敬备茶点并合影留念',
+        },
+        {
+          time: '06:00 PM',
+          title: '新婚典礼与晚宴开席',
+          detail: '举行新婚庆典仪式，与至亲好友举杯共庆美好晚宴',
+        },
+      ],
+    },
+    transportation: {
+      stamp1: '新婚晚宴',
+      stamp2: '24 · 11 · 2027',
+      stampNames: `${chineseNames.groom.shortName} & ${chineseNames.bride.shortName}`,
+      para2: '新婚晚宴席设于男方府邸，现场设有专属迎宾接待区及宽敞停车位。',
+      para3: '诚邀您于 2027年11月24日（农历丁未年十月廿七）傍晚 17:30 起莅临入席，共赴喜悦之约。',
+    },
+    venue: {
+      brideVenueTag: '新婚晚宴举办地点（男方府邸）',
+      hall: '男方府邸',
+      para1: '席设于温馨典雅的男方府邸，璀璨灯火与亲友的真挚祝福将伴随我们开启幸福新篇章。',
+      para2: '诚邀您于 2027年11月24日（星期三）傍晚 17:30 起莅临，合影留念并共度温馨愉悦的晚宴迎宾时光。',
+      timeDetail: '2027年11月24日（星期三）晚上 18:00',
+      schedule: [
+        '08:00 - 前往女方府邸祭祖 & 迎娶新娘回男方府邸',
+        '17:30 - 晚宴迎宾签到 & 合影留念',
+        '18:00 - 新婚典礼与晚宴正式开席',
+      ],
+    },
+    rsvp: {
+      formSubtitle: '为便于家人周全准备晚宴席位与招待，烦请您于 2027年11月10日 前确认出席。',
+    },
+  },
+};
+
+function mergeSideTranslations(basePack, sideOverride) {
+  if (!sideOverride) return basePack;
+  const merged = { ...basePack };
+  for (const key of Object.keys(sideOverride)) {
+    const val = sideOverride[key];
+    if (val && typeof val === 'object' && !Array.isArray(val) && basePack[key]) {
+      merged[key] = { ...basePack[key], ...val };
+    } else {
+      merged[key] = val;
+    }
+  }
+  return merged;
+}
+
 export const translations = {
   vi: {
     langCode: 'VI',
@@ -977,6 +1277,9 @@ export const translations = {
 export function LanguageProvider({ children }) {
   const location = useLocation();
   const [language, setLanguageState] = useState(() => resolveUrlLanguage(location.search));
+  const side = resolveInvitationSide(location.pathname, location.search);
+  const isGroomSide = side === 'groom';
+  const eventConfig = isGroomSide ? groomEventConfig : weddingConfig.event;
 
   // Automatically sync language whenever URL search query changes (?lang=en | zh | vi)
   useEffect(() => {
@@ -984,16 +1287,24 @@ export function LanguageProvider({ children }) {
     setLanguageState(urlLang);
   }, [location.search]);
 
+  const basePack = translations[language] || translations.vi;
+  const t = React.useMemo(
+    () =>
+      isGroomSide
+        ? mergeSideTranslations(basePack, groomTranslations[language] || groomTranslations.vi)
+        : basePack,
+    [basePack, isGroomSide, language]
+  );
+
   // Keep <html lang="..."> and document title localized
   useEffect(() => {
-    const activePack = translations[language] || translations.vi;
     if (typeof document !== 'undefined') {
-      document.documentElement.lang = activePack.htmlLang || language;
-      if (activePack.pageTitle && !location.pathname.startsWith('/admin')) {
-        document.title = activePack.pageTitle;
+      document.documentElement.lang = t.htmlLang || language;
+      if (t.pageTitle && !location.pathname.includes('admin')) {
+        document.title = t.pageTitle;
       }
     }
-  }, [language, location.pathname]);
+  }, [t, language, location.pathname]);
 
   const setLanguage = (lang) => {
     if (translations[lang]) {
@@ -1009,7 +1320,6 @@ export function LanguageProvider({ children }) {
     setLanguage(order[nextIdx]);
   };
 
-  const t = translations[language] || translations.vi;
   const { bride, groom } =
     language === 'zh'
       ? chineseCouple
@@ -1018,7 +1328,19 @@ export function LanguageProvider({ children }) {
         : weddingConfig;
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t, bride, groom }}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage,
+        toggleLanguage,
+        t,
+        bride,
+        groom,
+        side,
+        isGroomSide,
+        eventConfig,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );

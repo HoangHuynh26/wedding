@@ -3,13 +3,13 @@ import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './Countdown.module.css';
 
-const targetDate = Date.parse(weddingConfig.event.isoDate);
 const minute = 60;
 const hour = 60 * minute;
 const day = 24 * hour;
 
-function getSecondsLeft() {
-  const seconds = Math.floor((targetDate - Date.now()) / 1000);
+function getSecondsLeft(isoDateStr) {
+  const targetMs = Date.parse(isoDateStr || weddingConfig.event.isoDate);
+  const seconds = Math.floor((targetMs - Date.now()) / 1000);
   return seconds > 0 ? seconds : 0;
 }
 
@@ -20,19 +20,21 @@ function getSecondsLeft() {
  * plus a harmonious frosted slate-mauve sticky bar when scrolled past.
  */
 export default function Countdown() {
-  const { t } = useLanguage();
-  const [secondsLeft, setSecondsLeft] = useState(getSecondsLeft);
+  const { t, eventConfig } = useLanguage();
+  const targetIsoDate = eventConfig?.isoDate || weddingConfig.event.isoDate;
+  const [secondsLeft, setSecondsLeft] = useState(() => getSecondsLeft(targetIsoDate));
   const [isSticky, setIsSticky] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    setSecondsLeft(getSecondsLeft(targetIsoDate));
     const interval = window.setInterval(() => {
-      const seconds = getSecondsLeft();
+      const seconds = getSecondsLeft(targetIsoDate);
       setSecondsLeft(seconds);
       if (seconds === 0) window.clearInterval(interval);
     }, 1000);
     return () => window.clearInterval(interval);
-  }, []);
+  }, [targetIsoDate]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +49,42 @@ export default function Countdown() {
   }, []);
 
   const scrollToCountdown = () => {
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!sectionRef.current) return;
+    const startY = window.scrollY || window.pageYOffset;
+    const targetY = Math.max(0, sectionRef.current.getBoundingClientRect().top + startY);
+    const distance = Math.abs(targetY - startY);
+    if (distance < 4) return;
+
+    const duration = Math.min(1900, Math.max(1150, distance * 0.42));
+    const startTime = performance.now();
+    const htmlEl = document.documentElement;
+    const prevScrollBehavior = htmlEl.style.scrollBehavior;
+    htmlEl.style.scrollBehavior = 'auto';
+
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    let rafId = null;
+    const cancel = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      htmlEl.style.scrollBehavior = prevScrollBehavior;
+      window.removeEventListener('wheel', cancel);
+      window.removeEventListener('touchstart', cancel);
+    };
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('touchstart', cancel, { passive: true });
+
+    const step = (now) => {
+      const progress = Math.min(1, (now - startTime) / duration);
+      const eased = easeInOutCubic(progress);
+      window.scrollTo(0, Math.round(startY + (targetY - startY) * eased));
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        cancel();
+      }
+    };
+    rafId = requestAnimationFrame(step);
   };
 
   const timeUnits = [

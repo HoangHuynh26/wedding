@@ -48,10 +48,13 @@ export default function WeddingExperience() {
   const { pathname, hash } = useLocation();
   const { playAudio } = useAudio();
   const fragment = hash.slice(1);
-  const pathSection = pathname.replace(/^\/|\/$/g, '');
+  const pathSegments = pathname.replace(/^\/|\/$/g, '').split('/');
+  const lastSegment = pathSegments[pathSegments.length - 1] || '';
   const destination = sectionIds.has(fragment)
     ? fragment
-    : (pathSection === 'rsvp' || pathSection === 'story' ? pathSection : '');
+    : (lastSegment === 'rsvp' || lastSegment === 'story' || lastSegment === 'invitation'
+        ? lastSegment
+        : '');
 
   const [phase, setPhase] = useState(() => (destination ? 'open' : 'sealed'));
   const openedByGuest = useRef(false);

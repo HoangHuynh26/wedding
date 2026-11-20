@@ -125,44 +125,39 @@
   }
 }
 
-/* Sculpted 3D Royal Diamond & Seed-Pearl Oval Cameo Locket Medallion */
+/* Sculpted 3D Pale Champagne-Gold Double-Bezel Oval Cameo Medallion */
 .ovalOuterRing {
   position: relative;
   z-index: 3;
   width: 47%;
   aspect-ratio: 3 / 4;
   border-radius: 50% / 50%;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 6px;
+  background: linear-gradient(
+    145deg,
+    #fbf5e6 0%,
+    #e6d7b8 28%,
+    #f7f0e2 52%,
+    #cbb792 84%,
+    #efe3c9 100%
+  );
+  border: 1px solid rgba(136, 116, 86, 0.55);
+  box-shadow:
+    0 16px 36px rgba(48, 36, 52, 0.32),
+    0 4px 10px rgba(48, 36, 52, 0.2),
+    inset 0 2px 3px rgba(255, 253, 246, 0.94),
+    inset 0 -2px 4px rgba(118, 98, 70, 0.42);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
 }
 
 .ovalRevealed {
-  transform: scale(1.02);
+  transform: scale(1.03);
+  box-shadow:
+    0 20px 44px rgba(48, 36, 52, 0.36),
+    0 0 28px rgba(255, 248, 232, 0.55),
+    inset 0 2px 3px rgba(255, 253, 246, 0.96),
+    inset 0 -2px 4px rgba(118, 98, 70, 0.42);
 }
-
-/* Photorealistic 3D Diamond & Seed-Pearl Royal Tiara Oval Bezel Wrapping the Cameo */
-.ovalCameoFrameImg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120.8%;
-  height: 120.8%;
-  max-width: none;
-  max-height: none;
-  transform: translate(-50%, -50%);
-  object-fit: fill;
-  pointer-events: none;
-  user-select: none;
-  z-index: 6;
-  filter:
-    drop-shadow(0 12px 24px rgba(42, 30, 48, 0.36))
-    drop-shadow(0 3px 7px rgba(42, 30, 48, 0.24));
-}
-
-/* Twinkling diamond starlight glints on the oval cameo tiara & cardinal gems */
-.ovalGlintTop { top: -6.5%; left: 50%; animation-delay: 0.6s; z-index: 7; }
-.ovalGlintBot { top: 106.5%; left: 50%; animation-delay: 2.3s; z-index: 7; }
-.ovalGlintLeft { top: 34%; left: -4.5%; animation-delay: 1.4s; z-index: 7; }
-.ovalGlintRight { top: 66%; left: 104.5%; animation-delay: 3.5s; z-index: 7; }
 
 .ovalInnerFrame {
   position: relative;
@@ -170,6 +165,7 @@
   height: 100%;
   border-radius: 50% / 50%;
   overflow: hidden;
+  border: 1.5px solid rgba(124, 104, 76, 0.62);
   background: #c8bac6;
   isolation: isolate;
 }

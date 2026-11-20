@@ -146,9 +146,10 @@ export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
         {(guestName || inviterLabel) && (
           <div className={styles.guestBadge}>
             {guestName && (
-              <span className={styles.guestLine}>
-                {t.envelope.salutation} <strong>{guestName}</strong>
-              </span>
+              <>
+                <span className={styles.salutationLine}>{t.envelope.salutation}</span>
+                <strong className={styles.guestNameLine}>{guestName}</strong>
+              </>
             )}
             {inviterLabel && <span className={styles.inviterLine}>{inviterLabel}</span>}
           </div>

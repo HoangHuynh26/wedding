@@ -17,6 +17,8 @@ export default function MusicButton() {
   const trackTitle = currentTrack?.title || t.quickActions.defaultTrack || 'Wedding Melody';
   const trackArtist = currentTrack?.artist || t.quickActions.defaultTrack || 'Wedding Melody';
 
+  const scrollRafRef = React.useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 220);
@@ -24,16 +26,70 @@ export default function MusicButton() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
+    };
   }, []);
 
   const handleScrollToHero = () => {
-    const heroEl = document.getElementById('hero');
-    if (heroEl) {
-      heroEl.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollRafRef.current) {
+      cancelAnimationFrame(scrollRafRef.current);
+      scrollRafRef.current = null;
     }
+
+    const startY = window.scrollY || window.pageYOffset;
+    if (startY <= 0) return;
+
+    // Gentle, unhurried duration (1.25s – 2.15s) scaled smoothly with scroll distance
+    const duration = Math.min(2150, Math.max(1250, startY * 0.45));
+    const startTime = performance.now();
+    const htmlEl = document.documentElement;
+    const prevScrollBehavior = htmlEl.style.scrollBehavior;
+    htmlEl.style.scrollBehavior = 'auto';
+
+    let cancelled = false;
+    const cancelOnUserInput = () => {
+      cancelled = true;
+      if (scrollRafRef.current) {
+        cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
+      htmlEl.style.scrollBehavior = prevScrollBehavior;
+      cleanupListeners();
+    };
+
+    const cleanupListeners = () => {
+      window.removeEventListener('wheel', cancelOnUserInput);
+      window.removeEventListener('touchstart', cancelOnUserInput);
+    };
+
+    window.addEventListener('wheel', cancelOnUserInput, { passive: true });
+    window.addEventListener('touchstart', cancelOnUserInput, { passive: true });
+
+    // Silky cubic-bezier-like easeInOutCubic curve: soft takeoff, smooth glide, feather-soft landing
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const step = (now) => {
+      if (cancelled) return;
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = easeInOutCubic(progress);
+      const nextY = Math.round(startY * (1 - eased));
+
+      window.scrollTo(0, nextY);
+
+      if (progress < 1) {
+        scrollRafRef.current = requestAnimationFrame(step);
+      } else {
+        scrollRafRef.current = null;
+        htmlEl.style.scrollBehavior = prevScrollBehavior;
+        cleanupListeners();
+      }
+    };
+
+    scrollRafRef.current = requestAnimationFrame(step);
   };
 
   return (

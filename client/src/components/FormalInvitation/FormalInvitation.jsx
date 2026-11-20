@@ -25,8 +25,31 @@ function renderWithNumHighlight(text) {
 
 export default function FormalInvitation() {
   const { venue } = weddingConfig;
-  const { t, bride, groom } = useLanguage();
+  const { t, bride, groom, isGroomSide } = useLanguage();
   const { guestName, hasPersonalization } = useInvitationParams();
+
+  const firstPersonName = isGroomSide ? groom.name : bride.name;
+  const secondPersonName = isGroomSide ? bride.name : groom.name;
+
+  const brideFamilyCol = (
+    <div className={styles.familyColumn} key="bride-family">
+      <span className={styles.pillarTitle}>{t.formal.brideSideTitle}</span>
+      <div className={styles.parentsNames}>
+        <div>{t.formal.brideFather}</div>
+        <div>{t.formal.brideMother}</div>
+      </div>
+    </div>
+  );
+
+  const groomFamilyCol = (
+    <div className={styles.familyColumn} key="groom-family">
+      <span className={styles.pillarTitle}>{t.formal.groomSideTitle}</span>
+      <div className={styles.parentsNames}>
+        <div>{t.formal.groomFather}</div>
+        <div>{t.formal.groomMother}</div>
+      </div>
+    </div>
+  );
 
   return (
     <section className={styles.formalSection} id="invitation" aria-label={t.formal.title}>
@@ -43,7 +66,7 @@ export default function FormalInvitation() {
           <div className={styles.topPhotoFrame}>
             <img
               src={weddingConfig.formalPhoto || '/photos/tuan-0992.jpg'}
-              alt={`${bride.name} & ${groom.name}`}
+              alt={`${firstPersonName} & ${secondPersonName}`}
               className={styles.topHeroImg}
               style={{ objectPosition: weddingConfig.formalPhotoPosition || '48% 42%' }}
             />
@@ -51,25 +74,9 @@ export default function FormalInvitation() {
 
           {/* 2. CARD CONTENT BODY */}
           <div className={styles.cardContentBody}>
-            {/* PARENTS' TWO-COLUMN PILLARS — Bride's Family First (Lễ Vu Quy) */}
+            {/* PARENTS' TWO-COLUMN PILLARS — Groom's Family First on Groom's page, Bride's Family First on Bride's page */}
             <div className={styles.familyPillarsRow}>
-              {/* Bride's Family */}
-              <div className={styles.familyColumn}>
-                <span className={styles.pillarTitle}>{t.formal.brideSideTitle}</span>
-                <div className={styles.parentsNames}>
-                  <div>{t.formal.brideFather}</div>
-                  <div>{t.formal.brideMother}</div>
-                </div>
-              </div>
-
-              {/* Groom's Family */}
-              <div className={styles.familyColumn}>
-                <span className={styles.pillarTitle}>{t.formal.groomSideTitle}</span>
-                <div className={styles.parentsNames}>
-                  <div>{t.formal.groomFather}</div>
-                  <div>{t.formal.groomMother}</div>
-                </div>
-              </div>
+              {isGroomSide ? [groomFamilyCol, brideFamilyCol] : [brideFamilyCol, groomFamilyCol]}
             </div>
 
             {/* INVITATION PROCLAMATION & LOVING QUOTE */}
@@ -105,16 +112,16 @@ export default function FormalInvitation() {
               <BotanicalSprig className={styles.botanicalAccentSvg} />
             </div>
 
-            {/* COUPLE NAMES — Bride ♡ Groom (Lễ Bên Nhà Gái) */}
+            {/* COUPLE NAMES — Groom ♡ Bride on Groom's page, Bride ♡ Groom on Bride's page */}
             <div className={styles.coupleNamesSection}>
               <h2 className={styles.brideName}>
-                <span>{bride.name}</span>
+                <span>{firstPersonName}</span>
               </h2>
               <div className={styles.ampersandBlock}>
                 <span className={styles.heartGlyph}>♡</span>
               </div>
               <h2 className={styles.groomName}>
-                <span>{groom.name}</span>
+                <span>{secondPersonName}</span>
               </h2>
             </div>
 

@@ -7,9 +7,19 @@ import styles from './MobileQuickActions.module.css';
 
 export default function MobileQuickActions() {
   const { venue } = weddingConfig;
-  const { t, bride, groom } = useLanguage();
+  const { t, bride, groom, isGroomSide } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [isCallOpen, setIsCallOpen] = useState(false);
+
+  const contactItems = isGroomSide
+    ? [
+        { person: groom, roleLabel: t.quickActions.groomLabel, fallbackPhone: '0987654321', fallbackAvatar: '/groom.jpg' },
+        { person: bride, roleLabel: t.quickActions.brideLabel, fallbackPhone: '0912345678', fallbackAvatar: '/bride.jpg' },
+      ]
+    : [
+        { person: bride, roleLabel: t.quickActions.brideLabel, fallbackPhone: '0912345678', fallbackAvatar: '/bride.jpg' },
+        { person: groom, roleLabel: t.quickActions.groomLabel, fallbackPhone: '0987654321', fallbackAvatar: '/groom.jpg' },
+      ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -107,55 +117,32 @@ export default function MobileQuickActions() {
               </div>
 
               <div className={styles.contactList}>
-                {/* Cô Dâu */}
-                <a
-                  href={`tel:${bride.phone?.replace(/\s+/g, '') || '0912345678'}`}
-                  className={styles.contactItem}
-                  onClick={() => setIsCallOpen(false)}
-                >
-                  <div className={styles.contactAvatarCol}>
-                    <img
-                      src={bride.avatar || '/bride.jpg'}
-                      alt={bride.name}
-                      className={styles.avatarImg}
-                    />
-                  </div>
-                  <div className={styles.contactDetails}>
-                    <span className={styles.contactRole}>
-                      {t.quickActions.brideLabel} · {bride.shortName || bride.name}
-                    </span>
-                    <span className={styles.contactNumber}>{bride.phone}</span>
-                  </div>
-                  <div className={styles.callBadge}>
-                    <Phone size={12} />
-                    <span>{t.quickActions.callBadge}</span>
-                  </div>
-                </a>
-
-                {/* Chú Rể */}
-                <a
-                  href={`tel:${groom.phone?.replace(/\s+/g, '') || '0987654321'}`}
-                  className={styles.contactItem}
-                  onClick={() => setIsCallOpen(false)}
-                >
-                  <div className={styles.contactAvatarCol}>
-                    <img
-                      src={groom.avatar || '/groom.jpg'}
-                      alt={groom.name}
-                      className={styles.avatarImg}
-                    />
-                  </div>
-                  <div className={styles.contactDetails}>
-                    <span className={styles.contactRole}>
-                      {t.quickActions.groomLabel} · {groom.shortName || groom.name}
-                    </span>
-                    <span className={styles.contactNumber}>{groom.phone}</span>
-                  </div>
-                  <div className={styles.callBadge}>
-                    <Phone size={12} />
-                    <span>{t.quickActions.callBadge}</span>
-                  </div>
-                </a>
+                {contactItems.map(({ person, roleLabel, fallbackPhone, fallbackAvatar }) => (
+                  <a
+                    key={roleLabel}
+                    href={`tel:${person.phone?.replace(/\s+/g, '') || fallbackPhone}`}
+                    className={styles.contactItem}
+                    onClick={() => setIsCallOpen(false)}
+                  >
+                    <div className={styles.contactAvatarCol}>
+                      <img
+                        src={person.avatar || fallbackAvatar}
+                        alt={person.name}
+                        className={styles.avatarImg}
+                      />
+                    </div>
+                    <div className={styles.contactDetails}>
+                      <span className={styles.contactRole}>
+                        {roleLabel} · {person.shortName || person.name}
+                      </span>
+                      <span className={styles.contactNumber}>{person.phone}</span>
+                    </div>
+                    <div className={styles.callBadge}>
+                      <Phone size={12} />
+                      <span>{t.quickActions.callBadge}</span>
+                    </div>
+                  </a>
+                ))}
               </div>
             </motion.div>
           </>

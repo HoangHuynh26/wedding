@@ -8,7 +8,7 @@ import { triggerCelebrationFireworks } from '../Fireworks/Fireworks';
 import styles from './RSVP.module.css';
 
 export default function RSVP() {
-  const { t, language, bride, groom } = useLanguage();
+  const { t, language, bride, groom, isGroomSide } = useLanguage();
   const { guestName, inviterName } = useInvitationParams();
 
   const defaultSideId = useMemo(() => {
@@ -19,9 +19,14 @@ export default function RSVP() {
           return 'groom';
         }
       }
+      if (/thu hiền|thu hien|cô dâu|nhà gái|bride|新娘|女方|秋贤/.test(lower)) {
+        if (!/chú rể|nhà trai|groom|đình huy|dinh huy|新郎|男方|廷辉/.test(lower)) {
+          return 'bride';
+        }
+      }
     }
-    return 'bride';
-  }, [inviterName]);
+    return isGroomSide ? 'groom' : 'bride';
+  }, [inviterName, isGroomSide]);
 
   const [formData, setFormData] = useState({
     fullName: guestName || '',
@@ -29,6 +34,10 @@ export default function RSVP() {
     sideId: defaultSideId,
     message: '',
   });
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, sideId: defaultSideId }));
+  }, [defaultSideId]);
 
   useEffect(() => {
     if (guestName && !formData.fullName) {

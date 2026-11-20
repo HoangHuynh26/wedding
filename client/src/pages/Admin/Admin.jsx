@@ -19,13 +19,21 @@ import {
 } from 'lucide-react';
 import { chineseNames } from '../../config/chineseInvitation';
 import weddingConfig from '../../config/weddingConfig';
+import { useLanguage } from '../../context/LanguageContext';
 import styles from './Admin.module.css';
 
-const INVITER_PRESETS = [
+const BRIDE_INVITER_PRESETS = [
   'Cô dâu Thu Hiền',
   'Gia đình Nhà Gái',
   'Thu Hiền & Đình Huy',
   'Chú rể Đình Huy',
+];
+
+const GROOM_INVITER_PRESETS = [
+  'Chú rể Đình Huy',
+  'Gia đình Nhà Trai',
+  'Đình Huy & Thu Hiền',
+  'Cô dâu Thu Hiền',
 ];
 
 const LANGUAGE_OPTIONS = [
@@ -58,12 +66,17 @@ const PREFIXES_BY_LANG = {
   zh: ['亲爱的', '尊敬的', '先生', '女士', '阖家'],
 };
 
-const STORAGE_KEY = 'wedding_invitation_links_history';
+const STORAGE_KEY_BRIDE = 'wedding_invitation_links_history';
+const STORAGE_KEY_GROOM = 'wedding_invitation_links_history_groom';
 const HISTORY_PAGE_SIZE = 20;
 
 function classifyInviterGroup(inviterStr = '') {
   const norm = inviterStr.trim().toLowerCase();
-  if (norm === 'thu hiền & đình huy' || (norm.includes('thu hiền') && norm.includes('đình huy'))) {
+  if (
+    norm === 'thu hiền & đình huy' ||
+    norm === 'đình huy & thu hiền' ||
+    (norm.includes('thu hiền') && norm.includes('đình huy'))
+  ) {
     return 'couple';
   }
   if (norm.includes('cô dâu') || norm === 'thu hiền') {
@@ -76,7 +89,11 @@ function classifyInviterGroup(inviterStr = '') {
 }
 
 export default function Admin() {
-  const [inviter, setInviter] = useState(INVITER_PRESETS[0]);
+  const { isGroomSide } = useLanguage();
+  const activePresets = isGroomSide ? GROOM_INVITER_PRESETS : BRIDE_INVITER_PRESETS;
+  const activeStorageKey = isGroomSide ? STORAGE_KEY_GROOM : STORAGE_KEY_BRIDE;
+
+  const [inviter, setInviter] = useState(() => activePresets[0]);
   const [customInviter, setCustomInviter] = useState('');
   const [isCustomInviter, setIsCustomInviter] = useState(false);
   const [guestName, setGuestName] = useState('');
@@ -107,19 +124,23 @@ export default function Admin() {
     };
   }, []);
 
-  // Load history from localStorage
+  // Sync default inviter preset & load isolated history when switching between Bride Admin and Groom Admin
   useEffect(() => {
+    setInviter(isGroomSide ? GROOM_INVITER_PRESETS[0] : BRIDE_INVITER_PRESETS[0]);
+    setIsCustomInviter(false);
+    setHistoryFilter('all');
+    setHistoryPage(1);
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setHistory(JSON.parse(saved));
-      }
+      const saved = localStorage.getItem(activeStorageKey);
+      setHistory(saved ? JSON.parse(saved) : []);
     } catch {
-      // Ignore localStorage errors
+      setHistory([]);
     }
-  }, []);
+  }, [isGroomSide, activeStorageKey]);
 
-  const activeInviter = isCustomInviter ? customInviter.trim() || 'Gia đình Nhà Gái' : inviter;
+  const activeInviter = isCustomInviter
+    ? customInviter.trim() || (isGroomSide ? 'Gia đình Nhà Trai' : 'Gia đình Nhà Gái')
+    : inviter;
   const activeSong =
     playlist.find((s) => s.id === selectedSongId) || playlist[0] || weddingConfig.music;
   const activeLangObj =
@@ -176,8 +197,9 @@ export default function Admin() {
     if (selectedLang && selectedLang !== 'vi') {
       params.set('lang', selectedLang);
     }
-    return `${baseUrl}/?${params.toString()}`;
-  }, [guestName, activeInviter, selectedSongId, selectedLang, baseUrl]);
+    const routePath = isGroomSide ? '/chu-re' : '/';
+    return `${baseUrl}${routePath}?${params.toString()}`;
+  }, [guestName, activeInviter, selectedSongId, selectedLang, baseUrl, isGroomSide]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -258,7 +280,37 @@ export default function Admin() {
     const cleanGuest = guestName.trim();
     let msg = '';
 
-    if (selectedLang === 'en') {
+    if (isGroomSide) {
+      if (selectedLang === 'en') {
+        msg = `Dear ${cleanGuest},
+
+Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet on Wednesday, November 24, 2027 at 06:00 PM!
+
+🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
+✨ Open your personalized English wedding invitation here:
+${generatedUrl}
+
+Your presence and warm blessings would mean the world to us!`;
+      } else if (selectedLang === 'zh') {
+        msg = `${cleanGuest} 您好：
+
+谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临参加我们的新婚晚宴（2027年11月24日 星期三 晚上18:00）！
+
+🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
+✨ 点击开启您的专属中文电子婚礼请柬：
+${generatedUrl}
+
+衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
+      } else {
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền (18:00 tối Thứ Tư, ngày 24/11/2027)!
+
+🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
+✨ Xem thiệp mời cưới online tại đây:
+${generatedUrl}
+
+Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc lớn của gia đình chúng mình!`;
+      }
+    } else if (selectedLang === 'en') {
       msg = `Dear ${cleanGuest},
 
 Together with our families, Thu Hien & Dinh Huy joyfully invite you to celebrate our Wedding Ceremony on Sunday, January 17, 2027!
@@ -304,7 +356,8 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
     const url = canvas.toDataURL('image/png');
     const a = document.createElement('a');
     a.href = url;
-    a.download = `QR-Thiep-Cuoi-${guestName.trim().replace(/\s+/g, '-') || 'Khach'}-${selectedLang.toUpperCase()}.png`;
+    const sideSlug = isGroomSide ? 'ChuRe' : 'CoDau';
+    a.download = `QR-Thiep-${sideSlug}-${guestName.trim().replace(/\s+/g, '-') || 'Khach'}-${selectedLang.toUpperCase()}.png`;
     a.click();
     showToast('✓ Đã tải mã QR về máy!');
   };
@@ -320,7 +373,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
       );
       const updated = [item, ...filtered].slice(0, 1000);
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        localStorage.setItem(activeStorageKey, JSON.stringify(updated));
       } catch {}
       return updated;
     });
@@ -369,7 +422,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
     setHistory((prev) => {
       const updated = prev.filter((i) => i.id !== id);
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        localStorage.setItem(activeStorageKey, JSON.stringify(updated));
       } catch {}
       return updated;
     });
@@ -377,10 +430,10 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
   };
 
   const handleClearHistory = () => {
-    if (window.confirm('Bạn có chắc muốn xoá toàn bộ danh sách khách mời đã tạo?')) {
+    if (window.confirm('Bạn có chắc muốn xoá toàn bộ danh sách khách mời đã tạo của bên này?')) {
       setHistory([]);
       try {
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(activeStorageKey);
       } catch {}
       showToast('Đã dọn sạch lịch sử');
     }
@@ -403,14 +456,44 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
       <div className={styles.container}>
         {/* Navigation & Header */}
         <div className={styles.header}>
-          <Link to="/" className={styles.backHomeLink}>
+          {/* Dedicated Side Switcher Bar: Bride Admin vs Groom Admin */}
+          <div className={styles.sideSwitcherBar}>
+            <Link
+              to="/admin/co-dau"
+              className={`${styles.sideSwitchTab} ${!isGroomSide ? styles.sideSwitchTabActive : ''}`}
+            >
+              👰 Admin Nhà Gái (Cô Dâu • 17/01/2027)
+            </Link>
+            <Link
+              to="/admin/chu-re"
+              className={`${styles.sideSwitchTab} ${isGroomSide ? styles.sideSwitchTabActive : ''}`}
+            >
+              🤵 Admin Nhà Trai (Chú Rể • 24/11/2027)
+            </Link>
+          </div>
+
+          <Link to={isGroomSide ? '/chu-re' : '/'} className={styles.backHomeLink}>
             <ArrowLeft size={14} />
-            <span>Xem trang web thiệp cưới</span>
+            <span>
+              {isGroomSide
+                ? 'Xem trang thiệp cưới Chú Rể (24/11/2027)'
+                : 'Xem trang thiệp cưới Cô Dâu (17/01/2027)'}
+            </span>
           </Link>
-          <span className={styles.badge}>Quản Trị Thiệp Lễ Vu Quy • VIP</span>
-          <h1 className={styles.title}>Tạo Link Mời Khách Cá Nhân Hoá</h1>
+          <span className={styles.badge}>
+            {isGroomSide
+              ? 'Quản Trị Thiệp Nhà Trai (Lễ Tân Hôn • 24.11.2027)'
+              : 'Quản Trị Thiệp Nhà Gái (Lễ Vu Quy • 17.01.2027)'}
+          </span>
+          <h1 className={styles.title}>
+            {isGroomSide
+              ? 'Tạo Link Mời Khách Bên Chú Rể'
+              : 'Tạo Link Mời Khách Bên Cô Dâu'}
+          </h1>
           <p className={styles.subtitle}>
-            Tạo liên kết thiệp mời Lễ Vu Quy cho từng khách quý — hỗ trợ chọn ngôn ngữ tự động (Tiếng Việt, Tiếng Anh, Tiếng Trung), giai điệu riêng và mã QR.
+            {isGroomSide
+              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 18:00 ngày 24/11/2027) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
+              : 'Tạo liên kết thiệp mời Lễ Vu Quy (Thu Hiền & Đình Huy — 11:20 ngày 17/01/2027) riêng cho khách nhà gái — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'}
           </p>
         </div>
 
@@ -418,14 +501,18 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>
             <UserPlus size={22} className={styles.titleIcon} />
-            <span>Thông Tin Lời Mời</span>
+            <span>
+              {isGroomSide
+                ? 'Thông Tin Lời Mời (Đám Cưới Chú Rể • 24/11/2027)'
+                : 'Thông Tin Lời Mời (Đám Cưới Cô Dâu • 17/01/2027)'}
+            </span>
           </h2>
 
           {/* Step 1: Select Inviter */}
           <div className={styles.formGroup}>
             <label className={styles.label}>1. Người Mời (Đại diện gửi thiệp)</label>
             <div className={styles.presetGroup}>
-              {INVITER_PRESETS.map((item) => (
+              {activePresets.map((item) => (
                 <button
                   key={item}
                   type="button"

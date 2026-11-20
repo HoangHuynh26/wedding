@@ -285,22 +285,8 @@ export default function ScratchReveal() {
         <span className={`${styles.crystalGlint} ${styles.glint3}`} aria-hidden="true" />
         <span className={`${styles.crystalGlint} ${styles.glint4}`} aria-hidden="true" />
 
-        {/* Sculpted 3D Royal Diamond & Seed-Pearl Tiara Oval Cameo Medallion */}
+        {/* Sculpted 3D Double-Bezel Oval Cameo Medallion */}
         <div className={`${styles.ovalOuterRing} ${isRevealed ? styles.ovalRevealed : ''}`}>
-          <img
-            src="/mauve-theme/oval-cameo-frame.webp?v=1"
-            alt=""
-            className={styles.ovalCameoFrameImg}
-            loading="lazy"
-            decoding="async"
-          />
-
-          {/* Subtle diamond glints on the royal oval tiara & side clasps */}
-          <span className={`${styles.crystalGlint} ${styles.ovalGlintTop}`} aria-hidden="true" />
-          <span className={`${styles.crystalGlint} ${styles.ovalGlintBot}`} aria-hidden="true" />
-          <span className={`${styles.crystalGlint} ${styles.ovalGlintLeft}`} aria-hidden="true" />
-          <span className={`${styles.crystalGlint} ${styles.ovalGlintRight}`} aria-hidden="true" />
-
           <div className={styles.ovalInnerFrame}>
             {/* Outgoing slide for seamless 1.15s cross-fade */}
             {isRevealed && prevSlide && (
