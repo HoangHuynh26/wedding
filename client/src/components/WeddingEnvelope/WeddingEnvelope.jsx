@@ -70,10 +70,10 @@ export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
             <picture className={styles.envelopePicture}>
               <source
                 media="(min-aspect-ratio: 105/100)"
-                srcSet="/mauve-theme/petal-envelope-wide.webp?v=3"
+                srcSet="/mauve-theme/petal-envelope-wide.webp?v=4"
               />
               <img
-                src="/mauve-theme/petal-envelope.webp?v=3"
+                src="/mauve-theme/petal-envelope.webp?v=4"
                 alt=""
                 className={styles.pocketImg}
                 fetchPriority="high"
@@ -90,10 +90,10 @@ export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
               <picture className={styles.envelopePicture}>
                 <source
                   media="(min-aspect-ratio: 105/100)"
-                  srcSet="/mauve-theme/petal-flap-top-wide.webp?v=3"
+                  srcSet="/mauve-theme/petal-flap-top-wide.webp?v=4"
                 />
                 <img
-                  src="/mauve-theme/petal-flap-top.webp?v=3"
+                  src="/mauve-theme/petal-flap-top.webp?v=4"
                   alt=""
                   className={styles.topFlapImg}
                   fetchPriority="high"
@@ -108,7 +108,7 @@ export default function WeddingEnvelope({ phase, onOpen, onOpened }) {
             <div className={styles.waxSealAnchor}>
               <div className={styles.waxSealWrap}>
                 <img
-                  src="/mauve-theme/wax-seal-hh.webp?v=3"
+                  src="/mauve-theme/wax-seal-hh.webp?v=4"
                   alt=""
                   className={styles.waxSealImg}
                   draggable={false}
