@@ -21,7 +21,7 @@ export default function App() {
             <Route path="/rsvp" element={<Home />} />
             <Route path="/story" element={<Home />} />
 
-            {/* Trang Thiệp Mời Chú Rể (Lễ Tân Hôn • 24/11/2027) */}
+            {/* Trang Thiệp Mời Chú Rể (Lễ Tân Hôn • 24/01/2027) */}
             <Route path="/chu-re" element={<Home />} />
             <Route path="/chu-re/invitation" element={<Home />} />
             <Route path="/chu-re/rsvp" element={<Home />} />

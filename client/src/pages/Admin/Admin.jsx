@@ -284,7 +284,7 @@ export default function Admin() {
       if (selectedLang === 'en') {
         msg = `Dear ${cleanGuest},
 
-Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet on Wednesday, November 24, 2027 at 06:00 PM!
+Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet on Sunday, January 24, 2027 at 06:00 PM!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -294,7 +294,7 @@ Your presence and warm blessings would mean the world to us!`;
       } else if (selectedLang === 'zh') {
         msg = `${cleanGuest} 您好：
 
-谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临参加我们的新婚晚宴（2027年11月24日 星期三 晚上18:00）！
+谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临参加我们的新婚晚宴（2027年01月24日 星期日 晚上18:00）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
@@ -302,7 +302,7 @@ ${generatedUrl}
 
 衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
       } else {
-        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền (18:00 tối Thứ Tư, ngày 24/11/2027)!
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền (18:00 tối Chủ Nhật, ngày 24/01/2027)!
 
 🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
 ✨ Xem thiệp mời cưới online tại đây:
@@ -468,7 +468,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
               to="/admin/chu-re"
               className={`${styles.sideSwitchTab} ${isGroomSide ? styles.sideSwitchTabActive : ''}`}
             >
-              🤵 Admin Nhà Trai (Chú Rể • 24/11/2027)
+              🤵 Admin Nhà Trai (Chú Rể • 24/01/2027)
             </Link>
           </div>
 
@@ -476,13 +476,13 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
             <ArrowLeft size={14} />
             <span>
               {isGroomSide
-                ? 'Xem trang thiệp cưới Chú Rể (24/11/2027)'
+                ? 'Xem trang thiệp cưới Chú Rể (24/01/2027)'
                 : 'Xem trang thiệp cưới Cô Dâu (17/01/2027)'}
             </span>
           </Link>
           <span className={styles.badge}>
             {isGroomSide
-              ? 'Quản Trị Thiệp Nhà Trai (Lễ Tân Hôn • 24.11.2027)'
+              ? 'Quản Trị Thiệp Nhà Trai (Lễ Tân Hôn • 24.01.2027)'
               : 'Quản Trị Thiệp Nhà Gái (Lễ Vu Quy • 17.01.2027)'}
           </span>
           <h1 className={styles.title}>
@@ -492,7 +492,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
           </h1>
           <p className={styles.subtitle}>
             {isGroomSide
-              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 18:00 ngày 24/11/2027) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
+              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 18:00 ngày 24/01/2027) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
               : 'Tạo liên kết thiệp mời Lễ Vu Quy (Thu Hiền & Đình Huy — 11:20 ngày 17/01/2027) riêng cho khách nhà gái — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'}
           </p>
         </div>
@@ -503,7 +503,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
             <UserPlus size={22} className={styles.titleIcon} />
             <span>
               {isGroomSide
-                ? 'Thông Tin Lời Mời (Đám Cưới Chú Rể • 24/11/2027)'
+                ? 'Thông Tin Lời Mời (Đám Cưới Chú Rể • 24/01/2027)'
                 : 'Thông Tin Lời Mời (Đám Cưới Cô Dâu • 17/01/2027)'}
             </span>
           </h2>

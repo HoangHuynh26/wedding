@@ -72,45 +72,45 @@ export function resolveInvitationSide(pathname = '', search = '') {
 }
 
 export const groomEventConfig = {
-  dateDisplay: '24 · 11 · 2027',
-  fullDateDisplay: 'Thứ Tư, ngày 24 tháng 11 năm 2027',
+  dateDisplay: '24 · 01 · 2027',
+  fullDateDisplay: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
   timeDisplay: '18:00 PM',
   receptionTime: '17:30 - Đón khách & Tiệc trà khai vị buổi tối',
   ceremonyTime: '18:00 - Nghi lễ Tân Hôn & Khai tiệc tối',
   dinnerTime: '18:30 - Tiệc mừng buổi tối bên gia đình, bạn bè',
-  isoDate: '2027-11-24T18:00:00+07:00',
+  isoDate: '2027-01-24T18:00:00+07:00',
 };
 
 export const groomTranslations = {
   vi: {
-    pageTitle: 'Lễ Tân Hôn | Đình Huy & Thu Hiền • 24.11.2027',
+    pageTitle: 'Lễ Tân Hôn | Đình Huy & Thu Hiền • 24.01.2027',
     envelope: {
       header: 'THIỆP MỜI LỄ TÂN HÔN',
       ceremonyHeading: 'LỄ TÂN HÔN',
       invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Tân Hôn của chúng mình.',
     },
     hero: {
-      date: '24.11.2027',
+      date: '24.01.2027',
       venueTitle: 'Tư Gia Nhà Trai',
     },
     formal: {
       saveTheDate: 'LỄ TÂN HÔN • TRÂN TRỌNG KÍNH MỜI',
       title: 'THIỆP MỜI LỄ TÂN HÔN',
       welcome: 'Trân trọng kính mời quý khách đến dự bữa tiệc thân mật mừng Lễ Tân Hôn của hai con chúng tôi',
-      timeDayHeader: '18:00 PM, THỨ TƯ',
-      monthBox: 'THÁNG 11',
+      timeDayHeader: '18:00 PM, CHỦ NHẬT',
+      monthBox: 'THÁNG 01',
       dayNumber: '24',
       yearBox: 'NĂM 2027',
-      lunarDate: '( Tức ngày 27 tháng 10 năm Đinh Mùi )',
+      lunarDate: '( Tức ngày 17 tháng 12 năm Bính Ngọ )',
       venueHostName: 'TƯ GIA NHÀ TRAI',
       receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ TÂN HÔN',
-      fullDate: 'Thứ Tư, ngày 24 tháng 11 năm 2027',
+      fullDate: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
       time: '18:00 PM',
       venueName: 'TƯ GIA NHÀ TRAI',
       hallName: 'Tư Gia Nhà Trai',
     },
     countdown: {
-      fullDate: 'Thứ Tư, 24 Tháng 11, 2027 • 18:00 PM',
+      fullDate: 'Chủ Nhật, 24 Tháng 01, 2027 • 18:00 PM',
       ceremonyNote: 'Lễ Tân Hôn • Đình Huy ♡ Thu Hiền',
     },
     scratch: {
@@ -145,10 +145,10 @@ export const groomTranslations = {
     },
     transportation: {
       stamp1: 'LỄ TÂN HÔN',
-      stamp2: '24 · 11 · 2027',
+      stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hiền',
       para2: 'Lễ Tân Hôn được tổ chức vào buổi tối tại Tư Gia Nhà Trai với khu vực đón tiếp và chỗ đỗ xe rộng rãi cho cả ô tô lẫn xe máy.',
-      para3: 'Gia đình kính mời quý khách thu xếp đến từ 17:30 PM tối Thứ Tư 24.11.2027 (tức 27/10 năm Đinh Mùi) để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
+      para3: 'Gia đình kính mời quý khách thu xếp đến từ 17:30 PM tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
     },
     gallery: {
       intro: 'Những khoảnh khắc đong đầy yêu thương của Đình Huy & Thu Hiền.',
@@ -157,8 +157,8 @@ export const groomTranslations = {
       brideVenueTag: 'Địa điểm tổ chức Lễ Tân Hôn (Bên Nhà Trai)',
       hall: 'Tư Gia Nhà Trai',
       para1: 'Tọa lạc tại không gian ấm cúng của gia đình, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Tân Hôn.',
-      para2: 'Gia đình kính mời quý khách đến từ 17:30 tối Thứ Tư 24.11.2027 để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ buổi tối bắt đầu.',
-      timeDetail: '18:00 PM, Thứ Tư — 24.11.2027',
+      para2: 'Gia đình kính mời quý khách đến từ 17:30 tối Chủ Nhật 24.01.2027 để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ buổi tối bắt đầu.',
+      timeDetail: '18:00 PM, Chủ Nhật — 24.01.2027',
       schedule: [
         '08:00 - Lễ gia tiên bên nhà gái & Rước dâu về nhà trai',
         '17:30 - Đón tiếp quan khách tiệc tối & Chụp ảnh lưu niệm',
@@ -166,32 +166,32 @@ export const groomTranslations = {
       ],
     },
     rsvp: {
-      formSubtitle: 'Để gia đình chuẩn bị chu đáo nhất cho buổi tiệc tối, xin quý khách vui lòng xác nhận trước ngày 10.11.2027.',
+      formSubtitle: 'Để gia đình chuẩn bị chu đáo nhất cho buổi tiệc tối, xin quý khách vui lòng xác nhận trước ngày 10.01.2027.',
     },
   },
   en: {
-    pageTitle: 'Wedding Celebration | Dinh Huy & Thu Hien • 24.11.2027',
+    pageTitle: 'Wedding Celebration | Dinh Huy & Thu Hien • 24.01.2027',
     envelope: {
       header: 'WEDDING INVITATION',
       ceremonyHeading: "GROOM'S WEDDING CEREMONY",
     },
     hero: {
-      date: '24.11.2027',
+      date: '24.01.2027',
       venueTitle: "Groom's Family Residence",
     },
     formal: {
-      timeDayHeader: '06:00 PM, WEDNESDAY',
-      monthBox: 'NOVEMBER',
+      timeDayHeader: '06:00 PM, SUNDAY',
+      monthBox: 'JANUARY',
       dayNumber: '24',
       yearBox: '2027',
-      lunarDate: '( 27th Day of the 10th Lunar Month, Year of the Goat )',
+      lunarDate: '( 17th Day of the 12th Lunar Month, Year of the Horse )',
       venueHostName: "GROOM'S FAMILY RESIDENCE",
-      fullDate: 'Wednesday, November 24, 2027',
+      fullDate: 'Sunday, January 24, 2027',
       time: '06:00 PM',
       venueName: "GROOM'S FAMILY RESIDENCE",
     },
     countdown: {
-      fullDate: 'Wednesday, November 24, 2027 • 06:00 PM',
+      fullDate: 'Sunday, January 24, 2027 • 06:00 PM',
       ceremonyNote: "Groom's Ceremony • Dinh Huy ♡ Thu Hien",
     },
     scratch: {
@@ -226,10 +226,10 @@ export const groomTranslations = {
     },
     transportation: {
       stamp1: 'WEDDING NIGHT',
-      stamp2: '24 · 11 · 2027',
+      stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hien',
       para2: "Our evening wedding celebration takes place at the Groom's Family Residence, with welcoming reception and spacious parking for both cars and motorbikes.",
-      para3: 'We kindly recommend arriving from 05:30 PM on Wednesday, November 24, 2027, giving you plenty of time to settle in before the evening banquet begins.',
+      para3: 'We kindly recommend arriving from 05:30 PM on Sunday, January 24, 2027, giving you plenty of time to settle in before the evening banquet begins.',
     },
     gallery: {
       intro: 'Cherished memories of Dinh Huy & Thu Hien.',
@@ -238,8 +238,8 @@ export const groomTranslations = {
       brideVenueTag: "Groom's Family Evening Wedding Venue",
       hall: "Groom's Family Residence",
       para1: "Set in the warm embrace of the Groom's family home, surrounded by loving family and heartfelt blessings for our evening wedding celebration.",
-      para2: 'We recommend arriving around 05:30 PM on Wednesday, November 24, 2027 to enjoy the evening reception and take photos before the ceremony begins.',
-      timeDetail: '06:00 PM, Wednesday — November 24, 2027',
+      para2: 'We recommend arriving around 05:30 PM on Sunday, January 24, 2027 to enjoy the evening reception and take photos before the ceremony begins.',
+      timeDetail: '06:00 PM, Sunday — January 24, 2027',
       schedule: [
         "08:00 AM - Ancestral Ceremony at Bride's Home & Bridal Procession",
         '05:30 PM - Evening Welcome Reception & Commemorative Photos',
@@ -247,36 +247,36 @@ export const groomTranslations = {
       ],
     },
     rsvp: {
-      formSubtitle: 'To help our family prepare warmly for the evening banquet, please kindly confirm by November 10, 2027.',
+      formSubtitle: 'To help our family prepare warmly for the evening banquet, please kindly confirm by January 10, 2027.',
       messagePlaceholder: 'Send your warmest wishes to Dinh Huy & Thu Hien...',
     },
   },
   zh: {
-    pageTitle: `新婚喜宴请柬｜${chineseNames.groom.shortName}与${chineseNames.bride.shortName} · 2027.11.24`,
+    pageTitle: `新婚喜宴请柬｜${chineseNames.groom.shortName}与${chineseNames.bride.shortName} · 2027.01.24`,
     envelope: {
       header: '新婚喜宴请柬',
       ceremonyHeading: '新婚喜宴',
       invitation: '谨以满怀喜悦之心，诚邀您拨冗莅临参加我们的新婚晚宴，共证幸福时刻。',
     },
     hero: {
-      date: '24.11.2027',
+      date: '24.01.2027',
       venueTitle: '男方府邸',
     },
     formal: {
       title: '新婚喜宴请柬',
       welcome: '谨詹于良辰吉日，为长子与佳媳举行新婚晚宴，诚挚敬邀您莅临共襄盛举',
-      timeDayHeader: '晚上 18:00 · 星期三',
-      monthBox: '11月',
+      timeDayHeader: '晚上 18:00 · 星期日',
+      monthBox: '01月',
       dayNumber: '24',
       yearBox: '2027年',
-      lunarDate: '（农历丁未年十月廿七）',
+      lunarDate: '（农历丙午年腊月十七）',
       venueHostName: '男方府邸',
-      fullDate: '2027年11月24日（星期三）',
+      fullDate: '2027年01月24日（星期日）',
       time: '晚上 18:00',
       venueName: '男方府邸',
     },
     countdown: {
-      fullDate: '2027年11月24日 星期三 • 晚上 18:00',
+      fullDate: '2027年01月24日 星期日 • 晚上 18:00',
       ceremonyNote: `新婚喜宴 · ${chineseNames.groom.shortName} ♡ ${chineseNames.bride.shortName}`,
     },
     scratch: {
@@ -311,17 +311,17 @@ export const groomTranslations = {
     },
     transportation: {
       stamp1: '新婚晚宴',
-      stamp2: '24 · 11 · 2027',
+      stamp2: '24 · 01 · 2027',
       stampNames: `${chineseNames.groom.shortName} & ${chineseNames.bride.shortName}`,
       para2: '新婚晚宴席设于男方府邸，现场设有专属迎宾接待区及宽敞停车位。',
-      para3: '诚邀您于 2027年11月24日（农历丁未年十月廿七）傍晚 17:30 起莅临入席，共赴喜悦之约。',
+      para3: '诚邀您于 2027年01月24日（农历丙午年腊月十七）傍晚 17:30 起莅临入席，共赴喜悦之约。',
     },
     venue: {
       brideVenueTag: '新婚晚宴举办地点（男方府邸）',
       hall: '男方府邸',
       para1: '席设于温馨典雅的男方府邸，璀璨灯火与亲友的真挚祝福将伴随我们开启幸福新篇章。',
-      para2: '诚邀您于 2027年11月24日（星期三）傍晚 17:30 起莅临，合影留念并共度温馨愉悦的晚宴迎宾时光。',
-      timeDetail: '2027年11月24日（星期三）晚上 18:00',
+      para2: '诚邀您于 2027年01月24日（星期日）傍晚 17:30 起莅临，合影留念并共度温馨愉悦的晚宴迎宾时光。',
+      timeDetail: '2027年01月24日（星期日）晚上 18:00',
       schedule: [
         '08:00 - 前往女方府邸祭祖 & 迎娶新娘回男方府邸',
         '17:30 - 晚宴迎宾签到 & 合影留念',
@@ -329,7 +329,7 @@ export const groomTranslations = {
       ],
     },
     rsvp: {
-      formSubtitle: '为便于家人周全准备晚宴席位与招待，烦请您于 2027年11月10日 前确认出席。',
+      formSubtitle: '为便于家人周全准备晚宴席位与招待，烦请您于 2027年01月10日 前确认出席。',
     },
   },
 };
