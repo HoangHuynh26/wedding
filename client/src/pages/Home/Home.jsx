@@ -10,18 +10,30 @@ import LoveStory from '../../components/LoveStory/LoveStory';
 import MobileQuickActions from '../../components/MobileQuickActions/MobileQuickActions';
 import MusicButton from '../../components/MusicButton/MusicButton';
 import RSVP from '../../components/RSVP/RSVP';
+import ScratchReveal from '../../components/ScratchReveal/ScratchReveal';
 import Venue from '../../components/Venue/Venue';
 import WeddingEnvelope from '../../components/WeddingEnvelope/WeddingEnvelope';
 import WeddingHero from '../../components/WeddingHero/WeddingHero';
-import WeddingVideo from '../../components/WeddingVideo/WeddingVideo';
+import WeddingSchedule from '../../components/WeddingSchedule/WeddingSchedule';
 import weddingConfig from '../../config/weddingConfig';
 import { useAudio } from '../../context/AudioContext';
 import './Home.css';
 
-const openingDuration = 1850;
-const revealDuration = 1800;
 const motionPreference = '(prefers-reduced-motion: reduce)';
-const sectionIds = new Set(['hero', 'invitation', 'story', 'countdown', 'gallery', 'venue', 'rsvp', 'contact']);
+const sectionIds = new Set([
+  'hero',
+  'countdown',
+  'scratch-photo',
+  'venue',
+  'schedule',
+  'transportation',
+  'invitation',
+  'gallery',
+  'story',
+  'rsvp',
+  'contact',
+]);
+
 const { theme } = weddingConfig;
 const themeStyle = {
   '--wedding-ivory': theme.ivory,
@@ -29,6 +41,7 @@ const themeStyle = {
   '--wedding-pearl': theme.pearl,
   '--wedding-navy': theme.navy,
   '--wedding-gold': theme.gold,
+  '--wedding-slate': theme.slate,
 };
 
 export default function WeddingExperience() {
@@ -39,7 +52,8 @@ export default function WeddingExperience() {
   const destination = sectionIds.has(fragment)
     ? fragment
     : (pathSection === 'rsvp' || pathSection === 'story' ? pathSection : '');
-  const [phase, setPhase] = useState(() => destination ? 'open' : 'sealed');
+
+  const [phase, setPhase] = useState(() => (destination ? 'open' : 'sealed'));
   const openedByGuest = useRef(false);
   const locked = phase !== 'open';
 
@@ -61,14 +75,16 @@ export default function WeddingExperience() {
   }, [locked]);
 
   useEffect(() => {
-    if (phase !== 'opening' && phase !== 'reveal') return undefined;
-
-    const opening = phase === 'opening';
-    const timer = window.setTimeout(
-      () => setPhase(opening ? 'reveal' : 'open'),
-      opening ? openingDuration : revealDuration,
-    );
-    return () => window.clearTimeout(timer);
+    if (phase !== 'opening') return undefined;
+    const preference = window.matchMedia(motionPreference);
+    const finish = () => setPhase('open');
+    // The veil's transition normally finishes the opening. Allow for a suspended tab.
+    const fallback = window.setTimeout(finish, 5350);
+    preference.addEventListener('change', finish);
+    return () => {
+      window.clearTimeout(fallback);
+      preference.removeEventListener('change', finish);
+    };
   }, [phase]);
 
   useEffect(() => {
@@ -94,32 +110,48 @@ export default function WeddingExperience() {
   function openInvitation() {
     if (phase !== 'sealed') return;
     openedByGuest.current = true;
-    // Start playback while the browser still has the guest's click or key press.
-    void playAudio();
+    void playAudio({ fromStart: true, fadeMs: 1400 });
     setPhase(window.matchMedia(motionPreference).matches ? 'open' : 'opening');
   }
 
   return (
     <main className="wedding-home">
       <div className="wedding-front" style={themeStyle}>
-        <div inert={locked}>
-          <WeddingHero phase={phase} />
-        </div>
-        {locked && <WeddingEnvelope phase={phase} onOpen={openInvitation} />}
+        <WeddingHero phase={phase}>
+          {locked && (
+            <WeddingEnvelope
+              phase={phase}
+              onOpen={openInvitation}
+              onOpened={() => setPhase('open')}
+            />
+          )}
+        </WeddingHero>
       </div>
+
       {!locked && (
         <>
           <CursorEffect />
           <MusicButton />
           <MobileQuickActions />
-          <FormalInvitation />
-          <LoveStory />
+
+          {/* Step 5A: Twilight Dusty Slate-Lavender Countdown Band (Images 9–11) */}
           <Countdown />
-          {/* <WeddingVideo /> — Ẩn tạm thời, sẽ hoàn thiện sau */}
-          <Gallery />
+
+          {/* Formal Family Invitation (Nhà Gái / Nhà Trai / Kính Mời) directly below Countdown */}
+          <FormalInvitation />
+
+          {/* Step 5B: Mother-of-Pearl Interactive Scratch-to-Reveal Couple Portrait (Images 9–11) */}
+          <ScratchReveal />
+
+          {/* Step 7: "The Day / Lịch Trình" with 3D Blind-Embossed Draped Curtains & Tassels (Image 13) */}
+          <WeddingSchedule />
+
+          {/* Step 6: Pale Mauve-Lilac Location & Directions Section + Villa Etching + Double-Border CTA (Image 12) */}
           <Venue />
+
+          {/* Wedding Album, RSVP & Footer (harmonized in Mauve Couture Palette) */}
+          <Gallery />
           <RSVP />
-          <Contact />
           <Footer />
         </>
       )}

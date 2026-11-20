@@ -4,6 +4,7 @@ import { MapPin, Sparkles } from 'lucide-react';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import useInvitationParams from '../../hooks/useInvitationParams';
+import { BotanicalSprig } from '../WeddingEnvelope/WeddingOrnaments';
 import styles from './FormalInvitation.module.css';
 
 // Helper function to render text while giving numbers a bold, prominent, big font
@@ -23,12 +24,12 @@ function renderWithNumHighlight(text) {
 }
 
 export default function FormalInvitation() {
-  const { groom, bride, venue } = weddingConfig;
-  const { t } = useLanguage();
+  const { venue } = weddingConfig;
+  const { t, bride, groom } = useLanguage();
   const { guestName, hasPersonalization } = useInvitationParams();
 
   return (
-    <section className={styles.formalSection} id="invitation" aria-label="Formal Wedding Invitation">
+    <section className={styles.formalSection} id="invitation" aria-label={t.formal.title}>
       <div className={`container ${styles.formalContainer}`}>
         {/* KOREAN MINIMALIST EDITORIAL WEDDING CARD */}
         <motion.div
@@ -38,12 +39,13 @@ export default function FormalInvitation() {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* 1. TOP COUPLE HERO PHOTO (Image #3 — Staircase Loving Gaze) */}
+          {/* 1. TOP COUPLE HERO PHOTO (Landscape Grand Staircase with Floating Veil) */}
           <div className={styles.topPhotoFrame}>
             <img
-              src="/photos/tuan-0974.jpg"
+              src={weddingConfig.formalPhoto || '/photos/tuan-0992.jpg'}
               alt={`${bride.name} & ${groom.name}`}
               className={styles.topHeroImg}
+              style={{ objectPosition: weddingConfig.formalPhotoPosition || '48% 42%' }}
             />
           </div>
 
@@ -98,9 +100,9 @@ export default function FormalInvitation() {
               )}
             </div>
 
-            {/* BOTANICAL ORCHID ACCENT (TOP RIGHT) */}
-            <div className={styles.orchidCornerTop}>
-              <img src="/orchid.jpg" alt="" className={styles.orchidImg} />
+            {/* SUBTLE MAUVE BOTANICAL LINE-ART ACCENT (TOP RIGHT — NO WHITE BOX) */}
+            <div className={styles.orchidCornerTop} aria-hidden="true">
+              <BotanicalSprig className={styles.botanicalAccentSvg} />
             </div>
 
             {/* COUPLE NAMES — Bride ♡ Groom (Lễ Bên Nhà Gái) */}
@@ -143,9 +145,9 @@ export default function FormalInvitation() {
             <div className={styles.venueSection}>
               <span className={styles.venueIntroLabel}>{t.formal.venueIntro}</span>
               <h4 className={styles.venueNameText}>{t.formal.venueHostName}</h4>
-              <p className={styles.venueAddressViet}>{t.formal.venueAddress || venue.address}</p>
               {/* Prominent Google Maps Direction Button */}
               <a
+                style={{ marginTop: '20px' }}
                 href={venue.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -157,9 +159,9 @@ export default function FormalInvitation() {
               </a>
             </div>
 
-            {/* BOTANICAL ORCHID ACCENT (BOTTOM LEFT) */}
-            <div className={styles.orchidCornerBottom}>
-              <img src="/orchid.jpg" alt="" className={styles.orchidImg} />
+            {/* SUBTLE MAUVE BOTANICAL LINE-ART ACCENT (BOTTOM LEFT — NO WHITE BOX) */}
+            <div className={styles.orchidCornerBottom} aria-hidden="true">
+              <BotanicalSprig className={styles.botanicalAccentSvg} />
             </div>
           </div>
         </motion.div>

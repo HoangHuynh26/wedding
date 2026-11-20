@@ -17,6 +17,7 @@ import {
   Globe,
   Search,
 } from 'lucide-react';
+import { chineseNames } from '../../config/chineseInvitation';
 import weddingConfig from '../../config/weddingConfig';
 import styles from './Admin.module.css';
 
@@ -58,6 +59,21 @@ const PREFIXES_BY_LANG = {
 };
 
 const STORAGE_KEY = 'wedding_invitation_links_history';
+const HISTORY_PAGE_SIZE = 20;
+
+function classifyInviterGroup(inviterStr = '') {
+  const norm = inviterStr.trim().toLowerCase();
+  if (norm === 'thu hiền & đình huy' || (norm.includes('thu hiền') && norm.includes('đình huy'))) {
+    return 'couple';
+  }
+  if (norm.includes('cô dâu') || norm === 'thu hiền') {
+    return 'bride';
+  }
+  if (norm.includes('chú rể') || norm.includes('chú rễ') || norm === 'đình huy') {
+    return 'groom';
+  }
+  return 'family';
+}
 
 export default function Admin() {
   const [inviter, setInviter] = useState(INVITER_PRESETS[0]);
@@ -69,12 +85,16 @@ export default function Admin() {
   const playlist = weddingConfig.playlist || [];
   const [selectedSongId, setSelectedSongId] = useState(playlist[0]?.id || 'crush-love-you-with-all-my-heart');
   const [previewSongId, setPreviewSongId] = useState(null);
+  const [showOnlyCPreview, setShowOnlyCPreview] = useState(false);
   const previewAudioRef = useRef(null);
   const [musicCategory, setMusicCategory] = useState('all');
   const [musicSearch, setMusicSearch] = useState('');
 
   const [toastMessage, setToastMessage] = useState('');
   const [history, setHistory] = useState([]);
+  const [historyFilter, setHistoryFilter] = useState('all');
+  const [historySearch, setHistorySearch] = useState('');
+  const [historyPage, setHistoryPage] = useState(1);
   const qrRef = useRef(null);
 
   // Stop preview audio when leaving page
@@ -107,6 +127,7 @@ export default function Admin() {
 
   const musicCategories = React.useMemo(() => [
     { id: 'all', label: 'Tất Cả', count: playlist.length },
+    { id: 'hoa-tau', label: '🎻 Hòa Tấu (Piano / Sax / Violin)', count: playlist.filter((s) => s.category === 'hoa-tau').length },
     { id: 'don-khach', label: `🎧 Nhạc Mở Thiệp & Đón Khách (${playlist.filter((s) => s.category === 'don-khach').length} Bài)`, count: playlist.filter((s) => s.category === 'don-khach').length },
     { id: 'han-quoc', label: '🇰🇷 Hàn Quốc', count: playlist.filter((s) => s.country === 'Hàn Quốc').length },
     { id: 'trung-quoc', label: '🇨🇳 Trung Quốc', count: playlist.filter((s) => s.country === 'Trung Quốc').length },
@@ -117,6 +138,7 @@ export default function Admin() {
 
   const filteredPlaylist = React.useMemo(() => {
     return playlist.filter((song) => {
+      if (musicCategory === 'hoa-tau' && song.category !== 'hoa-tau') return false;
       if (musicCategory === 'don-khach' && song.category !== 'don-khach') return false;
       if (musicCategory === 'han-quoc' && song.country !== 'Hàn Quốc') return false;
       if (musicCategory === 'trung-quoc' && song.country !== 'Trung Quốc') return false;
@@ -164,6 +186,7 @@ export default function Admin() {
 
   const handleTogglePreview = (e, song) => {
     e.stopPropagation();
+    setShowOnlyCPreview(false);
     if (previewSongId === song.id) {
       if (previewAudioRef.current) {
         previewAudioRef.current.pause();
@@ -238,7 +261,7 @@ export default function Admin() {
     if (selectedLang === 'en') {
       msg = `Dear ${cleanGuest},
 
-Together with our families, Thu Hiền & Đình Huy joyfully invite you to celebrate our Wedding Ceremony on Sunday, January 17, 2027!
+Together with our families, Thu Hien & Dinh Huy joyfully invite you to celebrate our Wedding Ceremony on Sunday, January 17, 2027!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -248,7 +271,7 @@ Your presence and warm blessings would mean the world to us!`;
     } else if (selectedLang === 'zh') {
       msg = `${cleanGuest} 您好：
 
-谨以满怀喜悦之心，Thu Hiền 与 Đình Huy 诚挚邀请您莅临参加我们的归宁婚礼喜宴（2027年01月17日 星期日）！
+谨以满怀喜悦之心，${chineseNames.bride.shortName}与${chineseNames.groom.shortName}诚挚邀请您莅临参加我们的归宁婚礼喜宴（2027年01月17日 星期日）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
@@ -295,13 +318,52 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
             (i.lang || 'vi') === (item.lang || 'vi')
           )
       );
-      const updated = [item, ...filtered].slice(0, 50);
+      const updated = [item, ...filtered].slice(0, 1000);
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       } catch {}
       return updated;
     });
+    setHistoryPage(1);
   };
+
+  const historyFilterTabs = React.useMemo(() => {
+    const counts = { all: history.length, bride: 0, groom: 0, family: 0, couple: 0 };
+    history.forEach((item) => {
+      const grp = classifyInviterGroup(item.inviter);
+      counts[grp] = (counts[grp] || 0) + 1;
+    });
+    return [
+      { id: 'all', label: 'Tất cả', count: counts.all },
+      { id: 'bride', label: '👰 Cô dâu', count: counts.bride },
+      { id: 'groom', label: '🤵 Chú rể', count: counts.groom },
+      { id: 'family', label: '👨‍👩‍👧 Người nhà / Gia đình', count: counts.family },
+      { id: 'couple', label: '💑 Cô dâu & Chú rể', count: counts.couple },
+    ];
+  }, [history]);
+
+  const filteredHistory = React.useMemo(() => {
+    return history.filter((item) => {
+      if (historyFilter !== 'all') {
+        const grp = classifyInviterGroup(item.inviter);
+        if (grp !== historyFilter) return false;
+      }
+      if (historySearch.trim()) {
+        const q = historySearch.trim().toLowerCase();
+        const matchGuest = item.guestName?.toLowerCase().includes(q);
+        const matchInviter = item.inviter?.toLowerCase().includes(q);
+        return matchGuest || matchInviter;
+      }
+      return true;
+    });
+  }, [history, historyFilter, historySearch]);
+
+  const totalHistoryPages = Math.max(1, Math.ceil(filteredHistory.length / HISTORY_PAGE_SIZE));
+  const currentHistoryPage = Math.min(historyPage, totalHistoryPages);
+  const paginatedHistory = React.useMemo(() => {
+    const start = (currentHistoryPage - 1) * HISTORY_PAGE_SIZE;
+    return filteredHistory.slice(start, start + HISTORY_PAGE_SIZE);
+  }, [filteredHistory, currentHistoryPage]);
 
   const handleDeleteHistoryItem = (id) => {
     setHistory((prev) => {
@@ -571,6 +633,38 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
               )}
             </div>
 
+            <div className={styles.receptionPreview}>
+              <span className={styles.songCardTitle}>08. Yêu Là Tha Thu · OnlyC</span>
+              <p className={styles.songCardArtist}>Đoạn nghe thử 30 giây từ MV gốc.</p>
+              <div className={styles.actionGrid}>
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  aria-expanded={showOnlyCPreview}
+                  onClick={() => {
+                    previewAudioRef.current?.pause();
+                    setPreviewSongId(null);
+                    setShowOnlyCPreview(!showOnlyCPreview);
+                  }}
+                >
+                  {showOnlyCPreview ? 'Đóng trình phát' : 'Nghe thử'}
+                </button>
+                <a className={styles.secondaryBtn} href="https://www.youtube.com/watch?v=-nnWBhKZeg0&t=60s" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink size={16} aria-hidden="true" />
+                  Mở YouTube
+                </a>
+              </div>
+              {showOnlyCPreview && (
+                <iframe
+                  className={styles.receptionPlayer}
+                  src="https://www.youtube-nocookie.com/embed/-nnWBhKZeg0?start=60&end=90&autoplay=1&playsinline=1"
+                  title="Yêu Là Tha Thu – OnlyC"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
+            </div>
+
             <div className={styles.selectedSongBanner}>
               <Music size={15} style={{ color: 'var(--silver-primary)' }} />
               <span>
@@ -673,62 +767,170 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
               </button>
             </div>
 
-            <div className={styles.historyList}>
-              {history.map((item) => (
-                <div key={item.id} className={styles.historyItem}>
-                  <div className={styles.itemMain}>
-                    <div className={styles.itemGuestName}>{item.guestName}</div>
-                    <div className={styles.itemInviter}>
-                      {item.inviter} • {item.createdAt}
-                    </div>
-                    <div className={styles.itemBadgesRow}>
-                      <div className={styles.itemLangBadge}>
-                        <Globe size={11} />
-                        <span>{item.langFlag || '🇻🇳'} {item.langLabel || 'Tiếng Việt'}</span>
-                      </div>
-                      <div className={styles.itemSongBadge}>
-                        <Music size={11} />
-                        <span>
-                          {item.songTitle
-                            ? `${item.songTitle} - ${item.songArtist || ''}`
-                            : 'Young and Beautiful'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+            {/* Filter by Inviter Group (Cô dâu / Chú rể / Người nhà / Cô dâu & Chú rể) + Quick Search */}
+            <div className={styles.historyFilterSection}>
+              <div className={styles.historyFilterPills}>
+                {historyFilterTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    className={`${styles.historyFilterBtn} ${
+                      historyFilter === tab.id ? styles.historyFilterBtnActive : ''
+                    }`}
+                    onClick={() => {
+                      setHistoryFilter(tab.id);
+                      setHistoryPage(1);
+                    }}
+                  >
+                    <span>{tab.label}</span>
+                    <span className={styles.historyFilterCount}>{tab.count}</span>
+                  </button>
+                ))}
+              </div>
 
-                  <div className={styles.itemActions}>
+              <div className={styles.historySearchBox}>
+                <Search size={14} className={styles.searchIcon} />
+                <input
+                  type="text"
+                  className={styles.historySearchInput}
+                  placeholder="Tìm tên khách mời hoặc người mời..."
+                  value={historySearch}
+                  onChange={(e) => {
+                    setHistorySearch(e.target.value);
+                    setHistoryPage(1);
+                  }}
+                />
+                {historySearch && (
+                  <button
+                    type="button"
+                    className={styles.clearSearchBtn}
+                    onClick={() => {
+                      setHistorySearch('');
+                      setHistoryPage(1);
+                    }}
+                    title="Xóa tìm kiếm"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {filteredHistory.length === 0 ? (
+              <div className={styles.noMusicFound}>
+                Không có khách mời nào trong mục lọc này.
+              </div>
+            ) : (
+              <>
+                <div className={styles.historyList}>
+                  {paginatedHistory.map((item, idx) => {
+                    const globalIdx = (currentHistoryPage - 1) * HISTORY_PAGE_SIZE + idx + 1;
+                    return (
+                      <div key={item.id} className={styles.historyItem}>
+                        <div className={styles.itemMain}>
+                          <div className={styles.itemGuestName}>
+                            <span className={styles.itemIndexBadge}>#{globalIdx}</span>
+                            {item.guestName}
+                          </div>
+                          <div className={styles.itemInviter}>
+                            <strong>{item.inviter}</strong> • {item.createdAt}
+                          </div>
+                          <div className={styles.itemBadgesRow}>
+                            <div className={styles.itemLangBadge}>
+                              <Globe size={11} />
+                              <span>{item.langFlag || '🇻🇳'} {item.langLabel || 'Tiếng Việt'}</span>
+                            </div>
+                            <div className={styles.itemSongBadge}>
+                              <Music size={11} />
+                              <span>
+                                {item.songTitle
+                                  ? `${item.songTitle} - ${item.songArtist || ''}`
+                                  : 'Young and Beautiful'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={styles.itemActions}>
+                          <button
+                            type="button"
+                            className={styles.iconActionBtn}
+                            title="Sao chép link"
+                            onClick={() => handleCopyLink(item.url, item.guestName)}
+                          >
+                            <Copy size={15} />
+                          </button>
+
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.iconActionBtn}
+                            title="Xem trước thiệp"
+                          >
+                            <ExternalLink size={15} />
+                          </a>
+
+                          <button
+                            type="button"
+                            className={`${styles.iconActionBtn} ${styles.deleteActionBtn}`}
+                            title="Xoá khỏi danh sách"
+                            onClick={() => handleDeleteHistoryItem(item.id)}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Pagination Bar (20 guests per page) */}
+                <div className={styles.paginationBar}>
+                  <span className={styles.paginationInfo}>
+                    Hiển thị{' '}
+                    <strong>
+                      {(currentHistoryPage - 1) * HISTORY_PAGE_SIZE + 1}–
+                      {Math.min(currentHistoryPage * HISTORY_PAGE_SIZE, filteredHistory.length)}
+                    </strong>{' '}
+                    / <strong>{filteredHistory.length}</strong> khách mời ({HISTORY_PAGE_SIZE} người/trang)
+                  </span>
+
+                  <div className={styles.paginationControls}>
                     <button
                       type="button"
-                      className={styles.iconActionBtn}
-                      title="Sao chép link"
-                      onClick={() => handleCopyLink(item.url, item.guestName)}
+                      className={styles.pageBtn}
+                      disabled={currentHistoryPage <= 1}
+                      onClick={() => setHistoryPage((p) => Math.max(1, p - 1))}
                     >
-                      <Copy size={15} />
+                      ← Trước
                     </button>
 
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.iconActionBtn}
-                      title="Xem trước thiệp"
-                    >
-                      <ExternalLink size={15} />
-                    </a>
+                    {Array.from({ length: totalHistoryPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        type="button"
+                        className={`${styles.pageBtn} ${
+                          pageNum === currentHistoryPage ? styles.pageBtnActive : ''
+                        }`}
+                        onClick={() => setHistoryPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
 
                     <button
                       type="button"
-                      className={`${styles.iconActionBtn} ${styles.deleteActionBtn}`}
-                      title="Xoá khỏi danh sách"
-                      onClick={() => handleDeleteHistoryItem(item.id)}
+                      className={styles.pageBtn}
+                      disabled={currentHistoryPage >= totalHistoryPages}
+                      onClick={() => setHistoryPage((p) => Math.min(totalHistoryPages, p + 1))}
                     >
-                      <Trash2 size={15} />
+                      Sau →
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         )}
 

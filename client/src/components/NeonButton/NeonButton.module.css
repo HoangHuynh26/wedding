@@ -63,6 +63,15 @@
   width: 100%;
 }
 
+@media (max-width: 480px) {
+  .baseBtn {
+    padding: 0.8rem 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    gap: 0.45rem;
+  }
+}
+
 .baseBtn:focus-visible {
   outline: 2px solid #fff2ca;
   outline-offset: 3px;
@@ -79,61 +88,43 @@
    ═══════════════════════════════════════════════════ */
 
 .primary {
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
-  color: #0f172a;
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15),
-              0 0 25px rgba(148, 163, 184, 0.4),
-              inset 0 1px 1px rgba(255, 255, 255, 0.9),
-              inset 0 -1px 2px rgba(0, 0, 0, 0.15);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, #6e7387 0%, #5b6074 55%, #4d5265 100%);
+  color: #f6f2f6;
+  box-shadow: 0 8px 24px rgba(56, 50, 68, 0.22),
+              inset 0 1px 1px rgba(255, 250, 254, 0.3);
 }
 
 .neonBtnContainer:hover .primary {
-  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 45%, #94a3b8 100%);
-  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.2),
-              0 0 40px rgba(148, 163, 184, 0.6),
-              inset 0 1px 1px rgba(255, 255, 255, 1);
+  background: linear-gradient(135deg, #777c91 0%, #61667a 55%, #51566a 100%);
+  box-shadow: 0 12px 32px rgba(56, 50, 68, 0.3);
 }
 
-/* ═══════════════════════════════════════════════════
-   VARIANT: SECONDARY / OUTLINE (Frosted White Glass)
-   ═══════════════════════════════════════════════════ */
-
 .secondary {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(246, 241, 247, 0.95) 0%, rgba(235, 227, 237, 0.95) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(148, 163, 184, 0.45);
-  color: #0f172a;
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06),
-              0 0 20px rgba(148, 163, 184, 0.2),
-              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(114, 102, 122, 0.42);
+  color: #453e4b;
+  box-shadow: 0 8px 24px rgba(58, 48, 66, 0.08);
 }
 
 .neonBtnContainer:hover .secondary {
-  background: #ffffff;
-  border-color: #0f172a;
-  color: #0f172a;
-  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12),
-              0 0 30px rgba(148, 163, 184, 0.35);
+  background: #f8f4f9;
+  border-color: #6b7084;
+  color: #453e4b;
 }
-
-/* ═══════════════════════════════════════════════════
-   VARIANT: GHOST (Minimal Silver Link Pill)
-   ═══════════════════════════════════════════════════ */
 
 .ghost {
   background: transparent;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  color: #334155;
+  border: 1px solid rgba(114, 102, 122, 0.4);
+  color: #5b5264;
   box-shadow: none;
 }
 
 .neonBtnContainer:hover .ghost {
-  background: rgba(148, 163, 184, 0.15);
-  border-color: var(--silver-primary);
-  color: #0f172a;
-  box-shadow: 0 0 20px rgba(148, 163, 184, 0.3);
+  background: rgba(143, 126, 137, 0.14);
+  border-color: #6b7084;
+  color: #453e4b;
 }
 
 /* ═══════════════════════════════════════════════════

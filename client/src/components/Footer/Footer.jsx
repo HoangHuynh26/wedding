@@ -4,14 +4,14 @@ import { useLanguage } from '../../context/LanguageContext';
 import styles from './Footer.module.css';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, bride, groom } = useLanguage();
 
   return (
     <footer className={styles.footer} role="contentinfo">
       <div className="container">
 
         <h3 className={styles.coupleFullName}>
-          {weddingConfig.bride.name} ♡ {weddingConfig.groom.name}
+          {bride.shortName} <span className={styles.ampersand}>&amp;</span> {groom.shortName}
         </h3>
 
         <p className={styles.footerQuote}>

@@ -5,7 +5,7 @@ import styles from './Sparkles.module.css';
  * Sparkles (Kim Tuyến Bay Bổng)
  * Luxury gold & champagne floating glitter, tumbling sequins, and twinkling stars.
  */
-export default function Sparkles({ count = 38, className = '', theme = 'gold-rose' }) {
+export default function Sparkles({ count = 38, className = '', theme = 'mauve-pearl' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -50,24 +50,31 @@ export default function Sparkles({ count = 38, className = '', theme = 'gold-ros
     // Particle types: 'star' (ngôi sao 4 cánh), 'flake' (kim tuyến lấp lánh xoay 3D), 'dust' (bụi tiên phát sáng)
     const types = ['star', 'flake', 'dust', 'flake', 'dust', 'star'];
 
-    // Luxury high-contrast palettes that pop brilliantly on light ivory/cream backgrounds
+    // Haute-couture palettes — mauve-pearl matches the dusty lavender & pearlescent silk stationery
     const paletteMap = {
+      'mauve-pearl': [
+        { r: 252, g: 247, b: 252 }, // Pure Pearl White
+        { r: 229, g: 215, b: 227 }, // Soft Dusty Lilac
+        { r: 194, g: 176, b: 192 }, // Metallic Mauve Pewter
+        { r: 242, g: 234, b: 244 }, // Iridescent Lavender Mist
+        { r: 162, g: 148, b: 168 }, // Twilight Plum Glint
+      ],
       'gold-rose': [
-        { r: 218, g: 148, b: 32 },  // Deep 24K Royal Gold
-        { r: 228, g: 122, b: 95 },  // Sparkling Rose Gold
-        { r: 242, g: 178, b: 52 },  // Radiant Sun Gold
-        { r: 196, g: 118, b: 34 },  // Warm Amber Bronze
-        { r: 215, g: 95, b: 85 },   // Romantic Rose Champagne
+        { r: 218, g: 148, b: 32 },
+        { r: 228, g: 122, b: 95 },
+        { r: 242, g: 178, b: 52 },
+        { r: 196, g: 118, b: 34 },
+        { r: 215, g: 95, b: 85 },
       ],
       'royal-gold': [
-        { r: 218, g: 148, b: 32 },  // Deep 24K Royal Gold
-        { r: 242, g: 178, b: 52 },  // Radiant Sun Gold
-        { r: 196, g: 118, b: 34 },  // Warm Amber Bronze
-        { r: 232, g: 165, b: 42 },  // Metallic Gold
+        { r: 218, g: 148, b: 32 },
+        { r: 242, g: 178, b: 52 },
+        { r: 196, g: 118, b: 34 },
+        { r: 232, g: 165, b: 42 },
       ],
     };
 
-    const palette = paletteMap[theme] || paletteMap['gold-rose'];
+    const palette = paletteMap[theme] || paletteMap['mauve-pearl'];
 
     const particles = Array.from({ length: count }).map(() => {
       const type = types[Math.floor(Math.random() * types.length)];

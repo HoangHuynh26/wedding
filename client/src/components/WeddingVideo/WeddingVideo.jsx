@@ -4,6 +4,14 @@ import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './WeddingVideo.module.css';
 
+const controlLabels = {
+  vi: { play: 'Phát video', pause: 'Tạm dừng video', progress: 'Tiến trình video' },
+  en: { play: 'Play video', pause: 'Pause video', progress: 'Video progress' },
+  zh: { play: '播放视频', pause: '暂停视频', progress: '视频进度' },
+};
+
+const seekOffsets = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5 };
+
 function formatTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
   const mins = Math.floor(seconds / 60);
@@ -18,7 +26,8 @@ export default function WeddingVideo() {
   const hideControlsTimerRef = useRef(null);
   const enteredNativeFsRef = useRef(false);
 
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const controls = controlLabels[language] ?? controlLabels.vi;
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -95,7 +104,7 @@ export default function WeddingVideo() {
         document.webkitExitFullscreen ||
         document.msExitFullscreen;
       if (exitFn) {
-        exitFn.call(document).catch?.(() => {});
+        exitFn.call(document)?.catch(() => {});
       }
     }
   }, []);
@@ -238,11 +247,22 @@ export default function WeddingVideo() {
     togglePlay();
   };
 
+  const seekTo = useCallback(
+    (seconds) => {
+      const vid = videoRef.current;
+      if (!vid || !Number.isFinite(duration) || duration <= 0) return;
+
+      const nextTime = Math.max(0, Math.min(duration, seconds));
+      vid.currentTime = nextTime;
+      setCurrentTime(nextTime);
+    },
+    [duration]
+  );
+
   const seekByClientCoords = useCallback(
     (clientX, clientY) => {
       const bar = progressRef.current;
-      const vid = videoRef.current;
-      if (!bar || !vid || !duration) return;
+      if (!bar) return;
 
       const rect = bar.getBoundingClientRect();
       let ratio = 0;
@@ -251,13 +271,21 @@ export default function WeddingVideo() {
       } else {
         ratio = rect.width > 0 ? (clientX - rect.left) / rect.width : 0;
       }
-      const clamped = Math.max(0, Math.min(1, ratio));
-      const nextTime = clamped * duration;
-      vid.currentTime = nextTime;
-      setCurrentTime(nextTime);
+      seekTo(ratio * duration);
     },
-    [duration, isRotatedLandscape]
+    [duration, isRotatedLandscape, seekTo]
   );
+
+  const handleSeekKey = (e) => {
+    const offset = seekOffsets[e.key];
+    if (offset === undefined && e.key !== 'Home' && e.key !== 'End') return;
+
+    e.preventDefault();
+    if (e.key === 'Home') seekTo(0);
+    else if (e.key === 'End') seekTo(duration);
+    else seekTo(currentTime + offset);
+    scheduleControlsHide();
+  };
 
   const handleSeekPointerDown = (e) => {
     e.stopPropagation();
@@ -285,17 +313,9 @@ export default function WeddingVideo() {
     <section
       className={`section ${styles.videoSection} ${isExpanded ? styles.videoSectionExpanded : ''}`}
       id="video"
-      aria-label="Our Memories Video"
+      aria-label={t.video.title}
     >
       <div className="container">
-        <div className="section-header">
-          <span className="section-subtitle">{t.video.tag}</span>
-          <h2 className="section-title">{t.video.title}</h2>
-          <div className="gold-divider">
-            <span>❦</span>
-          </div>
-        </div>
-
         <div className={`${styles.videoCard} ${isExpanded ? styles.videoCardExpanded : ''}`}>
           {/* Aspect-ratio slot preserves inline layout height smoothly while fullscreen overlay is active */}
           <div className={styles.videoSlot}>
@@ -365,26 +385,24 @@ export default function WeddingVideo() {
                       e.stopPropagation();
                       exitExpanded();
                     }}
-                    aria-label={t.video.collapseLabel || 'Exit fullscreen'}
+                    aria-label={t.video.collapseLabel}
                   >
-                    <X size={20} />
+                    <X size={20} aria-hidden="true" />
                   </button>
                 )}
 
                 {/* Initial / Paused Center Play Overlay */}
                 {!isPlaying && (
-                  <div
+                  <button
+                    type="button"
                     className={styles.playOverlay}
                     onClick={togglePlay}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && togglePlay(e)}
-                    aria-label="Play Video"
+                    aria-label={controls.play}
                   >
-                    <div className={styles.playButton}>
-                      <Play size={34} style={{ marginLeft: '4px' }} />
-                    </div>
-                  </div>
+                    <span className={styles.playButton}>
+                      <Play size={34} style={{ marginLeft: '4px' }} aria-hidden="true" />
+                    </span>
+                  </button>
                 )}
 
                 {/* Quick Expand Corner Button before playback starts */}
@@ -393,10 +411,10 @@ export default function WeddingVideo() {
                     type="button"
                     className={styles.quickExpandBtn}
                     onClick={enterExpanded}
-                    aria-label={t.video.expandLabel || 'Fullscreen'}
-                    title={t.video.expandLabel || 'Fullscreen'}
+                    aria-label={t.video.expandLabel}
+                    title={t.video.expandLabel}
                   >
-                    <Maximize2 size={18} />
+                    <Maximize2 size={18} aria-hidden="true" />
                   </button>
                 )}
 
@@ -412,9 +430,9 @@ export default function WeddingVideo() {
                       type="button"
                       className={styles.ctrlIconBtn}
                       onClick={togglePlay}
-                      aria-label={isPlaying ? 'Pause' : 'Play'}
+                      aria-label={isPlaying ? controls.pause : controls.play}
                     >
-                      {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                      {isPlaying ? <Pause size={18} aria-hidden="true" /> : <Play size={18} aria-hidden="true" />}
                     </button>
 
                     <span className={styles.timeText}>
@@ -425,7 +443,9 @@ export default function WeddingVideo() {
                       ref={progressRef}
                       className={styles.progressHitArea}
                       onPointerDown={handleSeekPointerDown}
+                      onKeyDown={handleSeekKey}
                       role="slider"
+                      aria-label={controls.progress}
                       aria-valuemin={0}
                       aria-valuemax={Math.round(duration || 0)}
                       aria-valuenow={Math.round(currentTime || 0)}
@@ -443,18 +463,10 @@ export default function WeddingVideo() {
                       type="button"
                       className={styles.ctrlIconBtn}
                       onClick={toggleFullscreen}
-                      aria-label={
-                        isExpanded
-                          ? t.video.collapseLabel || 'Exit fullscreen'
-                          : t.video.expandLabel || 'Watch in landscape fullscreen'
-                      }
-                      title={
-                        isExpanded
-                          ? t.video.collapseLabel || 'Exit fullscreen'
-                          : t.video.expandLabel || 'Watch in landscape fullscreen'
-                      }
+                      aria-label={isExpanded ? t.video.collapseLabel : t.video.expandLabel}
+                      title={isExpanded ? t.video.collapseLabel : t.video.expandLabel}
                     >
-                      {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                      {isExpanded ? <Minimize2 size={18} aria-hidden="true" /> : <Maximize2 size={18} aria-hidden="true" />}
                     </button>
                   </div>
                 )}

@@ -1,7 +1,27 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { chineseNames } from '../config/chineseInvitation';
+import weddingConfig from '../config/weddingConfig';
 
 const LanguageContext = createContext(null);
+const englishCouple = {
+  bride: {
+    ...weddingConfig.bride,
+    name: 'Nguyen Thi Thu Hien',
+    shortName: 'Thu Hien',
+    role: 'The Bride',
+  },
+  groom: {
+    ...weddingConfig.groom,
+    name: 'Tran Le Dinh Huy',
+    shortName: 'Dinh Huy',
+    role: 'The Groom',
+  },
+};
+const chineseCouple = {
+  bride: { ...weddingConfig.bride, ...chineseNames.bride },
+  groom: { ...weddingConfig.groom, ...chineseNames.groom },
+};
 
 /**
  * Resolve language strictly from URL query (?lang=vi | en | zh),
@@ -41,13 +61,15 @@ export const translations = {
       salutation: 'Trân Trọng Kính Mời',
       defaultGuest: 'Quý Khách Quý',
       invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Vu Quy của chúng mình.',
-      tapToOpen: 'Chạm để mở thiệp',
+      tapToOpen: 'Chạm vào con dấu để mở thiệp',
       audioNote: '(Giai điệu tình yêu sẽ tự động ngân vang khi mở thiệp)',
     },
     hero: {
-      subtitle: 'LỄ VU QUY • NGÀY CHUNG ĐÔI',
+      subtitle: 'Save the Date',
       scroll: 'Cuộn xuống để khám phá',
-      date: '17 · 01 · 2027',
+      date: '17.01.2027',
+      venueTitle: 'Tư Gia Nhà Gái',
+      cityCaps: 'PHƯỜNG TRẢNG DÀI, ĐỒNG NAI',
     },
     formal: {
       saveTheDate: 'LỄ VU QUY • TRÂN TRỌNG KÍNH MỜI',
@@ -148,8 +170,10 @@ export const translations = {
     },
     countdown: {
       tag: 'CÙNG ĐẾM NGƯỢC KHOẢNH KHẮC ĐÁNG NHỚ',
+      heading: 'Đếm Ngược',
       title: 'Cùng Đếm Ngược Khoảnh Khắc Đáng Nhớ',
       subtitle: 'Từng khoảnh khắc trôi qua đưa chúng mình đến gần hơn với giờ phút thiêng liêng nhất',
+      seeYouSoon: 'Hẹn sớm gặp bạn!',
       days: 'NGÀY',
       hours: 'GIỜ',
       minutes: 'PHÚT',
@@ -157,6 +181,33 @@ export const translations = {
       fullDate: 'Chủ Nhật, 17 Tháng 01, 2027 • 11:20 AM',
       ceremonyNote: 'Lễ Vu Quy • Thu Hiền ♡ Đình Huy',
       celebratingText: 'Hôm nay là ngày trọng đại của chúng mình!',
+    },
+    scratch: {
+      promptLine1: 'Cào nhẹ để',
+      promptLine2: 'mở ảnh cưới',
+      revealedCaption: 'Khoảnh khắc chung đôi • Thu Hiền & Đình Huy',
+      tapFallback: 'Chạm mở nhanh',
+    },
+    theDay: {
+      headingTop: 'Lịch',
+      headingBottom: 'Trình',
+      intro: 'Một ngày chung vui trọn vẹn, từ phút giây đón khách đến bữa tiệc thân mật.',
+      items: [
+        { time: '10:30 AM', title: 'ĐÓN TIẾP QUAN KHÁCH', detail: 'Đón khách, dùng trà bánh & chụp ảnh lưu niệm tại gia đình' },
+        { time: '11:20 AM', title: 'NGHI LỄ VU QUY', detail: 'Khai tiệc & nghi thức gia tiên trang trọng trước hai họ' },
+        { time: '11:45 AM', title: 'TIỆC MỪNG THÂN MẬT', detail: 'Cùng nâng ly chúc phúc và chung vui bên gia đình, bạn bè' },
+      ],
+    },
+    transportation: {
+      heading: 'Đón Tiếp & Di Chuyển',
+      stamp1: 'LỄ VU QUY',
+      stamp2: '17 · 01 · 2027',
+      stampNames: 'Hiền & Huy',
+      stamp3: 'ĐỒNG NAI',
+      para1: 'Để hành trình đến chung vui cùng hai gia đình được thuận tiện và thoải mái nhất:',
+      para2: 'Lễ Vu Quy được tổ chức tại Tư Gia Nhà Gái — 1322/768, Phường Trảng Dài, Thành Phố Đồng Nai, với khu vực đón tiếp và chỗ đỗ xe rộng rãi cho cả ô tô lẫn xe máy.',
+      para3: 'Gia đình kính mời quý khách thu xếp đến từ 10:30 AM ngày Chủ Nhật 17.01.2027 (tức 10/12 năm Bính Ngọ) để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc.',
+      pickupBtn: 'XEM VỊ TRÍ ĐÓN TIẾP',
     },
     video: {
       tag: 'THƯỚC PHIM KỶ NIỆM',
@@ -171,6 +222,10 @@ export const translations = {
       title: 'Album Ảnh Cưới',
       expandBtn: 'Phóng To Ảnh',
       intro: 'Những khoảnh khắc đong đầy yêu thương của Thu Hiền & Đình Huy.',
+      carouselLabel: 'Album ảnh cưới 3D',
+      closeLabel: 'Đóng xem ảnh',
+      prevLabel: 'Ảnh trước',
+      nextLabel: 'Ảnh tiếp theo',
       categories: {
         all: 'Tất Cả',
         'grand-hall': 'Sảnh Hoàng Gia',
@@ -188,14 +243,20 @@ export const translations = {
     },
     venue: {
       tag: 'ĐỊA ĐIỂM TỔ CHỨC',
+      heading: 'Địa Điểm',
       title: 'Nơi Hạnh Phúc Đơm Hoa',
       brideVenueTag: 'Địa điểm tổ chức Lễ Vu Quy (Bên Nhà Gái)',
       hall: 'Tư Gia Nhà Gái',
+      regionCaps: 'PHƯỜNG TRẢNG DÀI, ĐỒNG NAI',
+      para1: 'Tọa lạc tại không gian ấm cúng của gia đình tại Phường Trảng Dài, Đồng Nai, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của ngày Lễ Vu Quy.',
+      para2: 'Gia đình kính mời quý khách đến sớm ít phút để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ bắt đầu.',
       timeTitle: 'Thời Gian Tổ Chức',
       timeDetail: '11:20 AM, Chủ Nhật — 17.01.2027',
       addressTitle: 'Địa Chỉ Tổ Chức',
       addressText: '1322/768, Phường Trảng Dài, Thành Phố Đồng Nai',
-      mapsBtn: 'CHỈ ĐƯỜNG GOOGLE MAPS',
+      mapsBtn: 'CHỈ ĐƯỜNG',
+      toggleMapShow: 'Xem bản đồ trực tiếp',
+      toggleMapHide: 'Thu gọn bản đồ',
       coordinatesLabel: 'Tọa độ',
       schedule: [
         '10:30 - Đón tiếp quan khách & Chụp ảnh lưu niệm',
@@ -226,7 +287,7 @@ export const translations = {
       sideGroom: 'Nhà Trai (Chú Rể)',
       sideMutual: 'Cả hai (Bạn chung)',
       messageLabel: 'Gửi lời chúc mừng đến cặp đôi',
-      messagePlaceholder: 'Gửi những lời chúc phúc ấm áp nhất đến Thu Hiền & Đình Huy...',
+      messagePlaceholder: 'Gửi lời chúc mừng...',
       submitBtn: 'TÔI SẼ ĐẾN CHUNG VUI',
       confirming: 'Đang gửi xác nhận...',
       validationNameRequired: 'Vui lòng nhập họ và tên của bạn',
@@ -273,6 +334,7 @@ export const translations = {
       backToTop: 'Quay lên đầu trang',
       musicPlay: 'Phát nhạc nền',
       musicMute: 'Tắt nhạc nền',
+      defaultTrack: 'Nhạc Cưới',
     },
     nav: {
       story: 'CÂU CHUYỆN',
@@ -286,7 +348,12 @@ export const translations = {
     },
     footer: {
       quote: '“Cảm ơn bạn đã luôn là một phần trân quý trong hành trình hạnh phúc của chúng mình.”',
-      tagline: 'Lễ Vu Quy • Gửi trọn yêu thương cho ngày hạnh phúc trăm năm',
+      tagline: 'Gửi trọn yêu thương cho ngày hạnh phúc trăm năm',
+    },
+    notFound: {
+      title: 'Trang Không Tồn Tại',
+      description: 'Trang bạn tìm kiếm không tồn tại hoặc đã được chuyển hướng. Mời bạn trở về trang thiệp cưới chính.',
+      backHome: 'Về Trang Thiệp Cưới',
     },
   },
 
@@ -306,9 +373,11 @@ export const translations = {
       audioNote: '(Romantic background melody plays automatically upon opening)',
     },
     hero: {
-      subtitle: 'WE ARE GETTING MARRIED',
+      subtitle: 'Save the Date',
       scroll: 'Scroll to explore',
-      date: '17 · 01 · 2027',
+      date: '17.01.2027',
+      venueTitle: "Bride's Family Residence",
+      cityCaps: 'TRANG DAI, DONG NAI',
     },
     formal: {
       saveTheDate: 'SAVE THE DATE • CORDIALLY INVITED',
@@ -409,8 +478,10 @@ export const translations = {
     },
     countdown: {
       tag: 'COUNTING DOWN TO OUR MEMORABLE MOMENT',
+      heading: 'Countdown',
       title: 'Counting Down to Our Memorable Moment',
       subtitle: 'Every passing second brings us closer to the most sacred moment of our lives',
+      seeYouSoon: 'See you soon!',
       days: 'DAYS',
       hours: 'HOURS',
       minutes: 'MINUTES',
@@ -418,6 +489,33 @@ export const translations = {
       fullDate: 'Sunday, January 17, 2027 • 11:20 AM',
       ceremonyNote: "Bride's Ceremony • Thu Hien ♡ Dinh Huy",
       celebratingText: 'Today we celebrate our wedding day!',
+    },
+    scratch: {
+      promptLine1: 'Scratch',
+      promptLine2: 'to reveal',
+      revealedCaption: 'Cherished Moments • Thu Hien & Dinh Huy',
+      tapFallback: 'Tap to reveal',
+    },
+    theDay: {
+      headingTop: 'The',
+      headingBottom: 'Day',
+      intro: 'A day to celebrate, from the first hello to the warmest farewell.',
+      items: [
+        { time: '10:30 AM', title: 'WELCOME', detail: 'Warm reception, refreshments & commemorative photos' },
+        { time: '11:20 AM', title: 'CEREMONY', detail: 'Sacred wedding ceremony & ancestral blessings' },
+        { time: '11:45 AM', title: 'BANQUET', detail: 'Joyful wedding feast with both families & dear friends' },
+      ],
+    },
+    transportation: {
+      heading: 'Transportation',
+      stamp1: 'WEDDING DAY',
+      stamp2: '17 · 01 · 2027',
+      stampNames: 'Hien & Huy',
+      stamp3: 'DONG NAI',
+      para1: 'We want getting to and from the celebration to be as easy and pleasant as possible.',
+      para2: "Our ceremony takes place at the Bride's Family Residence — 1322/768, Trang Dai Ward, Dong Nai City, with welcoming reception and spacious parking for both cars and motorbikes.",
+      para3: 'We kindly recommend arriving from 10:30 AM on Sunday, January 17, 2027, giving you plenty of time to settle in before the ceremony begins.',
+      pickupBtn: 'VIEW PICK UP POINT',
     },
     video: {
       tag: 'CINEMATIC HIGHLIGHTS',
@@ -432,6 +530,10 @@ export const translations = {
       title: 'Wedding Photo Album',
       expandBtn: 'Expand Photo',
       intro: 'Cherished memories from our pre-wedding collection.',
+      carouselLabel: '3D Wedding Photo Slideshow',
+      closeLabel: 'Close photo viewer',
+      prevLabel: 'Previous photo',
+      nextLabel: 'Next photo',
       categories: {
         all: 'All Photos',
         'grand-hall': 'Royal Hall',
@@ -442,21 +544,27 @@ export const translations = {
       },
       hintDesktop: '✦ Click center photo to view fullscreen · Select side cards or swipe to explore ✦',
       hintMobile: '✦ Swipe left / right to browse photos · Tap photo for fullscreen ✦',
-      brideTitle: 'The Bride — Thu Hiền',
-      brideCaption: 'Nguyễn Thị Thu Hiền · 23/11/1999',
-      groomTitle: 'The Groom — Đình Huy',
-      groomCaption: 'Trần Lê Đình Huy · 14/10/1997',
+      brideTitle: 'The Bride — Thu Hien',
+      brideCaption: 'Nguyen Thi Thu Hien · 23/11/1999',
+      groomTitle: 'The Groom — Dinh Huy',
+      groomCaption: 'Tran Le Dinh Huy · 14/10/1997',
     },
     venue: {
       tag: 'WEDDING VENUE',
+      heading: 'Location',
       title: 'Where Love Blooms',
       brideVenueTag: "Bride's Family Wedding Ceremony Venue",
       hall: "Bride's Family Residence",
+      regionCaps: 'TRANG DAI, DONG NAI',
+      para1: "Set in the warm embrace of the Bride's family home in Trang Dai, Dong Nai, surrounded by loving family and heartfelt blessings for our celebration.",
+      para2: 'We recommend arriving a little early to settle in and enjoy the warm atmosphere before the ceremony begins.',
       timeTitle: 'Date & Time',
       timeDetail: '11:20 AM, Sunday — January 17, 2027',
       addressTitle: 'Venue Address',
       addressText: '1322/768, Trang Dai Ward, Dong Nai City, Vietnam',
-      mapsBtn: 'GET DIRECTIONS (GOOGLE MAPS)',
+      mapsBtn: 'GET DIRECTIONS',
+      toggleMapShow: 'Show interactive map',
+      toggleMapHide: 'Hide map',
       coordinatesLabel: 'Coordinates',
       schedule: [
         '10:30 AM - Welcome Guests & Commemorative Photos',
@@ -534,6 +642,7 @@ export const translations = {
       backToTop: 'Back to top',
       musicPlay: 'Play background music',
       musicMute: 'Mute background music',
+      defaultTrack: 'Wedding Melody',
     },
     nav: {
       story: 'OUR STORY',
@@ -549,13 +658,18 @@ export const translations = {
       quote: '“Thank you for being such a cherished part of our journey toward lifelong happiness.”',
       tagline: 'With All Our Love • Dedicated to our special wedding day',
     },
+    notFound: {
+      title: 'Page Not Found',
+      description: 'The page you are looking for does not exist or has been moved. Please return to the main wedding invitation.',
+      backHome: 'Back to Wedding Invitation',
+    },
   },
 
   zh: {
     langCode: '中文',
     htmlLang: 'zh-CN',
-    toggleLabel: 'Tiếng Việt',
-    pageTitle: '婚礼请柬 | Thu Hiền & Đình Huy • 2027.01.17',
+    toggleLabel: '越南语',
+    pageTitle: `婚礼请柬｜${chineseNames.bride.shortName}与${chineseNames.groom.shortName} · 2027.01.17`,
     envelope: {
       header: '归宁喜宴请柬',
       subHeader: '喜结良缘 • 诚挚邀请',
@@ -567,9 +681,11 @@ export const translations = {
       audioNote: '（开启请柬后将自动播放浪漫婚礼音乐）',
     },
     hero: {
-      subtitle: '归宁喜宴 • 喜结良缘',
+      subtitle: 'Save the Date',
       scroll: '向下滑动探索',
-      date: '17 · 01 · 2027',
+      date: '17.01.2027',
+      venueTitle: '女方府邸',
+      cityCaps: '越南同奈市 · 长台坊',
     },
     formal: {
       saveTheDate: '良辰吉日 • 诚挚邀请',
@@ -577,14 +693,14 @@ export const translations = {
       welcome: '谨詹于良辰吉日，为小女与佳婿举行归宁喜宴，诚挚敬邀您莅临共襄盛举',
       brideSide: '女方家长',
       brideSideTitle: '女方家长',
-      brideFather: '父：Nguyễn Thanh Tâm',
-      brideMother: '母：Nguyễn Xuân Mai',
-      brideParents: 'Nguyễn Thanh Tâm 先生 & Nguyễn Xuân Mai 女士',
+      brideFather: `父：${chineseNames.bride.father}`,
+      brideMother: `母：${chineseNames.bride.mother}`,
+      brideParents: `${chineseNames.bride.father}先生与${chineseNames.bride.mother}女士`,
       groomSide: '男方家长',
       groomSideTitle: '男方家长',
-      groomFather: '父：Trần Đình Lý',
-      groomMother: '母：Lê Thị Kim Dung',
-      groomParents: 'Trần Đình Lý 先生 & Lê Thị Kim Dung 女士',
+      groomFather: `父：${chineseNames.groom.father}`,
+      groomMother: `母：${chineseNames.groom.mother}`,
+      groomParents: `${chineseNames.groom.father}先生与${chineseNames.groom.mother}女士`,
       brideRole: '新娘',
       groomRole: '新郎',
       dob: '出生日期：',
@@ -603,15 +719,15 @@ export const translations = {
       lunarDate: '（农历丙午年腊月初十）',
       venueIntro: '席设于',
       venueHostName: '女方府邸',
-      venueAddress: '越南同奈市长台坊 1322/768 号 (1322/768, Phường Trảng Dài, Thành Phố Đồng Nai)',
+      venueAddress: '越南同奈市长台坊 1322/768 号',
       directionsBtn: '地图导航',
       receptionTag: '婚礼喜宴时间与地点',
       fullDate: '2027年01月17日（星期日）',
       time: '上午 11:20',
       venueName: '女方府邸',
       hallName: '同奈市',
-      address: '越南同奈市长台坊 1322/768 号 (1322/768, Phường Trảng Dài, Thành Phố Đồng Nai)',
-      rsvpBtn: '宾客出席回执 (RSVP)',
+      address: '越南同奈市长台坊 1322/768 号',
+      rsvpBtn: '宾客出席回执',
       mapsBtn: 'Google 地图导航',
       exploreBtn: '探索爱情故事',
     },
@@ -627,8 +743,8 @@ export const translations = {
       daughterOf: '女方父母：',
       groomDob: '1997/10/14',
       brideDob: '1999/11/23',
-      groomParents: 'Trần Đình Lý 先生 & Lê Thị Kim Dung 女士',
-      brideParents: 'Nguyễn Thanh Tâm 先生 & Nguyễn Xuân Mai 女士',
+      groomParents: `${chineseNames.groom.father}先生与${chineseNames.groom.mother}女士`,
+      brideParents: `${chineseNames.bride.father}先生与${chineseNames.bride.mother}女士`,
       groomBio: '真诚温暖、体贴稳重，珍视与家人及挚爱共度的每一刻平静时光。',
       brideBio: '温柔聪慧、充满阳光与正能量，总能为身边的人带来温暖的笑容。',
     },
@@ -664,27 +780,56 @@ export const translations = {
           year: '2027',
           title: '喜结连理',
           subtitle: '开启百年好合的幸福新篇',
-          description: '2027年01月17日，在双方家人与挚友的祝福声中，Thu Hiền 与 Đình Huy 正式携手步入婚姻殿堂。',
+          description: `2027年01月17日，在双方家人与挚友的祝福声中，${chineseNames.bride.shortName}与${chineseNames.groom.shortName}正式携手步入婚姻殿堂。`,
         },
       ],
     },
     countdown: {
       tag: '共同倒计时 • 见证难忘时刻',
+      heading: '婚礼倒计时',
       title: '共同倒计时 • 见证难忘时刻',
       subtitle: '每一秒的流转，都让我们离人生中最神圣幸福的时刻更近一步',
+      seeYouSoon: '期待与您相见！',
       days: '天',
       hours: '时',
       minutes: '分',
       seconds: '秒',
       fullDate: '2027年01月17日 星期日 • 上午 11:20',
-      ceremonyNote: '归宁喜宴 • Thu Hiền ♡ Đình Huy',
+      ceremonyNote: `归宁喜宴 · ${chineseNames.bride.shortName} ♡ ${chineseNames.groom.shortName}`,
       celebratingText: '今天是我们喜结良缘的大喜之日！',
+    },
+    scratch: {
+      promptLine1: '轻刮开启',
+      promptLine2: '新人合影',
+      revealedCaption: `幸福瞬间 · ${chineseNames.bride.shortName} & ${chineseNames.groom.shortName}`,
+      tapFallback: '轻触直接揭晓',
+    },
+    theDay: {
+      headingTop: '婚礼',
+      headingBottom: '流程',
+      intro: '良辰美景，从迎宾初见到举杯同庆的每一个珍贵时刻。',
+      items: [
+        { time: '10:30 AM', title: '迎宾签到', detail: '敬备茶点迎接亲友并合影留念' },
+        { time: '11:20 AM', title: '归宁典礼', detail: '庄重温馨的归宁仪式与双方家长祝福' },
+        { time: '11:45 AM', title: '喜宴开席', detail: '与至亲好友举杯共庆美好佳期' },
+      ],
+    },
+    transportation: {
+      heading: '交通与接待',
+      stamp1: '归宁喜宴',
+      stamp2: '17 · 01 · 2027',
+      stampNames: `${chineseNames.bride.shortName} & ${chineseNames.groom.shortName}`,
+      stamp3: '同奈市',
+      para1: '为了让您往返喜宴的旅程更加轻松顺畅：',
+      para2: '喜宴席设于女方府邸 — 越南同奈市长台坊 1322/768 号，现场设有专属迎宾接待区及宽敞停车位。',
+      para3: '诚邀您于 2027年01月17日（农历丙午年腊月初十）上午 10:30 起莅临入席，共赴喜悦之约。',
+      pickupBtn: '查看地图位置',
     },
     video: {
       tag: '纪念影像',
       title: '珍藏幸福瞬间',
       captionTitle: '相伴的美好时光',
-      captionText: '定格 Thu Hiền 与 Đình Huy 充满爱意的笑容、深情目光与浪漫旅程。',
+      captionText: `定格${chineseNames.bride.shortName}与${chineseNames.groom.shortName}充满爱意的笑容、深情目光与浪漫旅程。`,
       expandLabel: '横屏全屏播放',
       collapseLabel: '退出全屏',
     },
@@ -693,6 +838,10 @@ export const translations = {
       title: '婚纱纪念相册',
       expandBtn: '全屏查看',
       intro: '珍藏我们满满爱意的幸福瞬间。',
+      carouselLabel: '3D 婚纱照片轮播',
+      closeLabel: '关闭图片预览',
+      prevLabel: '上一张照片',
+      nextLabel: '下一张照片',
       categories: {
         all: '全部照片',
         'grand-hall': '古典殿堂',
@@ -703,21 +852,27 @@ export const translations = {
       },
       hintDesktop: '✦ 点击中间照片全屏欣赏 · 点击两侧照片或滑动切换 ✦',
       hintMobile: '✦ 左右滑动浏览照片 · 轻触照片全屏欣赏 ✦',
-      brideTitle: '新娘 — Thu Hiền',
-      brideCaption: 'Nguyễn Thị Thu Hiền · 1999/11/23',
-      groomTitle: '新郎 — Đình Huy',
-      groomCaption: 'Trần Lê Đình Huy · 1997/10/14',
+      brideTitle: `新娘 · ${chineseNames.bride.shortName}`,
+      brideCaption: `${chineseNames.bride.name} · 1999/11/23`,
+      groomTitle: `新郎 · ${chineseNames.groom.shortName}`,
+      groomCaption: `${chineseNames.groom.name} · 1997/10/14`,
     },
     venue: {
       tag: '喜宴地点',
+      heading: '喜宴地点',
       title: '幸福绽放之地',
       brideVenueTag: '归宁喜宴举办地点（女方府邸）',
       hall: '女方府邸',
+      regionCaps: '越南同奈市 · 长台坊',
+      para1: '席设于同奈市长台坊温馨典雅的女方府邸，鲜花与亲友的真挚祝福将伴随我们开启幸福新篇章。',
+      para2: '诚邀您提前少许莅临，合影留念并共度温馨愉悦的迎宾时光。',
       timeTitle: '举办时间',
       timeDetail: '2027年01月17日（星期日）上午 11:20',
       addressTitle: '喜宴地址',
-      addressText: '越南同奈市长台坊 1322/768 号 (1322/768, Phường Trảng Dài, Thành Phố Đồng Nai)',
-      mapsBtn: 'GOOGLE 地图导航',
+      addressText: '越南同奈市长台坊 1322/768 号',
+      mapsBtn: '地图导航',
+      toggleMapShow: '查看互动地图',
+      toggleMapHide: '收起地图',
       coordinatesLabel: '坐标',
       schedule: [
         '10:30 - 迎宾签到 & 合影留念',
@@ -737,10 +892,10 @@ export const translations = {
       before: '送上祝福 & 出席确认',
       quote: '“您的莅临与诚挚祝福，是我们全家人莫大的荣幸与喜悦。”',
       joining: '诚盼您的光临！',
-      formTitle: '出席回执确认 (RSVP)',
+      formTitle: '出席回执确认',
       formSubtitle: '为便于家人周全准备席位与招待，烦请您于 2027年01月05日 前确认出席。',
       nameLabel: '您的姓名 *',
-      namePlaceholder: '例如：王伟 / 李明 / Chen Wei',
+      namePlaceholder: '例如：王伟、李明',
       locationLabel: '您来自哪里？（城市 / 地区）*',
       locationPlaceholder: '例如：胡志明市、同奈、上海、深圳、台北',
       sideLabel: '您是哪一方的宾客？*',
@@ -748,7 +903,7 @@ export const translations = {
       sideGroom: '男方亲友（新郎方）',
       sideMutual: '双方共同好友',
       messageLabel: '送给新人的祝福寄语',
-      messagePlaceholder: '写下您对 Thu Hiền & Đình Huy 最温暖的新婚祝福...',
+      messagePlaceholder: '请写下您送给新人的新婚祝福…',
       submitBtn: '确认出席喜宴',
       confirming: '正在提交回执...',
       validationNameRequired: '请输入您的姓名',
@@ -795,6 +950,7 @@ export const translations = {
       backToTop: '返回顶部',
       musicPlay: '播放背景音乐',
       musicMute: '静音背景音乐',
+      defaultTrack: '婚礼配乐',
     },
     nav: {
       story: '爱情故事',
@@ -808,7 +964,12 @@ export const translations = {
     },
     footer: {
       quote: '“感谢您成为我们迈向幸福婚姻旅途中珍贵而温暖的一部分。”',
-      tagline: '归宁喜宴 • 执子之手，与子偕老',
+      tagline: '执子之手，与子偕老',
+    },
+    notFound: {
+      title: '页面不存在',
+      description: '您访问的页面不存在或已被移动，请返回主婚礼请柬页面。',
+      backHome: '返回婚礼请柬',
     },
   },
 };
@@ -849,9 +1010,15 @@ export function LanguageProvider({ children }) {
   };
 
   const t = translations[language] || translations.vi;
+  const { bride, groom } =
+    language === 'zh'
+      ? chineseCouple
+      : language === 'en'
+        ? englishCouple
+        : weddingConfig;
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t, bride, groom }}>
       {children}
     </LanguageContext.Provider>
   );

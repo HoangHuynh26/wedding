@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
 
 html,
 body {
   margin: 0;
   padding: 0;
+  background-color: #dad0d8;
+  color: #453e4b;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -17,14 +19,22 @@ body::-webkit-scrollbar {
   position: relative;
   width: 100%;
   overflow-x: hidden;
+  background-color: #e6dfe6;
 }
 
 .wedding-front {
   --wedding-serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
-  --wedding-sans: 'Be Vietnam Pro', 'Noto Sans SC', system-ui, sans-serif;
+  --wedding-sans: 'Montserrat', 'Be Vietnam Pro', 'Noto Sans SC', system-ui, sans-serif;
+  --wedding-names: 'Great Vibes', 'Pinyon Script', 'Alex Brush', cursive;
+  --wedding-mauve: #dad0d8;
+  --wedding-slate: #6b7084;
+  --wedding-ink: #453e4b;
+  --wedding-ink-soft: #635a6b;
+  position: relative;
+  width: 100%;
 }
 
 :where(.wedding-front) :focus-visible {
-  outline: 2px solid #826442;
+  outline: 2px solid #6b7084;
   outline-offset: 4px;
 }

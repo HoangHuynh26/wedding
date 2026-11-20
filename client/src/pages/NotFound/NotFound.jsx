@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function NotFound() {
+  const { t } = useLanguage();
+  const nf = t.notFound || {};
+
   return (
     <div
       style={{
@@ -51,7 +55,7 @@ export default function NotFound() {
           marginBottom: '1rem',
         }}
       >
-        Trang Không Tồn Tại / Page Not Found
+        {nf.title || 'Trang Không Tồn Tại'}
       </p>
 
       <p
@@ -62,7 +66,7 @@ export default function NotFound() {
           fontSize: '0.95rem',
         }}
       >
-        Trang bạn tìm kiếm không tồn tại hoặc đã được chuyển hướng. Mời bạn trở về trang thiệp cưới chính.
+        {nf.description || 'Trang bạn tìm kiếm không tồn tại hoặc đã được chuyển hướng. Mời bạn trở về trang thiệp cưới chính.'}
       </p>
 
       <Link
@@ -81,7 +85,7 @@ export default function NotFound() {
           fontSize: '0.82rem',
         }}
       >
-        Về Trang Thiệp Cưới
+        {nf.backHome || 'Về Trang Thiệp Cưới'}
       </Link>
     </div>
   );

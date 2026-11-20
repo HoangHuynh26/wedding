@@ -21,8 +21,8 @@ const PHOTO_I18N = {
     10: ['Take My Hand', 'Every step forward leads into our shared future'],
     11: ['Serene Balcony Moments', 'Quiet, affectionate conversations overlooking the hall'],
     12: ['Gentle Whispers', 'Little stories that create a lifetime of happiness'],
-    13: ['Dashing Groom', 'Warm and refined portrait of Groom Đình Huy'],
-    14: ['Radiant Bride', 'Graceful beauty and bright smile of Bride Thu Hiền'],
+    13: ['Dashing Groom', 'Warm and refined portrait of Groom Dinh Huy'],
+    14: ['Radiant Bride', 'Graceful beauty and bright smile of Bride Thu Hien'],
     15: ['By the Arched Window', 'Timeless elegance bathed in natural sunlight'],
     16: ['Bright Smiles', 'Joyful laughter lighting up the entire hall'],
     17: ['Hand in Hand', 'Holding hands tightly through every chapter of life'],
@@ -38,7 +38,7 @@ const PHOTO_I18N = {
     27: ['Sunlit Laughter', 'Pure, candid, and heartfelt joy together'],
     28: ['Playful Moments', 'Sweet and lighthearted memories of just the two of us'],
     29: ['Stepping Forward', 'Looking ahead toward a bright tomorrow'],
-    30: ['Refined Poise', 'Gentle poise and sincerity of Groom Đình Huy'],
+    30: ['Refined Poise', 'Gentle poise and sincerity of Groom Dinh Huy'],
     31: ['Graceful Ao Dai', 'Timeless Vietnamese white Ao Dai paired with a bridal veil'],
     32: ['Pure Vietnamese Charm', 'Gentle, graceful portrait in traditional attire'],
     33: ['Lifelong Bond', 'Where cherished tradition meets modern love'],
@@ -49,7 +49,7 @@ const PHOTO_I18N = {
     38: ['Artistic Moment', 'Time passes by, yet true love remains timeless'],
     39: ['Timeless Poise', 'Poised and luminous in every delicate detail'],
     40: ['Forever Vow', 'Arm in arm stepping into a joyful marriage'],
-    41: ['Wedding Photobook Cover', 'Opening page of Thu Hiền & Đình Huy’s love story'],
+    41: ['Wedding Photobook Cover', 'Opening page of Thu Hien & Dinh Huy’s love story'],
   },
   zh: {
     1: ['并肩同行', '在古典殿堂中携手步入幸福时刻'],
@@ -64,8 +64,8 @@ const PHOTO_I18N = {
     10: ['执子之手', '每一级台阶都延伸向共同的未来'],
     11: ['露台絮语', '凭栏相依，细语温柔时光'],
     12: ['轻声呢喃', '点滴温暖汇聚成一生的幸福'],
-    13: ['温润新郎', '新郎 Đình Huy 帅气温暖的肖像'],
-    14: ['明艳新娘', '新娘 Thu Hiền 温婉动人的笑容'],
+    13: ['温润新郎', '新郎温暖俊朗的肖像'],
+    14: ['明艳新娘', '新娘温婉动人的笑容'],
     15: ['拱窗沐光', '沐浴在柔和阳光下的优雅身影'],
     16: ['笑靥如花', '灿烂笑容点亮整座礼堂'],
     17: ['十指紧扣', '紧握双手，共度岁月漫长'],
@@ -81,7 +81,7 @@ const PHOTO_I18N = {
     27: ['阳光笑颜', '最自然、最真挚的快乐时光'],
     28: ['俏皮甜蜜', '属于两人的轻松可爱瞬间'],
     29: ['笃定前行', '意气风发迈向美好未来'],
-    30: ['儒雅风度', '新郎 Đình Huy 沉稳温雅的气质'],
+    30: ['儒雅风度', '新郎沉稳温雅的气质'],
     31: ['优雅奥黛', '越南传统白色奥黛与头纱的柔美结合'],
     32: ['东方温婉', '纯净柔美的传统新娘风采'],
     33: ['百年好合', '传统礼韵与现代爱情的美好交融'],
@@ -92,12 +92,12 @@ const PHOTO_I18N = {
     38: ['光影艺术', '时光流转，唯有真爱恒久留存'],
     39: ['高雅风姿', '举手投足间的从容与优雅'],
     40: ['白首之约', '挽手步入圆满幸福的婚姻殿堂'],
-    41: ['精装相册封面', '开启 Thu Hiền & Đình Huy 的幸福篇章'],
+    41: ['精装相册封面', '开启新人的幸福篇章'],
   },
 };
 
 export default function Gallery() {
-  const { t, language } = useLanguage();
+  const { t, language, bride, groom } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(null);
@@ -112,49 +112,18 @@ export default function Gallery() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Assemble full photo collection — Bride first, Groom second (Lễ Vu Quy)
+  // Assemble full photo collection — strictly all 40 studio "file le" photos (Couple shots first, AB 15 TO excluded)
   const allPhotos = useMemo(() => {
-    const brideTitle = t.gallery.brideTitle;
-    const brideCaption = t.gallery.brideCaption;
-    const groomTitle = t.gallery.groomTitle;
-    const groomCaption = t.gallery.groomCaption;
-
-    const basePhotos = [
-      {
-        src: '/bride.jpg',
-        image: { src: '/bride.jpg', alt: brideTitle },
-        title: brideTitle,
-        caption: brideCaption,
-        category: 'grand-hall',
-      },
-      {
-        src: '/groom.jpg',
-        image: { src: '/groom.jpg', alt: groomTitle },
-        title: groomTitle,
-        caption: groomCaption,
-        category: 'grand-hall',
-      },
-    ];
-
-    const albumPhotos = weddingConfig.gallery.map((photo) => {
-      let localizedTitle = photo.title || 'Thu Hiền & Đình Huy';
-      let localizedCaption = photo.caption || '';
+    const coupleFallback = `${bride.shortName} & ${groom.shortName}`;
+    return weddingConfig.gallery.map((photo) => {
+      let localizedTitle = language === 'zh' ? '婚纱纪念照' : photo.title || coupleFallback;
+      let localizedCaption = language === 'zh' ? '' : photo.caption || '';
 
       if (language === 'en' || language === 'zh') {
         const entry = PHOTO_I18N[language]?.[photo.id];
         if (entry) {
           localizedTitle = entry[0];
           localizedCaption = entry[1];
-        } else if (photo.id >= 42) {
-          const pageNo = String(photo.id - 41).padStart(2, '0');
-          localizedTitle =
-            language === 'zh'
-              ? `精装相册第 ${pageNo} 页`
-              : `Wedding Photobook Spread ${pageNo}`;
-          localizedCaption =
-            language === 'zh'
-              ? 'Thu Hiền & Đình Huy 婚纱纪念特辑'
-              : 'Curated studio wedding album spread — Thu Hiền & Đình Huy';
         }
       }
 
@@ -164,11 +133,10 @@ export default function Gallery() {
         title: localizedTitle,
         caption: localizedCaption,
         category: photo.category || 'grand-hall',
+        position: photo.position || '50% 28%',
       };
     });
-
-    return [...basePhotos, ...albumPhotos];
-  }, [t, language]);
+  }, [language, bride.shortName, groom.shortName]);
 
   // Filter photos by active category
   const filteredPhotos = useMemo(() => {
@@ -176,7 +144,7 @@ export default function Gallery() {
     return allPhotos.filter((item) => item.category === selectedCategory);
   }, [allPhotos, selectedCategory]);
 
-  // Categories with localized labels & counts
+  // Categories with localized labels & counts (AB 15 TO album spread category removed)
   const categories = useMemo(() => {
     const catLabels = t.gallery.categories || {};
     return [
@@ -200,11 +168,6 @@ export default function Gallery() {
         key: 'artistic',
         label: catLabels.artistic || 'Nghệ Thuật',
         count: allPhotos.filter((p) => p.category === 'artistic').length,
-      },
-      {
-        key: 'album',
-        label: catLabels.album || 'Sách Album Cưới',
-        count: allPhotos.filter((p) => p.category === 'album').length,
       },
     ];
   }, [t, allPhotos]);
@@ -296,29 +259,12 @@ export default function Gallery() {
   const currentLightboxPhoto = lightboxIndex !== null ? filteredPhotos[lightboxIndex] : null;
 
   return (
-    <section className={`section ${styles.gallerySection}`} id="gallery" aria-label="Photo Gallery">
+    <section className={`section ${styles.gallerySection}`} id="gallery" aria-label={t.gallery.title}>
       <div className="container">
         {/* Section Header */}
         <div className="section-header">
           <h2 className="section-title">{t.gallery.title}</h2>
           <p className={styles.galleryIntroText}>{t.gallery.intro}</p>
-        </div>
-
-        {/* Category Filter Tabs */}
-        <div className={styles.categoryFilterBar} role="tablist" aria-label="Gallery Categories">
-          {categories.map((cat) => (
-            <button
-              key={cat.key}
-              type="button"
-              role="tab"
-              aria-selected={selectedCategory === cat.key}
-              className={`${styles.categoryBtn} ${selectedCategory === cat.key ? styles.categoryBtnActive : ''}`}
-              onClick={() => handleCategoryChange(cat.key)}
-            >
-              <span>{cat.label}</span>
-              <span className={styles.categoryCount}>({cat.count})</span>
-            </button>
-          ))}
         </div>
 
         {/* 3D Coverflow Slideshow (Swipe-only on mobile, no arrows & no counter) */}
@@ -329,6 +275,14 @@ export default function Gallery() {
             onActiveIndexChange={setActiveIndex}
             onOpenLightbox={openLightbox}
             showControls={true}
+            autoplay={lightboxIndex === null}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 4 }}
+            labels={{
+              carousel: t.gallery.carouselLabel,
+              expand: t.gallery.expandBtn,
+              prev: t.gallery.prevLabel,
+              next: t.gallery.nextLabel,
+            }}
           />
         </div>
       </div>
@@ -351,7 +305,7 @@ export default function Gallery() {
             <button
               className={styles.closeButton}
               onClick={closeLightbox}
-              aria-label="Close photo viewer"
+              aria-label={t.gallery.closeLabel || 'Close photo viewer'}
             >
               <X size={24} />
             </button>
@@ -362,7 +316,7 @@ export default function Gallery() {
                 <button
                   className={`${styles.navButton} ${styles.prevButton}`}
                   onClick={showPrevLightbox}
-                  aria-label="Previous photo"
+                  aria-label={t.gallery.prevLabel || 'Previous photo'}
                 >
                   <ChevronLeft size={30} />
                 </button>
@@ -370,7 +324,7 @@ export default function Gallery() {
                 <button
                   className={`${styles.navButton} ${styles.nextButton}`}
                   onClick={showNextLightbox}
-                  aria-label="Next photo"
+                  aria-label={t.gallery.nextLabel || 'Next photo'}
                 >
                   <ChevronRight size={30} />
                 </button>
@@ -390,18 +344,14 @@ export default function Gallery() {
                 />
               </div>
 
-              {/* Lightbox Info Bar */}
-              <div className={styles.lightboxInfo}>
-                {!isMobile && (
+              {/* Lightbox Info Bar (Counter only on desktop) */}
+              {!isMobile && (
+                <div className={styles.lightboxInfo}>
                   <div className={styles.lightboxCounter}>
                     {String(lightboxIndex + 1).padStart(2, '0')} / {String(filteredPhotos.length).padStart(2, '0')}
                   </div>
-                )}
-                <h4 className={styles.lightboxTitle}>{currentLightboxPhoto.title}</h4>
-                {currentLightboxPhoto.caption && (
-                  <p className={styles.lightboxCaption}>{currentLightboxPhoto.caption}</p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

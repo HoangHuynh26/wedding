@@ -4,16 +4,16 @@
    ═══════════════════════════════════════════════ */
 
 .gallerySection {
-  background: linear-gradient(180deg, var(--bg-section-alt, #faf7f2) 0%, var(--bg-dark-secondary, #f4ede4) 100%);
+  background: linear-gradient(180deg, #e2dae3 0%, #dcd3de 100%);
   position: relative;
   overflow: hidden;
-  padding: 4rem 0 3.5rem;
+  padding: 4.5rem 0 4rem;
 }
 
 .galleryIntroText {
   max-width: 680px;
   margin: 0.5rem auto 1.5rem;
-  color: var(--text-dark-secondary, #64748b);
+  color: #62596a;
   font-size: 0.95rem;
   text-align: center;
   line-height: 1.6;
@@ -34,15 +34,15 @@
 }
 
 .categoryBtn {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(246, 241, 247, 0.8);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(212, 168, 83, 0.3);
-  color: var(--text-dark-secondary, #475569);
+  border: 1px solid rgba(114, 102, 122, 0.3);
+  color: #5b5264;
   font-family: var(--font-sans, inherit);
   font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   padding: 0.45rem 0.95rem;
   border-radius: 999px;
   cursor: pointer;
@@ -50,27 +50,27 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 2px 6px rgba(58, 48, 66, 0.05);
 }
 
 .categoryBtn:hover {
-  background: #ffffff;
-  color: var(--text-dark, #0f172a);
-  border-color: var(--gold-secondary, #d4a853);
+  background: #f5f0f6;
+  color: #453e4b;
+  border-color: #6b7084;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 168, 83, 0.15);
+  box-shadow: 0 4px 12px rgba(96, 86, 110, 0.16);
 }
 
 .categoryBtnActive {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: #ffffff;
-  border-color: #0f172a;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+  background: linear-gradient(135deg, #6d7286 0%, #585d70 100%);
+  color: #f6f2f6;
+  border-color: #585d70;
+  box-shadow: 0 6px 18px rgba(68, 62, 82, 0.24);
 }
 
 .categoryBtnActive:hover {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #6d7286 0%, #585d70 100%);
+  color: #f6f2f6;
 }
 
 .categoryCount {
@@ -121,8 +121,8 @@
 
 .frameBadgeOverlay {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 10px;
+  right: 10px;
   z-index: 20;
   display: flex;
   align-items: center;
@@ -135,30 +135,69 @@
 }
 
 .expandIconBtn {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  width: 32px;
-  height: 32px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #453e4b;
+  width: 30px;
+  height: 30px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  display: flex;
+  border: 1px solid rgba(107, 112, 132, 0.24);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
+}
+
+.expandIconBtn svg {
+  width: 13px;
+  height: 13px;
 }
 
 .expandIconBtn:hover {
-  background: rgba(15, 23, 42, 0.9);
-  border-color: rgba(212, 168, 83, 0.8);
-  color: #fce7b2;
+  background: #ffffff;
+  border-color: #6b7084;
+  color: #2f2836;
   transform: scale(1.08);
 }
 
-/* Main Photo Navigation Overlay Arrows */
+@media (min-width: 641px) {
+  .frameBadgeOverlay {
+    top: 12px;
+    right: 12px;
+  }
+
+  .expandIconBtn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .expandIconBtn svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .expandIconBtn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .expandIconBtn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Main Photo Navigation Arrows flanked cleanly to Left & Right OUTSIDE the photos */
 .mainNavBtn {
   position: absolute;
   top: 50%;
@@ -167,25 +206,23 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid rgba(107, 112, 132, 0.28);
+  color: #4b4252;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
   pointer-events: auto;
 }
 
 .mainNavBtn:hover {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: rgba(212, 168, 83, 0.8);
-  color: #fce7b2;
-  transform: translateY(-50%) scale(1.1);
+  background: #ffffff;
+  border-color: #6b7084;
+  color: #2f2836;
+  transform: translateY(-50%) scale(1.08);
 }
 
 .mainNavBtn:active {
@@ -193,11 +230,11 @@
 }
 
 .mainNavPrev {
-  left: 14px;
+  left: 4px;
 }
 
 .mainNavNext {
-  right: 14px;
+  right: 4px;
 }
 
 /* ═══════════════════════════════════════════════
@@ -215,7 +252,7 @@
   font-family: var(--font-serif, "Cinzel", Georgia, serif);
   font-size: 1.35rem;
   font-weight: 600;
-  color: var(--text-dark, #0f172a);
+  color: var(--text-dark, #453e4b);
   letter-spacing: 0.04em;
   margin: 0 0 0.35rem;
 }
@@ -246,7 +283,7 @@
 .lightboxBackdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(5, 4, 3, 0.96);
+  background-color: rgba(34, 30, 42, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 10000;
@@ -270,10 +307,10 @@
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius-md, 12px);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 168, 83, 0.2);
-  border: 1px solid rgba(212, 168, 83, 0.35);
+  box-shadow: 0 25px 80px rgba(24, 20, 32, 0.8), 0 0 40px rgba(206, 190, 206, 0.22);
+  border: 1px solid rgba(232, 222, 234, 0.38);
   cursor: zoom-in;
-  max-height: 74vh;
+  max-height: 80vh;
 }
 
 .lightboxImageWrapper.isZoomed {
@@ -282,7 +319,7 @@
 
 .lightboxImg {
   max-width: 100%;
-  max-height: 74vh;
+  max-height: 80vh;
   object-fit: contain;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -295,24 +332,24 @@
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(69, 62, 75, 0.72);
+  border: 1px solid rgba(244, 238, 245, 0.35);
   border-radius: 50%;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: #f6f2f6;
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 1010;
 }
 
 .closeButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(212, 168, 83, 0.8);
-  color: #fce7b2;
+  background: rgba(107, 112, 132, 0.85);
+  border-color: rgba(244, 238, 245, 0.8);
+  color: #ffffff;
   transform: rotate(90deg) scale(1.05);
 }
 
@@ -320,24 +357,24 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(69, 62, 75, 0.65);
+  border: 1px solid rgba(244, 238, 245, 0.35);
   border-radius: 50%;
   width: 52px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: #f6f2f6;
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 1010;
 }
 
 .navButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(212, 168, 83, 0.8);
-  color: #fce7b2;
+  background: rgba(107, 112, 132, 0.85);
+  border-color: rgba(244, 238, 245, 0.8);
+  color: #ffffff;
   transform: translateY(-50%) scale(1.08);
 }
 
@@ -350,16 +387,16 @@
 }
 
 .lightboxInfo {
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   text-align: center;
-  color: #ffffff;
+  color: #f6f2f6;
 }
 
 .lightboxCounter {
-  font-size: 0.8rem;
-  color: var(--gold-secondary, #d4a853);
-  letter-spacing: 0.15em;
-  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: #dfd4e2;
+  letter-spacing: 0.16em;
+  margin: 0;
 }
 
 .lightboxTitle {
@@ -375,9 +412,35 @@
   margin: 0.25rem 0 0;
 }
 
+/* Compact, refined gallery proportions on Desktop & Laptop */
+@media (min-width: 1024px) {
+  .gallerySection {
+    padding: 3.1rem 0 3rem;
+  }
+
+  .gallerySection :global(.section-header) {
+    margin-bottom: 1.5rem;
+  }
+
+  .gallerySection :global(.section-title) {
+    font-size: 2.35rem;
+  }
+
+  .galleryIntroText {
+    margin: 0.35rem auto 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .albumContainer {
+    max-width: 1140px;
+  }
+}
+
 /* Mobile & iPad / Tablet touch-first requirement:
    Hide left/right buttons & image counters, touch swipe left/right only, hide count numbers */
-@media (max-width: 1366px), (hover: none) and (pointer: coarse) {
+@media (max-width: 1023px),
+(hover: none) and (pointer: coarse) {
+
   .navButton,
   .mainNavBtn,
   .counterBadge,
@@ -385,14 +448,17 @@
   .categoryCount {
     display: none !important;
   }
+
   .coverflowRoot {
     perspective: none !important;
     -webkit-perspective: none !important;
   }
+
   .coverflowStage {
     transform-style: flat !important;
     -webkit-transform-style: flat !important;
   }
+
   .coverflowCard {
     transform-style: flat !important;
     -webkit-transform-style: flat !important;
@@ -401,27 +467,41 @@
   }
 }
 
-/* Tablet & iPad Pro (11", 12.9", 13") Typography & Layout */
-@media (min-width: 641px) and (max-width: 1366px) {
+/* Tablet Portrait Typography & Layout */
+@media (min-width: 641px) and (max-width: 1023px) {
   .gallerySection {
-    padding: 4.5rem 0 3.5rem;
+    padding: 3.75rem 0 3.25rem;
   }
+
   .categoryFilterBar {
     gap: 0.65rem;
     margin-bottom: 1.6rem;
     justify-content: center;
   }
+
   .categoryBtn {
     font-size: 0.95rem;
     padding: 0.55rem 1.25rem;
     border-radius: 999px;
   }
+
   .photoTitle {
     font-size: 1.35rem;
   }
+
   .galleryHint {
     font-size: 0.85rem;
     line-height: 1.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .coverflowCard,
+  .expandIconBtn,
+  .categoryBtn,
+  .categoryBtnActive,
+  .lightboxImageWrapper {
+    box-shadow: none !important;
   }
 }
 
@@ -429,17 +509,21 @@
   .gallerySection {
     padding: 3rem 0 2.5rem;
   }
+
   .categoryFilterBar {
     gap: 0.35rem;
     margin-bottom: 0.9rem;
   }
+
   .categoryBtn {
     font-size: 0.76rem;
     padding: 0.38rem 0.75rem;
   }
+
   .photoTitle {
     font-size: 1.15rem;
   }
+
   .galleryHint {
     font-size: 0.72rem;
     padding: 0 1rem;

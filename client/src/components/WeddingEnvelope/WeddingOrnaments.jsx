@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function WeddingMonogram({ className, alt = 'Monogram Logo HH' }) {
+export function WeddingMonogram({ className, alt = '' }) {
   return (
     <img
       src="/logo.png"

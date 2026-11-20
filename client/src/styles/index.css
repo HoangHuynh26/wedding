@@ -79,12 +79,12 @@ img, video {
    ═══════════════════════════════════════════════ */
 
 ::selection {
-  background-color: rgba(148, 163, 184, 0.35);
+  background-color: rgba(143, 126, 137, 0.35);
   color: var(--text-dark);
 }
 
 :focus-visible {
-  outline: 2px solid var(--silver-primary);
+  outline: 2px solid var(--slate-plum);
   outline-offset: 3px;
 }
 
@@ -99,6 +99,13 @@ img, video {
   margin-right: auto;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -221,16 +228,16 @@ img, video {
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: #eae3ea;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.45);
+  background: rgba(107, 112, 132, 0.42);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.75);
+  background: rgba(69, 62, 75, 0.68);
 }
 
 /* ═══════════════════════════════════════════════

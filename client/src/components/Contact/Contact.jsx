@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, MessageCircle, Copy, Check } from 'lucide-react';
-import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './Contact.module.css';
 
 export default function Contact() {
-  const { groom, bride } = weddingConfig;
-  const { t } = useLanguage();
+  const { t, bride, groom } = useLanguage();
   const [toastMessage, setToastMessage] = useState('');
 
   const showToast = (msg) => {
