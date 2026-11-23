@@ -10,8 +10,8 @@ import styles from './TransportationPostcard.module.css';
  * & wavy postmark emblem, sweeping calligraphy heading, and double-bordered rectangular CTA.
  */
 export default function TransportationPostcard() {
-  const { venue } = weddingConfig;
-  const { t, language } = useLanguage();
+  const { t, language, venueConfig } = useLanguage();
+  const venue = venueConfig || weddingConfig.venue;
   const tr = t.transportation || {};
   const stampSansFont = language === 'zh' ? '"Noto Sans SC", Montserrat, sans-serif' : 'Montserrat, sans-serif';
   const stampSerifFont = language === 'zh' ? '"Noto Serif SC", "Cormorant Garamond", serif' : 'Cormorant Garamond, serif';

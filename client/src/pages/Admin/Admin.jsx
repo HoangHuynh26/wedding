@@ -20,6 +20,7 @@ import {
 import { chineseNames } from '../../config/chineseInvitation';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
+import { setSafeInvitationParams } from '../../utils/invitationCodec';
 import styles from './Admin.module.css';
 
 const BRIDE_INVITER_PRESETS = [
@@ -100,7 +101,9 @@ export default function Admin() {
   const [selectedLang, setSelectedLang] = useState('vi');
 
   const playlist = weddingConfig.playlist || [];
-  const [selectedSongId, setSelectedSongId] = useState(playlist[0]?.id || 'crush-love-you-with-all-my-heart');
+  const [selectedSongId, setSelectedSongId] = useState(
+    weddingConfig.music?.id || playlist[0]?.id || 'wildest-dreams-piano'
+  );
   const [previewSongId, setPreviewSongId] = useState(null);
   const [showOnlyCPreview, setShowOnlyCPreview] = useState(false);
   const previewAudioRef = useRef(null);
@@ -186,17 +189,12 @@ export default function Admin() {
   const generatedUrl = React.useMemo(() => {
     if (!guestName.trim()) return '';
     const params = new URLSearchParams();
-    params.set('to', guestName.trim());
-    if (activeInviter) {
-      params.set('from', activeInviter);
-    }
-    if (selectedSongId) {
-      params.set('music', selectedSongId);
-    }
-    // Default is Vietnamese ('vi'); embed lang param when English ('en') or Chinese ('zh') is chosen
-    if (selectedLang && selectedLang !== 'vi') {
-      params.set('lang', selectedLang);
-    }
+    setSafeInvitationParams(params, {
+      guestName: guestName.trim(),
+      inviter: activeInviter,
+      songId: selectedSongId,
+      lang: selectedLang,
+    });
     const routePath = isGroomSide ? '/chu-re' : '/';
     return `${baseUrl}${routePath}?${params.toString()}`;
   }, [guestName, activeInviter, selectedSongId, selectedLang, baseUrl, isGroomSide]);
@@ -284,7 +282,7 @@ export default function Admin() {
       if (selectedLang === 'en') {
         msg = `Dear ${cleanGuest},
 
-Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet at White Palace on Sunday, January 24, 2027 at 06:00 PM!
+Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet at White Palace (588 Pham Van Dong, Thu Duc, Ho Chi Minh City) on Sunday, January 24, 2027 (Welcome at 05:30 PM, Ceremony at 07:00 PM, Banquet at 07:30 PM)!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -294,7 +292,7 @@ Your presence and warm blessings would mean the world to us!`;
       } else if (selectedLang === 'zh') {
         msg = `${cleanGuest} 您好：
 
-谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临 White Palace 宴会厅参加我们的新婚晚宴（2027年01月24日 星期日 晚上18:00）！
+谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临 White Palace 宴会厅（胡志明市守德市范文同街 588 号）参加我们的新婚晚宴（2027年01月24日 星期日 17:30迎宾 · 19:00典礼 · 19:30开席）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
@@ -302,7 +300,7 @@ ${generatedUrl}
 
 衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
       } else {
-        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace (18:00 tối Chủ Nhật, ngày 24/01/2027)!
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace — 588 Phạm Văn Đồng, TP. Thủ Đức, TP. Hồ Chí Minh (17:30 đón khách, 19:00 làm lễ, 19:30 khai tiệc — tối Chủ Nhật, ngày 24/01/2027)!
 
 🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
 ✨ Xem thiệp mời cưới online tại đây:
@@ -492,7 +490,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
           </h1>
           <p className={styles.subtitle}>
             {isGroomSide
-              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 18:00 ngày 24/01/2027) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
+              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 24/01/2027 tại Nhà Hàng White Palace) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
               : 'Tạo liên kết thiệp mời Lễ Vu Quy (Thu Hiền & Đình Huy — 11:20 ngày 17/01/2027) riêng cho khách nhà gái — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'}
           </p>
         </div>

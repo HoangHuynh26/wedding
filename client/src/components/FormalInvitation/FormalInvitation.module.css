@@ -22,6 +22,134 @@
 
 .formalContainer {
   width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════════
+   SIDE-WING SNOWFALL EFFECT (IPAD & DESKTOP ONLY — NEVER IN CENTER)
+   ═══════════════════════════════════════════════════ */
+.snowWing {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .snowWing {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    overflow: hidden;
+    container-type: size;
+    pointer-events: none;
+    user-select: none;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+  }
+
+  .snowWingLeft {
+    left: 0;
+    width: max(0px, calc((100% - clamp(620px, 68vw, 720px)) / 2 - 8px));
+  }
+
+  .snowWingRight {
+    right: 0;
+    width: max(0px, calc((100% - clamp(620px, 68vw, 720px)) / 2 - 8px));
+  }
+
+  .snowFlake {
+    position: absolute;
+    top: -24px;
+    left: var(--snow-x, 50%);
+    width: var(--snow-size, 10px);
+    height: var(--snow-size, 10px);
+    color: rgba(255, 255, 255, 0.96);
+    opacity: var(--snow-opacity, 0.85);
+    will-change: transform;
+    animation: snowFallWing var(--snow-dur, 14s) var(--snow-delay, 0s) linear infinite;
+  }
+
+  .snowCrystalSvg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    filter:
+      drop-shadow(0 0 4px rgba(255, 255, 255, 0.95))
+      drop-shadow(0 1px 3px rgba(96, 80, 112, 0.28));
+    animation: snowSpin 16s linear infinite;
+  }
+
+  .snowOrb {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(255, 252, 255, 0.88) 52%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    box-shadow:
+      0 0 6px rgba(255, 255, 255, 0.9),
+      0 1px 4px rgba(102, 86, 118, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .snowWingLeft {
+    width: max(0px, calc((100% - 480px) / 2 - 12px));
+  }
+
+  .snowWingRight {
+    width: max(0px, calc((100% - 480px) / 2 - 12px));
+  }
+}
+
+@keyframes snowFallWing {
+  0% {
+    transform: translate3d(0, -24px, 0);
+  }
+  25% {
+    transform: translate3d(var(--snow-sway, 12px), calc(25cqh + 6px), 0);
+  }
+  50% {
+    transform: translate3d(calc(var(--snow-sway, 12px) * -0.55), calc(50cqh + 18px), 0);
+  }
+  75% {
+    transform: translate3d(calc(var(--snow-sway, 12px) * 0.75), calc(75cqh + 32px), 0);
+  }
+  100% {
+    transform: translate3d(0, calc(100cqh + 48px), 0);
+  }
+}
+
+@keyframes snowSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snowWing {
+    display: none !important;
+  }
 }
 
 @media (max-width: 767px) {
@@ -86,7 +214,7 @@
   max-height: 420px;
   overflow: hidden;
   position: relative;
-  background: #ffffff;
+  background: #ebe4ec;
   border-radius: 18px 18px 0 0;
 }
 

@@ -1,13 +1,18 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import weddingConfig from '../config/weddingConfig';
+import {
+  decodeUtf8Base64Url,
+  repairCorruptedParam,
+  resolveInviterSlug,
+} from '../utils/invitationCodec';
 
 /**
  * Hook to extract and sanitize personalized invitation query parameters.
  * Supported query keys:
- * - to / guest / name: Recipient / Guest Name (e.g., "Anh Tuấn & Chị Lan")
- * - from / inviter / sender: Inviter Name (e.g., "Chú rể Đình Huy")
- * - music / song / track: Specific background song id (e.g., "until-i-found-you")
+ * - to / to64 / guest / name: Recipient / Guest Name (ASCII-safe Base64URL or plain UTF-8)
+ * - from / from64 / inviter / sender: Inviter Name (ASCII preset slug, Base64URL, or plain UTF-8)
+ * - music / song / track: Specific background song id (e.g., "wildest-dreams-piano")
  */
 export function useInvitationParams() {
   const location = useLocation();
@@ -15,20 +20,31 @@ export function useInvitationParams() {
   return useMemo(() => {
     try {
       const searchParams = new URLSearchParams(location.search);
-      
-      const to = (
+
+      const rawTo64 = searchParams.get('to64') || '';
+      const decodedTo64 = rawTo64 ? decodeUtf8Base64Url(rawTo64).trim() : '';
+      const rawTo = (
         searchParams.get('to') ||
         searchParams.get('guest') ||
         searchParams.get('name') ||
         ''
       ).trim();
+      const to =
+        decodedTo64 ||
+        repairCorruptedParam(rawTo, location.search, ['to', 'guest', 'name']);
 
-      const from = (
+      const rawFrom64 = searchParams.get('from64') || '';
+      const decodedFrom64 = rawFrom64 ? decodeUtf8Base64Url(rawFrom64).trim() : '';
+      const rawFrom = (
         searchParams.get('from') ||
         searchParams.get('inviter') ||
         searchParams.get('sender') ||
         ''
       ).trim();
+      const from =
+        decodedFrom64 ||
+        resolveInviterSlug(rawFrom) ||
+        repairCorruptedParam(rawFrom, location.search, ['from', 'inviter', 'sender']);
 
       const songId = (
         searchParams.get('music') ||
@@ -53,8 +69,10 @@ export function useInvitationParams() {
 
       // Find song in playlist if specified
       const playlist = weddingConfig.playlist || [];
+      const defaultSong =
+        playlist.find((s) => s.id === weddingConfig.music?.id) || playlist[0] || weddingConfig.music;
       const foundSong = playlist.find((s) => s.id.toLowerCase() === songId);
-      const selectedSong = foundSong || playlist[0] || weddingConfig.music;
+      const selectedSong = foundSong || defaultSong;
 
       return {
         guestName: to,

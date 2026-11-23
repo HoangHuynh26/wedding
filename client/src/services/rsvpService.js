@@ -26,8 +26,9 @@ export const rsvpService = {
     try {
       const response = await apiClient.post('/api/rsvp', {
         fullName: data.fullName,
-        location: data.location,
+        location: data.location ?? '',
         side: data.side,
+        invitationType: data.invitationType === 'chu-re' ? 'chu-re' : 'co-dau',
         message: data.message,
         attendance: data.attendance ?? true,
       });

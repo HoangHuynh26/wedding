@@ -140,15 +140,16 @@ export default function Smooth3DSlideshow({
     }
   }, [n, active, setActive]);
 
-  // Preload adjacent images in memory for instant crisp display upon swiping
+  // Preload only immediate neighbor thumbnails (5 cards) so mobile RAM & scroll stay silky smooth
   useEffect(() => {
     if (n === 0) return;
-    for (let offset = -4; offset <= 4; offset++) {
+    for (let offset = -2; offset <= 2; offset++) {
       const idx = (((active + offset) % n) + n) % n;
       const s = list[idx];
-      const imgSrc = s?.image?.src || s?.src || s?.image;
+      const imgSrc = s?.thumbnail || s?.image?.src || s?.src || s?.image;
       if (imgSrc) {
         const img = new Image();
+        img.decoding = 'async';
         img.src = imgSrc;
       }
     }
@@ -195,14 +196,29 @@ export default function Smooth3DSlideshow({
     [active, lock, setActive, onOpenLightbox]
   );
 
-  // Autoplay every 4s (resets cleanly whenever active slide changes via swipe/click)
+  // Autoplay every 4s ONLY while carousel is visible in viewport (saves CPU/GPU while scrolling elsewhere)
   const delay = transition && typeof transition.delay === 'number' ? transition.delay : 4.0;
+  const isInViewRef = useRef(true);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = Boolean(entry?.isIntersecting);
+      },
+      { rootMargin: '120px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!autoplay || n < 2) return;
     const ms = Math.max(0.5, delay) * 1000;
     const dir = autoplayDirection === 'leftToRight' ? -1 : 1;
     const id = window.setInterval(() => {
-      if (!isTouchingRef.current) {
+      if (!isTouchingRef.current && isInViewRef.current) {
         step(dir, 260);
       }
     }, ms);
@@ -223,11 +239,30 @@ export default function Smooth3DSlideshow({
     [step]
   );
 
-  // Enhanced Touch Swipe Support (Left / Right)
+  // Enhanced Touch Swipe Support (Left / Right) with horizontal swipe-back guard
+  const rootRef = useRef(null);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
   const touchDeltaX = useRef(0);
   const touchDeltaY = useRef(0);
+
+  // Prevent browser back-swipe gesture when user horizontally swipes across the photo album
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return undefined;
+
+    const onNativeTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const dx = e.touches[0].clientX - touchStartX.current;
+      const dy = e.touches[0].clientY - touchStartY.current;
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    el.addEventListener('touchmove', onNativeTouchMove, { passive: false });
+    return () => el.removeEventListener('touchmove', onNativeTouchMove);
+  }, []);
 
   const handleTouchStart = (e) => {
     isTouchingRef.current = true;
@@ -287,6 +322,7 @@ export default function Smooth3DSlideshow({
     outline: 'none',
     padding: '10px 0',
     touchAction: 'pan-y',
+    overscrollBehaviorX: 'none',
     ...(style || {}),
   };
 
@@ -294,6 +330,7 @@ export default function Smooth3DSlideshow({
 
   return (
     <div
+      ref={rootRef}
       style={rootStyle}
       tabIndex={0}
       role="region"
@@ -322,6 +359,8 @@ export default function Smooth3DSlideshow({
             if (rel < -n / 2) rel += n;
           }
           const ax = Math.abs(rel);
+          // Only mount DOM/image layers within ±3 cards of active (avoids decoding all 40 images at once)
+          if (ax > MAX_VISIBLE + 1) return null;
           const visible = ax <= MAX_VISIBLE;
           const isActive = rel === 0;
           const sc = Math.max(0.4, 1 - ax * SCALE_STEP);
@@ -329,7 +368,7 @@ export default function Smooth3DSlideshow({
           const tz = -ax * depth;
           const ry = -rel * tilt;
           const rz = rel * sideTilt;
-          const src = slide.image?.src || slide.src || slide.image || '';
+          const src = slide.thumbnail || slide.image?.src || slide.src || slide.image || '';
 
           const cardStyle = {
             position: 'absolute',

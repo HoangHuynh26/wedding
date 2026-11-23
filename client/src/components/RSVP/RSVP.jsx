@@ -30,7 +30,6 @@ export default function RSVP() {
 
   const [formData, setFormData] = useState({
     fullName: guestName || '',
-    location: '',
     sideId: defaultSideId,
     message: '',
   });
@@ -83,14 +82,6 @@ export default function RSVP() {
       newErrors.fullName = t.rsvp.validationNameLong;
     }
 
-    if (!formData.location.trim()) {
-      newErrors.location = t.rsvp.validationLocationRequired;
-    } else if (formData.location.trim().length < 2) {
-      newErrors.location = t.rsvp.validationLocationShort;
-    } else if (formData.location.trim().length > 100) {
-      newErrors.location = t.rsvp.validationLocationLong;
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -119,10 +110,11 @@ export default function RSVP() {
 
     try {
       const sideLabel = selectedOption.label;
+      const invitationType = isGroomSide ? 'chu-re' : 'co-dau';
       const response = await rsvpService.submitRSVP({
         fullName: formData.fullName.trim(),
-        location: formData.location.trim(),
         side: sideLabel,
+        invitationType,
         message: formData.message.trim(),
         attendance: true,
       });
@@ -130,8 +122,8 @@ export default function RSVP() {
       setConfirmedGuest(
         response.guest || {
           fullName: formData.fullName.trim(),
-          location: formData.location.trim(),
           side: sideLabel,
+          invitationType,
           message: formData.message.trim(),
         }
       );
@@ -146,7 +138,7 @@ export default function RSVP() {
   };
 
   const handleReset = () => {
-    setFormData({ fullName: '', location: '', sideId: defaultSideId, message: '' });
+    setFormData({ fullName: '', sideId: defaultSideId, message: '' });
     setErrors({});
     setSubmitSuccess(false);
     setConfirmedGuest(null);
@@ -169,10 +161,10 @@ export default function RSVP() {
         {/* Poetic Quote Above the Physical Card */}
         <motion.div
           className={styles.revealIntro}
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.75 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.45 }}
         >
           <p className={styles.revealSubtext}>{t.rsvp.quote}</p>
         </motion.div>
@@ -180,10 +172,10 @@ export default function RSVP() {
         {/* Physical Stacked Cotton-Paper Stationery RSVP Card */}
         <motion.div
           className={styles.cardStack}
-          initial={{ opacity: 0, y: 34 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Tilted backing stationery sheet underneath for authentic tactile card-stack depth */}
           <div className={styles.underCardBack} aria-hidden="true" />
@@ -254,26 +246,7 @@ export default function RSVP() {
                       {errors.fullName && <span className={styles.errorText}>{errors.fullName}</span>}
                     </div>
 
-                    {/* 2. Location — Printed Letterpress Fill-In Line */}
-                    <div className={styles.fieldRow}>
-                      <label htmlFor="location" className={styles.fieldLabel}>
-                        {t.rsvp.locationLabel}
-                      </label>
-                      <input
-                        type="text"
-                        id="location"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        placeholder={t.rsvp.locationPlaceholder}
-                        className={`${styles.paperInput} ${errors.location ? styles.inputError : ''}`}
-                        disabled={isSubmitting}
-                        required
-                      />
-                      {errors.location && <span className={styles.errorText}>{errors.location}</span>}
-                    </div>
-
-                    {/* 3. Guest Side — Printed RSVP Checkbox Chips (No Cartoon Emojis) */}
+                    {/* 2. Guest Side — Printed RSVP Checkbox Chips (No Cartoon Emojis) */}
                     <div className={styles.fieldRow}>
                       <span className={styles.fieldLabel}>{t.rsvp.sideLabel}</span>
                       <div className={styles.sideChoices} role="radiogroup" aria-label={t.rsvp.sideLabel}>
@@ -370,9 +343,6 @@ export default function RSVP() {
                     <div className={styles.guestSummary}>
                       <div>
                         <strong>{t.rsvp.guestLabel}</strong> {confirmedGuest?.fullName}
-                      </div>
-                      <div>
-                        <strong>{t.rsvp.fromLabel}</strong> {confirmedGuest?.location || formData.location}
                       </div>
                       <div>
                         <strong>{t.rsvp.sideSummary}</strong>{' '}

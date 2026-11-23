@@ -7,7 +7,8 @@ const AudioContext = createContext(null);
 export function AudioProvider({ children }) {
   const location = useLocation();
   const playlist = weddingConfig.playlist || [];
-  const defaultTrack = playlist[0] || weddingConfig.music;
+  const defaultTrack =
+    playlist.find((s) => s.id === weddingConfig.music?.id) || playlist[0] || weddingConfig.music;
 
   // Resolve track from URL or default
   const getTrackFromQuery = useCallback(() => {
