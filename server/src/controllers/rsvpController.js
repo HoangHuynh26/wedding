@@ -11,8 +11,15 @@ class RSVPController {
    */
   static async submitRSVP(req, res, next) {
     try {
-      const { fullName, location, side = 'Nhà Trai (Chú Rể)', message = '', attendance = true } = req.body;
-      const key = `${fullName.toLowerCase().trim()}_${location.toLowerCase().trim()}`;
+      const {
+        fullName,
+        location = '',
+        invitationType = 'co-dau',
+        side = invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)',
+        message = '',
+        attendance = true,
+      } = req.body;
+      const key = `${invitationType}_${fullName.toLowerCase().trim()}_${String(side).toLowerCase().trim()}`;
 
       // Prevent immediate double submissions within 30 seconds
       if (recentSubmissions.has(key)) {
@@ -25,6 +32,7 @@ class RSVPController {
             fullName: lastSubmitted.fullName,
             location: lastSubmitted.location,
             side: lastSubmitted.side,
+            invitationType: lastSubmitted.invitationType,
             message: lastSubmitted.message,
             attendance: lastSubmitted.attendance,
             submittedAt: lastSubmitted.submittedAt,
@@ -35,11 +43,12 @@ class RSVPController {
 
       const submittedAt = new Date().toISOString();
 
-      // Dispatch to Make.com to append row into Excel
+      // Dispatch to Make.com to append row into Excel / Google Sheets
       const webhookResult = await MakeService.sendRSVP({
         fullName,
         location,
         side,
+        invitationType,
         message,
         attendance,
         submittedAt,
@@ -50,6 +59,7 @@ class RSVPController {
         fullName,
         location,
         side,
+        invitationType,
         message,
         attendance,
         submittedAt,
@@ -65,6 +75,7 @@ class RSVPController {
           fullName,
           location,
           side,
+          invitationType,
           message,
           attendance,
           submittedAt,

@@ -6,7 +6,7 @@ class RSVPModel {
     const newRecord = {
       id: `rsvp_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       fullName: fullName.trim(),
-      location: location.trim(),
+      location: location ? location.trim() : '',
       attendance: Boolean(attendance),
       submittedAt: submittedAt || new Date().toISOString(),
       createdAt: new Date().toISOString(),

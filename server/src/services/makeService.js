@@ -27,33 +27,39 @@ class MakeService {
       hour12: false,
     }).format(now);
 
-    // Payload formatted specifically for Make.com -> Excel columns
+    let invitationType;
+    if (payload.invitationType === 'chu-re' || payload.invitationType === 'groom') {
+      invitationType = 'chu-re';
+    } else {
+      invitationType = 'co-dau';
+    }
+
+    const defaultSide = invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)';
+
+    // Payload formatted specifically for Make.com -> Google Sheets
     const formattedPayload = {
-      // Excel column mappings
       fullName: payload.fullName,
-      location: payload.location,
-      side: payload.side || 'Nhà Trai (Chú Rể)',
+      side: payload.side || defaultSide,
+      invitationType,
       message: payload.message || '',
-      attendance: payload.attendance ? 'Tham dự' : 'Không tham dự',
-      attendanceBool: Boolean(payload.attendance ?? true),
       dateFormatted: formattedDate,
       submittedAt: payload.submittedAt || now.toISOString(),
       source: 'Website Thiệp Cưới',
-      // Convenience fields for Excel table headers in Vietnamese & English
+      // Convenience fields for Google Sheets table headers in Vietnamese
       'Họ và Tên': payload.fullName,
-      'Địa Điểm': payload.location,
-      'Khách Của': payload.side || 'Nhà Trai (Chú Rể)',
+      'Khách Của': payload.side || defaultSide,
+      'Loại Thiệp': invitationType,
       'Lời Chúc': payload.message || '',
-      'Xác Nhận': payload.attendance ? 'Tham dự' : 'Không tham dự',
       'Thời Gian': formattedDate,
     };
 
-    if (!webhookUrl || !webhookUrl.trim()) {
-      console.warn('⚠️ [MakeService] MAKE_WEBHOOK_URL is not configured in .env.');
-      console.log('📋 [MakeService] Payload prepared for Excel:', formattedPayload);
+    const trimmedWebhook = (webhookUrl || '').trim();
+    if (!trimmedWebhook || !/^https?:\/\//i.test(trimmedWebhook)) {
+      console.warn('⚠️ [MakeService] MAKE_WEBHOOK_URL must be an HTTP(S) Custom Webhook URL (e.g. https://hook.eu1.make.com/...).');
+      console.log('📋 [MakeService] Payload prepared for Google Sheets:', formattedPayload);
       return {
         delivered: false,
-        message: 'Webhook URL not configured. Data formatted for Excel was logged.',
+        message: 'Webhook URL not configured or invalid (must start with https://).',
         excelData: formattedPayload,
       };
     }

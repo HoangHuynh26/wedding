@@ -20,11 +20,33 @@ export default function CursorEffect() {
 
     setIsSupported(true);
 
+    let animationFrameId = null;
+    const animateRing = () => {
+      const dx = mousePos.current.x - ringPos.current.x;
+      const dy = mousePos.current.y - ringPos.current.y;
+      const ease = 0.18;
+      ringPos.current.x += dx * ease;
+      ringPos.current.y += dy * ease;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+
+      if (Math.abs(dx) > 0.25 || Math.abs(dy) > 0.25) {
+        animationFrameId = requestAnimationFrame(animateRing);
+      } else {
+        animationFrameId = null;
+      }
+    };
+
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+      }
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(animateRing);
       }
     };
 
@@ -47,27 +69,10 @@ export default function CursorEffect() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
-    // Smooth animation loop for trailing ring
-    let animationFrameId;
-    const animateRing = () => {
-      // Lerp (linear interpolation) for elastic trailing effect
-      const ease = 0.18;
-      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * ease;
-      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * ease;
-
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
-      }
-
-      animationFrameId = requestAnimationFrame(animateRing);
-    };
-
-    animationFrameId = requestAnimationFrame(animateRing);
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
   }, []);
 

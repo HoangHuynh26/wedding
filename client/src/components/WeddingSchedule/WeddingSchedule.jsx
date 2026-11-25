@@ -53,6 +53,7 @@ export default function WeddingSchedule() {
   const pleatImgRef = useRef(null);
   const tiledRef = useRef({ w: 0, h: 0, left: null, right: null });
   const latestProgressRef = useRef(0);
+  const lastDrawnRef = useRef(-1);
   const prefersReducedMotion = useReducedMotion();
 
   // Start parting gently as #schedule enters from bottom (88%) and reach 100% fully opened
@@ -79,16 +80,27 @@ export default function WeddingSchedule() {
   const contentScale = useTransform(smoothProgress, [0.3, 0.9], [0.96, 1]);
   const contentY = useTransform(smoothProgress, [0.3, 0.9], [20, 0]);
 
-  const drawCurtains = (rawP) => {
+  const drawCurtains = (rawP, force = false) => {
     const canvas = canvasRef.current;
     const pleats = pleatImgRef.current;
     if (!canvas || !pleats) return;
 
     const p = prefersReducedMotion ? 1 : clamp(rawP, 0, 1);
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (!force && Math.abs(p - lastDrawnRef.current) < 0.002) return;
+    const prevP = lastDrawnRef.current;
+    lastDrawnRef.current = p;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 2);
     const W = canvas.width / dpr;
     const H = canvas.height / dpr;
     if (W < 2 || H < 2) return;
+
+    // Keep the parting silk pleats gliding slowly until near full reveal before fading into tiebacks
+    const pleatAlpha = 1 - smoothstep(0.68, 0.98, p);
+    const prevAlpha = prevP < 0 ? 1 : 1 - smoothstep(0.68, 0.98, prevP);
+    if (!force && pleatAlpha <= 0.004 && prevAlpha <= 0.004) {
+      return;
+    }
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -97,8 +109,6 @@ export default function WeddingSchedule() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
 
-    // Keep the parting silk pleats gliding slowly until near full reveal before fading into tiebacks
-    const pleatAlpha = 1 - smoothstep(0.68, 0.98, p);
     if (pleatAlpha <= 0.004) {
       ctx.restore();
       return;
@@ -137,7 +147,7 @@ export default function WeddingSchedule() {
       cache.right = rightOff;
     }
 
-    const sliceH = 1.5;
+    const sliceH = 3.5;
     const srcH = cache.h;
     const srcW = cache.w;
 
@@ -150,43 +160,44 @@ export default function WeddingSchedule() {
 
     ctx.globalAlpha = pleatAlpha;
 
-    // Smooth continuous curved shadow along the moving inner curtain hem (zero stair-step jaggies!)
+    // Fast GPU-friendly soft curved shadow along the moving inner curtain hem (no software ctx.filter blur!)
     if (p > 0.02) {
       const shadowW = 10 + 8 * (1 - p);
       ctx.save();
-      ctx.lineWidth = shadowW;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-      ctx.strokeStyle = `rgba(64, 52, 72, ${(0.14 * pleatAlpha).toFixed(3)})`;
-      ctx.filter = 'blur(4px)';
+      for (const [mult, alpha] of [[1.9, 0.045], [1.15, 0.085]]) {
+        ctx.lineWidth = shadowW * mult;
+        ctx.strokeStyle = `rgba(64, 52, 72, ${(alpha * pleatAlpha).toFixed(3)})`;
 
-      ctx.beginPath();
-      for (let y = 0; y <= H; y += 6) {
-        const cur = edgeAt(y / Math.max(1, H - 1));
-        if (y === 0) ctx.moveTo(cur + shadowW * 0.25, y);
-        else ctx.lineTo(cur + shadowW * 0.25, y);
-      }
-      ctx.stroke();
+        ctx.beginPath();
+        for (let y = 0; y <= H; y += 10) {
+          const cur = edgeAt(y / Math.max(1, H - 1));
+          if (y === 0) ctx.moveTo(cur + shadowW * 0.25, y);
+          else ctx.lineTo(cur + shadowW * 0.25, y);
+        }
+        ctx.stroke();
 
-      ctx.beginPath();
-      for (let y = 0; y <= H; y += 6) {
-        const cur = edgeAt(y / Math.max(1, H - 1));
-        if (y === 0) ctx.moveTo(W - cur - shadowW * 0.25, y);
-        else ctx.lineTo(W - cur - shadowW * 0.25, y);
+        ctx.beginPath();
+        for (let y = 0; y <= H; y += 10) {
+          const cur = edgeAt(y / Math.max(1, H - 1));
+          if (y === 0) ctx.moveTo(W - cur - shadowW * 0.25, y);
+          else ctx.lineTo(W - cur - shadowW * 0.25, y);
+        }
+        ctx.stroke();
       }
-      ctx.stroke();
       ctx.restore();
     }
 
-    // Fine 1.5px sculpted lilac pleats parting slowly from the waist in a silky curved silhouette
+    // Smooth sculpted lilac pleats parting from the waist in a silky curved silhouette
     for (let y = 0; y < H; y += sliceH) {
       const yn = y / Math.max(1, H - 1);
       const cur = edgeAt(yn);
       const sy = Math.min(srcH - 1, Math.round(yn * (srcH - 1)));
       const sh = Math.max(1, Math.min(Math.ceil(sliceH) + 1, srcH - sy));
 
-      ctx.drawImage(cache.left, 0, sy, srcW, sh, 0, y, cur, sliceH + 0.7);
-      ctx.drawImage(cache.right, 0, sy, srcW, sh, W - cur, y, cur, sliceH + 0.7);
+      ctx.drawImage(cache.left, 0, sy, srcW, sh, 0, y, cur, sliceH + 0.8);
+      ctx.drawImage(cache.right, 0, sy, srcW, sh, W - cur, y, cur, sliceH + 0.8);
     }
 
     // Delicate vertical center seam crease while curtains are closed
@@ -213,14 +224,14 @@ export default function WeddingSchedule() {
       const canvas = canvasRef.current;
       if (!folio || !canvas) return;
       const rect = folio.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 2);
       const cw = Math.max(1, Math.round(rect.width * dpr));
       const ch = Math.max(1, Math.round(rect.height * dpr));
       if (canvas.width !== cw || canvas.height !== ch) {
         canvas.width = cw;
         canvas.height = ch;
       }
-      drawCurtains(latestProgressRef.current);
+      drawCurtains(latestProgressRef.current, true);
     };
 
     const img = new Image();

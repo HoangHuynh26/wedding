@@ -106,7 +106,7 @@ export const weddingConfig = {
   // Venue & Location
   venue: {
     name: 'TƯ GIA NHÀ GÁI',
-    hall: 'Tư Gia Nhà Gái',
+    hall: 'Tư gia Nhà Gái',
     address: '1322/768, Phường Trảng Dài, Thành Phố Đồng Nai',
     addressShort: '1322/768, P. Trảng Dài, TP. Đồng Nai',
     phone: '(+84) 251 388 9999',
@@ -567,8 +567,24 @@ export const weddingConfig = {
     ],
   },
 
-  // Romantic Background Music Catalog & Playlist — All 72 tracks mastered for wedding envelope opening (40s – 2m)
+  // Romantic Background Music Catalog & Playlist — All 73 tracks mastered for wedding envelope opening (40s – 2m)
   playlist: [
+    // ═════════════════════════════════════════════════════════════
+    // NHẠC MẶC ĐỊNH MỞ THIỆP (DEFAULT WEDDING ANTHEM)
+    // ═════════════════════════════════════════════════════════════
+    {
+      id: 'wildest-dreams-piano',
+      title: 'Wildest Dreams (Piano Version)',
+      artist: 'Taylor Swift — Grand Piano Cover',
+      tag: '★ Nhạc Mặc Định • Hòa Tấu Piano • Âu - Mỹ',
+      country: 'Âu - Mỹ',
+      duration: '1:07',
+      category: 'hoa-tau',
+      src: '/audio/wildest-dreams-piano.m4a?v=climax',
+      fallbackSrc: '/audio/lover-wedding-string.m4a?v=climax',
+      youtubeUrl: 'https://www.youtube.com/watch?v=inx0pYHrRMg',
+    },
+
     // ═════════════════════════════════════════════════════════════
     // GIAI ĐIỆU CAO TRÀO MỞ THIỆP & ĐÓN KHÁCH (OST & HOT HITS)
     // ═════════════════════════════════════════════════════════════
@@ -1510,16 +1526,16 @@ export const weddingConfig = {
 
   // Default Romantic Background Music (Đoạn nhạc cao trào lãng mạn khi mở thiệp cưới)
   music: {
-    id: 'crush-love-you-with-all-my-heart',
-    title: 'Love You With All My Heart (미안해 미워해 사랑해)',
-    artist: 'Crush',
-    tag: 'Queen of Tears OST • Hàn Quốc',
-    country: 'Hàn Quốc',
-    duration: '1:38',
-    src: '/audio/crush-love-you-with-all-my-heart.m4a?v=climax',
-    audioUrl: '/audio/crush-love-you-with-all-my-heart.m4a?v=climax',
-    fallbackSrc: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/47/3a/b2/473ab250-b9f3-3e18-b7bb-9acf92fce70b/mzaf_6163453806696420355.plus.aac.p.m4a',
-    fallbackUrl: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/47/3a/b2/473ab250-b9f3-3e18-b7bb-9acf92fce70b/mzaf_6163453806696420355.plus.aac.p.m4a',
+    id: 'wildest-dreams-piano',
+    title: 'Wildest Dreams (Piano Version)',
+    artist: 'Taylor Swift — Grand Piano Cover',
+    tag: '★ Nhạc Mặc Định • Hòa Tấu Piano • Âu - Mỹ',
+    country: 'Âu - Mỹ',
+    duration: '1:07',
+    src: '/audio/wildest-dreams-piano.m4a?v=climax',
+    audioUrl: '/audio/wildest-dreams-piano.m4a?v=climax',
+    fallbackSrc: '/audio/lover-wedding-string.m4a?v=climax',
+    fallbackUrl: '/audio/lover-wedding-string.m4a?v=climax',
   },
 };
 

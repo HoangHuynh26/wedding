@@ -50,9 +50,9 @@ exports.handler = async function (event, context) {
         };
       }
 
-      const { fullName, location, side = 'Nhà Gái (Cô Dâu)', message = '', attendance = true } = body;
+      const { fullName, side, invitationType: rawInvitationType, message = '' } = body;
 
-      // Validation
+      // Validation: only fullName is required; message (lời chúc) is completely optional
       if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 2) {
         return {
           statusCode: 400,
@@ -64,22 +64,19 @@ exports.handler = async function (event, context) {
         };
       }
 
-      if (!location || typeof location !== 'string' || location.trim().length < 2) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            message: 'Vui lòng chọn hoặc nhập đơn vị / vị trí của bạn.',
-          }),
-        };
+      const normalizedType = String(rawInvitationType || '').trim().toLowerCase();
+      let invitationType;
+      if (normalizedType === 'chu-re' || normalizedType === 'groom' || normalizedType === 'nha-trai') {
+        invitationType = 'chu-re';
+      } else {
+        invitationType = 'co-dau';
       }
 
       const trimmedName = fullName.trim();
-      const trimmedLocation = location.trim();
-      const trimmedSide = side ? String(side).trim() : 'Nhà Gái (Cô Dâu)';
-      const trimmedMessage = message ? String(message).trim() : '';
-      const cacheKey = `${trimmedName.toLowerCase()}_${trimmedLocation.toLowerCase()}`;
+      const defaultSide = invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)';
+      const trimmedSide = side && String(side).trim() ? String(side).trim() : defaultSide;
+      const trimmedMessage = typeof message === 'string' ? message.trim() : '';
+      const cacheKey = `${invitationType}_${trimmedName.toLowerCase()}_${trimmedSide.toLowerCase()}`;
 
       // Duplicate prevention within warm instance
       if (recentSubmissions.has(cacheKey)) {
@@ -114,27 +111,24 @@ exports.handler = async function (event, context) {
 
       const formattedPayload = {
         fullName: trimmedName,
-        location: trimmedLocation,
         side: trimmedSide,
+        invitationType,
         message: trimmedMessage,
-        attendance: attendance ? 'Tham dự' : 'Không tham dự',
-        attendanceBool: Boolean(attendance),
         dateFormatted: formattedDate,
-        submittedAt: submittedAt,
+        submittedAt,
         source: 'Website Thiệp Cưới (Netlify)',
-        // Formatted columns for Excel spreadsheet
+        // Formatted columns for Make.com -> Google Sheets
         'Họ và Tên': trimmedName,
-        'Địa Điểm': trimmedLocation,
         'Khách Của': trimmedSide,
+        'Loại Thiệp': invitationType,
         'Lời Chúc': trimmedMessage,
-        'Xác Nhận': attendance ? 'Tham dự' : 'Không tham dự',
         'Thời Gian': formattedDate,
       };
 
-      const webhookUrl = process.env.MAKE_WEBHOOK_URL;
+      const webhookUrl = (process.env.MAKE_WEBHOOK_URL || '').trim();
       let webhookDelivered = false;
 
-      if (webhookUrl && webhookUrl.trim()) {
+      if (webhookUrl && /^https?:\/\//i.test(webhookUrl)) {
         try {
           const res = await fetch(webhookUrl, {
             method: 'POST',
@@ -146,17 +140,24 @@ exports.handler = async function (event, context) {
           });
 
           webhookDelivered = res.ok;
+          if (!res.ok) {
+            console.error(`Make.com webhook returned HTTP ${res.status}`);
+          }
         } catch (err) {
           console.error('Make.com webhook dispatch error:', err);
         }
+      } else if (webhookUrl) {
+        console.error('MAKE_WEBHOOK_URL must be an HTTP(S) Custom Webhook URL (https://hook.eu1.make.com/...), not a Mailhook email address.');
       } else {
         console.warn('MAKE_WEBHOOK_URL is not set in Netlify environment variables.');
       }
 
       const guestRecord = {
         fullName: trimmedName,
-        location: trimmedLocation,
-        attendance: Boolean(attendance),
+        side: trimmedSide,
+        invitationType,
+        message: trimmedMessage,
+        attendance: true,
         submittedAt,
         deliveredToMake: webhookDelivered,
       };

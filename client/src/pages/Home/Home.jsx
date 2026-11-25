@@ -78,6 +78,35 @@ export default function WeddingExperience() {
     };
   }, [locked]);
 
+  // Preload & decode critical below-the-fold images as soon as the envelope starts opening
+  // so every section renders instantly with zero scroll lag or pop-in flash
+  useEffect(() => {
+    if (phase === 'sealed') return undefined;
+    const criticalAssets = [
+      weddingConfig.formalPhoto || '/photos/tuan-0992.jpg',
+      '/photos/thumbs/tuan-1515.jpg',
+      '/mauve-theme/mother-of-pearl.webp',
+      '/mauve-theme/jeweled-frame-cutout.webp?v=3',
+      '/mauve-theme/curtain-pleats-matched.webp',
+      '/mauve-theme/curtain-tieback-left.webp',
+      '/mauve-theme/curtain-tieback-right.webp',
+      '/mauve-theme/wax-seal-hh.webp',
+      ...weddingConfig.gallery.slice(0, 5).map((p) => p.thumbnail || p.src),
+    ];
+    const imgs = criticalAssets.map((src) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = src;
+      if (typeof img.decode === 'function') {
+        img.decode().catch(() => {});
+      }
+      return img;
+    });
+    return () => {
+      imgs.length = 0;
+    };
+  }, [phase]);
+
   useEffect(() => {
     if (phase !== 'opening') return undefined;
     const preference = window.matchMedia(motionPreference);

@@ -131,7 +131,8 @@ export default function Gallery() {
 
       return {
         src: photo.src,
-        image: { src: photo.src, alt: localizedTitle },
+        thumbnail: photo.thumbnail || photo.src,
+        image: { src: photo.thumbnail || photo.src, fullSrc: photo.src, alt: localizedTitle },
         title: localizedTitle,
         caption: localizedCaption,
         category: photo.category || 'grand-hall',
