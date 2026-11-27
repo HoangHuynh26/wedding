@@ -244,8 +244,10 @@ export default function FormalInvitation() {
                 className={styles.directionsBtn}
                 id="formal-invitation-maps-btn"
               >
-                <MapPin size={17} className={styles.pinIcon} />
-                <span>{t.formal.directionsBtn}</span>
+                <span className={styles.directionsBtnPulse}>
+                  <MapPin size={17} className={styles.pinIcon} />
+                  <span>{t.formal.directionsBtn}</span>
+                </span>
               </a>
             </div>
 

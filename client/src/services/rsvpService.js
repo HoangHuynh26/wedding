@@ -24,11 +24,13 @@ export const rsvpService = {
    */
   async submitRSVP(data) {
     try {
+      const invitationType =
+        data.invitationType === 'groom' || data.invitationType === 'chu-re' ? 'groom' : 'bride';
       const response = await apiClient.post('/api/rsvp', {
         fullName: data.fullName,
-        location: data.location ?? '',
         side: data.side,
-        invitationType: data.invitationType === 'chu-re' ? 'chu-re' : 'co-dau',
+        invitationType,
+        language: data.language || 'vi',
         message: data.message,
         attendance: data.attendance ?? true,
       });

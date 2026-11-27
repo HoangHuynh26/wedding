@@ -502,10 +502,24 @@
 
 .successGuestName {
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
   font-family: var(--font-script, 'Great Vibes', cursive);
-  font-size: clamp(2.1rem, 7.5vw, 2.75rem);
+  font-size: clamp(2.05rem, 7.2vw, 2.7rem);
   font-weight: 400;
+  line-height: 1.22;
   color: #423949;
+}
+
+.thankYouLine {
+  display: block;
+}
+
+.guestNameLine {
+  display: block;
+  text-wrap: balance;
 }
 
 .successMessage {
@@ -523,7 +537,7 @@
   background: rgba(255, 252, 255, 0.52);
   padding: 1.05rem 1.15rem;
   border: 1px dashed rgba(102, 88, 112, 0.4);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.25rem;
   font-family: var(--font-serif);
   font-size: 0.98rem;
   color: #584e62;
@@ -730,6 +744,6 @@
   .guestSummary {
     padding: 0.8rem 0.95rem;
     font-size: 0.88rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.15rem;
   }
 }

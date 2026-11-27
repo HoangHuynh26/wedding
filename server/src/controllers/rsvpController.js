@@ -13,9 +13,9 @@ class RSVPController {
     try {
       const {
         fullName,
-        location = '',
-        invitationType = 'co-dau',
-        side = invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)',
+        invitationType = 'bride',
+        language = 'en',
+        side = invitationType === 'groom' ? "Groom's Side" : "Bride's Side",
         message = '',
         attendance = true,
       } = req.body;
@@ -27,12 +27,12 @@ class RSVPController {
         return res.status(200).json({
           success: true,
           isDuplicate: true,
-          message: 'Bạn đã xác nhận tham dự rồi! Thông tin đã được ghi nhận vào Excel qua Make.com ♡',
+          message: 'RSVP already confirmed and recorded.',
           guest: {
             fullName: lastSubmitted.fullName,
-            location: lastSubmitted.location,
             side: lastSubmitted.side,
             invitationType: lastSubmitted.invitationType,
+            language: lastSubmitted.language,
             message: lastSubmitted.message,
             attendance: lastSubmitted.attendance,
             submittedAt: lastSubmitted.submittedAt,
@@ -46,9 +46,9 @@ class RSVPController {
       // Dispatch to Make.com to append row into Excel / Google Sheets
       const webhookResult = await MakeService.sendRSVP({
         fullName,
-        location,
         side,
         invitationType,
+        language,
         message,
         attendance,
         submittedAt,
@@ -57,9 +57,9 @@ class RSVPController {
       // Track in memory
       const guestRecord = {
         fullName,
-        location,
         side,
         invitationType,
+        language,
         message,
         attendance,
         submittedAt,
@@ -73,9 +73,9 @@ class RSVPController {
         message: 'RSVP confirmed successfully. Data dispatched to Make.com for Excel.',
         guest: {
           fullName,
-          location,
           side,
           invitationType,
+          language,
           message,
           attendance,
           submittedAt,

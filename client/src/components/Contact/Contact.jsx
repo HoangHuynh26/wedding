@@ -5,7 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import styles from './Contact.module.css';
 
 export default function Contact() {
-  const { t, bride, groom } = useLanguage();
+  const { t, bride, groom, isGroomSide } = useLanguage();
   const [toastMessage, setToastMessage] = useState('');
 
   const showToast = (msg) => {
@@ -21,6 +21,25 @@ export default function Contact() {
       showToast(phone);
     }
   };
+
+  const activeHost = isGroomSide
+    ? {
+        person: groom,
+        fallbackPhone: '0921 779 799',
+        roleBadge: t.contact.groomRole,
+        note: t.contact.groomNote,
+        copiedToast: t.contact.copiedGroomToast,
+      }
+    : {
+        person: bride,
+        fallbackPhone: '0912 345 678',
+        roleBadge: t.contact.brideRole,
+        note: t.contact.brideNote,
+        copiedToast: t.contact.copiedBrideToast,
+      };
+
+  const displayPhone = activeHost.person.phone || activeHost.fallbackPhone;
+  const cleanPhone = displayPhone.replace(/\s+/g, '');
 
   return (
     <section className={`section ${styles.contactSection}`} id="contact" aria-label="Contact Section">
@@ -38,9 +57,8 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* Contacts Grid — Bride First (Lễ Vu Quy), Groom Second */}
-        <div className={styles.contactsGrid}>
-          {/* 1. Bride Contact Card */}
+        {/* Single Host Contact Card — Groom only on Groom's invitation, Bride only on Bride's invitation */}
+        <div className={styles.contactsGridSingle}>
           <motion.div
             className={styles.contactCard}
             initial={{ opacity: 0, y: 30 }}
@@ -50,19 +68,19 @@ export default function Contact() {
           >
             <div className={styles.cardCorner} />
             <div className={styles.avatarRing}>
-              <img src={bride.avatar} alt={bride.name} className={styles.avatarImg} />
+              <img src={activeHost.person.avatar} alt={activeHost.person.name} className={styles.avatarImg} />
             </div>
-            <span className={styles.roleBadge}>{t.contact.brideRole}</span>
-            <h3 className={styles.personName}>{bride.name}</h3>
+            <span className={styles.roleBadge}>{activeHost.roleBadge}</span>
+            <h3 className={styles.personName}>{activeHost.person.name}</h3>
             <div className={styles.phoneNumber}>
               <Phone size={14} color="var(--silver-primary)" />
-              <span>{bride.phone || '0912 345 678'}</span>
+              <span>{displayPhone}</span>
             </div>
-            <p className={styles.noteText}>{t.contact.brideNote}</p>
+            <p className={styles.noteText}>{activeHost.note}</p>
 
             <div className={styles.actionRow}>
               <a
-                href={`tel:${(bride.phone || '0912345678').replace(/\s+/g, '')}`}
+                href={`tel:${cleanPhone}`}
                 className={styles.callBtn}
               >
                 <Phone size={14} />
@@ -70,7 +88,7 @@ export default function Contact() {
               </a>
 
               <a
-                href={`https://zalo.me/${(bride.phone || '0912345678').replace(/\s+/g, '')}`}
+                href={`https://zalo.me/${cleanPhone}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.zaloBtn}
@@ -83,57 +101,7 @@ export default function Contact() {
                 type="button"
                 className={styles.copyBtn}
                 title={t.contact.copyTitle}
-                onClick={() => handleCopyPhone(bride.phone || '0912 345 678', t.contact.copiedBrideToast)}
-              >
-                <Copy size={14} />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* 2. Groom Contact Card */}
-          <motion.div
-            className={styles.contactCard}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <div className={styles.cardCorner} />
-            <div className={styles.avatarRing}>
-              <img src={groom.avatar} alt={groom.name} className={styles.avatarImg} />
-            </div>
-            <span className={styles.roleBadge}>{t.contact.groomRole}</span>
-            <h3 className={styles.personName}>{groom.name}</h3>
-            <div className={styles.phoneNumber}>
-              <Phone size={14} color="var(--silver-primary)" />
-              <span>{groom.phone || '0987 654 321'}</span>
-            </div>
-            <p className={styles.noteText}>{t.contact.groomNote}</p>
-
-            <div className={styles.actionRow}>
-              <a
-                href={`tel:${(groom.phone || '0987654321').replace(/\s+/g, '')}`}
-                className={styles.callBtn}
-              >
-                <Phone size={14} />
-                <span>{t.contact.callBtn}</span>
-              </a>
-
-              <a
-                href={`https://zalo.me/${(groom.phone || '0987654321').replace(/\s+/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.zaloBtn}
-              >
-                <MessageCircle size={14} />
-                <span>{t.contact.zaloBtn}</span>
-              </a>
-
-              <button
-                type="button"
-                className={styles.copyBtn}
-                title={t.contact.copyTitle}
-                onClick={() => handleCopyPhone(groom.phone || '0987 654 321', t.contact.copiedGroomToast)}
+                onClick={() => handleCopyPhone(displayPhone, activeHost.copiedToast)}
               >
                 <Copy size={14} />
               </button>

@@ -36,7 +36,7 @@ export default function Venue() {
         </h3>
 
         <p className={styles.regionCaps}>
-          {t.venue.regionCaps || 'PHƯỜNG TRẢNG DÀI, ĐỒNG NAI'}
+          {t.venue.regionCaps || 'PHƯỜNG TRẢNG DÀI, THÀNH PHỐ ĐỒNG NAI'}
         </p>
 
         {/* Framed Interactive Embedded Google Map */}

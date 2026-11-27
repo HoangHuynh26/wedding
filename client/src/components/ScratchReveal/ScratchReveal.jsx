@@ -1,40 +1,42 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Pointer } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import weddingConfig from '../../config/weddingConfig';
+import { fullWeddingPhotoUrl } from '../../utils/weddingPhotos';
 import styles from './ScratchReveal.module.css';
 
-// All 29 couple portraits (crisp 760px retina thumbnails for instant decode inside the 240px oval cameo locket)
+// Use full-resolution portraits to retain detail through the oval crop and zoom.
 const CAMEO_COUPLE_SLIDES = [
-  { src: '/photos/thumbs/tuan-1515.jpg', pos: '48% 8%', zoom: 1.0 },
-  { src: '/photos/thumbs/tuan-0389.jpg', pos: '50% 18%', zoom: 1.04 },
-  { src: '/photos/thumbs/tuan-9751.jpg', pos: '50% 14%', zoom: 1.0 },
-  { src: '/photos/thumbs/tuan-1196.jpg', pos: '48% 54%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-0269.jpg', pos: '50% 34%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-2031.jpg', pos: '50% 36%', zoom: 1.2 },
-  { src: '/photos/thumbs/tuan-2135.jpg', pos: '50% 16%', zoom: 1.02 },
-  { src: '/photos/thumbs/tuan-1157.jpg', pos: '50% 34%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-0992.jpg', pos: '49% 40%', zoom: 1.16 },
-  { src: '/photos/thumbs/tuan-0923.jpg', pos: '50% 36%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-0974.jpg', pos: '50% 36%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-0876.jpg', pos: '50% 18%', zoom: 1.14 },
-  { src: '/photos/thumbs/tuan-1202.jpg', pos: '46% 52%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-1235.jpg', pos: '50% 38%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-1341.jpg', pos: '50% 38%', zoom: 1.16 },
-  { src: '/photos/thumbs/tuan-1369.jpg', pos: '51% 38%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-1423.jpg', pos: '50% 14%', zoom: 1.02 },
-  { src: '/photos/thumbs/tuan-0998.jpg', pos: '50% 34%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-0150.jpg', pos: '51% 46%', zoom: 1.24 },
-  { src: '/photos/thumbs/tuan-0229.jpg', pos: '48% 52%', zoom: 1.2 },
-  { src: '/photos/thumbs/tuan-0058.jpg', pos: '48% 36%', zoom: 1.14 },
-  { src: '/photos/thumbs/tuan-0375.jpg', pos: '48% 46%', zoom: 1.24 },
-  { src: '/photos/thumbs/tuan-0558.jpg', pos: '50% 38%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-0620.jpg', pos: '46% 50%', zoom: 1.2 },
-  { src: '/photos/thumbs/tuan-0654.jpg', pos: '50% 38%', zoom: 1.2 },
-  { src: '/photos/thumbs/tuan-2015.jpg', pos: '50% 36%', zoom: 1.2 },
-  { src: '/photos/thumbs/tuan-2109.jpg', pos: '49% 34%', zoom: 1.18 },
-  { src: '/photos/thumbs/tuan-2171.jpg', pos: '51% 42%', zoom: 1.22 },
-  { src: '/photos/thumbs/tuan-9792.jpg', pos: '50% 28%', zoom: 1.14 },
-];
+  { src: weddingConfig.couplePhoto, pos: '48% 8%', zoom: 1.0 },
+  { src: '/photos/tuan-0389.jpg', pos: '50% 18%', zoom: 1.04 },
+  { src: '/photos/tuan-9751.jpg', pos: '50% 14%', zoom: 1.0 },
+  { src: '/photos/tuan-1196.jpg', pos: '48% 54%', zoom: 1.22 },
+  { src: '/photos/tuan-0269.jpg', pos: '50% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-2031.jpg', pos: '50% 36%', zoom: 1.2 },
+  { src: '/photos/tuan-2135.jpg', pos: '50% 16%', zoom: 1.02 },
+  { src: '/photos/tuan-1157.jpg', pos: '50% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-0992.jpg', pos: '49% 40%', zoom: 1.16 },
+  { src: '/photos/tuan-0923.jpg', pos: '50% 36%', zoom: 1.18 },
+  { src: '/photos/tuan-0974.jpg', pos: '50% 36%', zoom: 1.18 },
+  { src: '/photos/tuan-0876.jpg', pos: '50% 18%', zoom: 1.14 },
+  { src: '/photos/tuan-1202.jpg', pos: '46% 52%', zoom: 1.22 },
+  { src: '/photos/tuan-1235.jpg', pos: '50% 38%', zoom: 1.22 },
+  { src: '/photos/tuan-1341.jpg', pos: '50% 38%', zoom: 1.16 },
+  { src: '/photos/tuan-1369.jpg', pos: '51% 38%', zoom: 1.22 },
+  { src: '/photos/tuan-1423.jpg', pos: '50% 14%', zoom: 1.02 },
+  { src: '/photos/tuan-0998.jpg', pos: '50% 34%', zoom: 1.22 },
+  { src: '/photos/tuan-0150.jpg', pos: '51% 46%', zoom: 1.24 },
+  { src: '/photos/tuan-0229.jpg', pos: '48% 52%', zoom: 1.2 },
+  { src: '/photos/tuan-0058.jpg', pos: '48% 36%', zoom: 1.14 },
+  { src: '/photos/tuan-0375.jpg', pos: '48% 46%', zoom: 1.24 },
+  { src: '/photos/tuan-0558.jpg', pos: '50% 38%', zoom: 1.18 },
+  { src: '/photos/tuan-0620.jpg', pos: '46% 50%', zoom: 1.2 },
+  { src: '/photos/tuan-0654.jpg', pos: '50% 38%', zoom: 1.2 },
+  { src: '/photos/tuan-2015.jpg', pos: '50% 36%', zoom: 1.2 },
+  { src: '/photos/tuan-2109.jpg', pos: '49% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-2171.jpg', pos: '51% 42%', zoom: 1.22 },
+  { src: '/photos/tuan-9792.jpg', pos: '50% 28%', zoom: 1.14 },
+].map((slide) => ({ ...slide, src: fullWeddingPhotoUrl(slide.src) }));
 
 function shuffleOrder(total, avoidFirst) {
   const arr = Array.from({ length: total }, (_, i) => i).filter((i) => i !== avoidFirst);
@@ -59,45 +61,47 @@ export default function ScratchReveal() {
   const [hasScratched, setHasScratched] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
 
-  // Double-buffered cross-fade slides for smooth 4-second video-like playback after reveal
-  const queueRef = useRef([]);
   const [activeSlide, setActiveSlide] = useState(() => ({ ...CAMEO_COUPLE_SLIDES[0], key: 0 }));
   const [prevSlide, setPrevSlide] = useState(null);
 
   useEffect(() => {
     if (!isRevealed) return undefined;
 
-    queueRef.current = shuffleOrder(CAMEO_COUPLE_SLIDES.length, 0).slice(1);
-    let stepCounter = 1;
+    let current = { ...CAMEO_COUPLE_SLIDES[0], key: 0 };
+    let order = shuffleOrder(CAMEO_COUPLE_SLIDES.length, 0).slice(1);
+    let timer;
+    let cancelled = false;
 
-    // Preload first upcoming slide immediately
-    if (queueRef.current.length > 0) {
-      const preloadImg = new Image();
-      preloadImg.src = CAMEO_COUPLE_SLIDES[queueRef.current[0]].src;
-    }
-
-    const timer = window.setInterval(() => {
-      if (queueRef.current.length === 0) {
-        queueRef.current = shuffleOrder(CAMEO_COUPLE_SLIDES.length);
+    function scheduleSlide() {
+      if (!order.length) {
+        order = shuffleOrder(CAMEO_COUPLE_SLIDES.length);
       }
-      const nextIdx = queueRef.current.shift();
-      const nextItem = CAMEO_COUPLE_SLIDES[nextIdx];
-      stepCounter += 1;
-
-      setActiveSlide((current) => {
-        setPrevSlide(current);
-        return { ...nextItem, key: stepCounter };
+      const next = CAMEO_COUPLE_SLIDES[order.shift()];
+      const image = new Image();
+      // Keep the current portrait visible while the next original is arriving.
+      const ready = new Promise((resolve) => {
+        image.onload = () => resolve(true);
+        image.onerror = () => resolve(false);
+        image.src = next.src;
       });
 
-      // Preload the following random photo ahead of time
-      if (queueRef.current.length > 0) {
-        const upcoming = CAMEO_COUPLE_SLIDES[queueRef.current[0]];
-        const img = new Image();
-        img.src = upcoming.src;
-      }
-    }, 4000);
+      timer = window.setTimeout(async () => {
+        const loaded = await ready;
+        if (cancelled) return;
+        if (loaded) {
+          setPrevSlide(current);
+          current = { ...next, key: current.key + 1 };
+          setActiveSlide(current);
+        }
+        scheduleSlide();
+      }, 4000);
+    }
 
-    return () => window.clearInterval(timer);
+    scheduleSlide();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, [isRevealed]);
 
   const paintFoil = useCallback(() => {
@@ -307,6 +311,8 @@ export default function ScratchReveal() {
             <img
               key={`active-${activeSlide.key}`}
               src={activeSlide.src}
+              loading={isRevealed ? 'eager' : 'lazy'}
+              decoding="async"
               alt={isGroomSide ? `${groom.name} & ${bride.name}` : `${bride.name} & ${groom.name}`}
               className={`${styles.couplePortrait} ${
                 isRevealed ? styles.couplePortraitActive : styles.couplePortraitStatic

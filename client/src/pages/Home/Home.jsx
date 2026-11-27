@@ -47,7 +47,7 @@ const themeStyle = {
 
 export default function WeddingExperience() {
   const { pathname, hash } = useLocation();
-  const { playAudio } = useAudio();
+  const { playAudio, getPlaybackTime } = useAudio();
   const fragment = hash.slice(1);
   const pathSegments = pathname.replace(/^\/|\/$/g, '').split('/');
   const lastSegment = pathSegments[pathSegments.length - 1] || '';
@@ -58,6 +58,7 @@ export default function WeddingExperience() {
         : '');
 
   const [phase, setPhase] = useState(() => (destination ? 'open' : 'sealed'));
+  const [belowFoldMounted, setBelowFoldMounted] = useState(() => Boolean(destination));
   const openedByGuest = useRef(false);
   const locked = phase !== 'open';
 
@@ -84,14 +85,13 @@ export default function WeddingExperience() {
     if (phase === 'sealed') return undefined;
     const criticalAssets = [
       weddingConfig.formalPhoto || '/photos/tuan-0992.jpg',
-      '/photos/thumbs/tuan-1515.jpg',
       '/mauve-theme/mother-of-pearl.webp',
       '/mauve-theme/jeweled-frame-cutout.webp?v=3',
       '/mauve-theme/curtain-pleats-matched.webp',
       '/mauve-theme/curtain-tieback-left.webp',
       '/mauve-theme/curtain-tieback-right.webp',
       '/mauve-theme/wax-seal-hh.webp',
-      ...weddingConfig.gallery.slice(0, 5).map((p) => p.thumbnail || p.src),
+      '/mauve-theme/footer-curtain.webp',
     ];
     const imgs = criticalAssets.map((src) => {
       const img = new Image();
@@ -110,14 +110,55 @@ export default function WeddingExperience() {
   useEffect(() => {
     if (phase !== 'opening') return undefined;
     const preference = window.matchMedia(motionPreference);
-    const finish = () => setPhase('open');
-    const reveal = window.setTimeout(finish, WRAP_CLEAR_MS);
+    const startedAt = performance.now();
+    const targetSec = WRAP_CLEAR_MS / 1000;
+    let rafId = 0;
+
+    const finish = () => {
+      window.cancelAnimationFrame(rafId);
+      setPhase('open');
+    };
+
+    // Lock Hero name reveal directly to the audio playback clock (~5.42s veil clear -> 6.00s chorus climax)
+    // with safe wall-clock bounds [WRAP_CLEAR_MS, WRAP_CLEAR_MS + 650ms] if audio is muted or blocked.
+    const checkSync = (now) => {
+      const wallElapsedMs = now - startedAt;
+      if (wallElapsedMs >= WRAP_CLEAR_MS) {
+        const audioSec = getPlaybackTime ? getPlaybackTime() : null;
+        if (
+          audioSec === null ||
+          audioSec < 0.1 ||
+          audioSec >= targetSec ||
+          wallElapsedMs >= WRAP_CLEAR_MS + 650
+        ) {
+          finish();
+          return;
+        }
+      }
+      rafId = window.requestAnimationFrame(checkSync);
+    };
+
+    rafId = window.requestAnimationFrame(checkSync);
     preference.addEventListener('change', finish);
     return () => {
-      window.clearTimeout(reveal);
+      window.cancelAnimationFrame(rafId);
       preference.removeEventListener('change', finish);
     };
-  }, [phase]);
+  }, [phase, getPlaybackTime]);
+
+  // Mount below-the-fold sections right after the Hero couple names have cleanly bloomed on the 6.00s climax
+  // so React never drops frames during the 5.42s -> 6.05s calligraphy reveal!
+  useEffect(() => {
+    if (phase !== 'open') return undefined;
+    if (destination || belowFoldMounted) {
+      setBelowFoldMounted(true);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => {
+      setBelowFoldMounted(true);
+    }, 520);
+    return () => window.clearTimeout(timer);
+  }, [phase, destination, belowFoldMounted]);
 
   useEffect(() => {
     if (destination && locked) setPhase('open');
@@ -165,7 +206,7 @@ export default function WeddingExperience() {
         </WeddingHero>
       </div>
 
-      {!locked && (
+      {!locked && belowFoldMounted && (
         <>
           <CursorEffect />
           <MusicButton />

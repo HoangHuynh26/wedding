@@ -76,8 +76,8 @@ export const groomEventConfig = {
   fullDateDisplay: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
   timeDisplay: '17:30',
   receptionTime: '17:30 - Đón khách & Tiệc trà khai vị',
-  ceremonyTime: '19:00 - Nghi lễ Tân Hôn',
-  dinnerTime: '19:30 - Khai tiệc tối mừng Lễ Tân Hôn',
+  ceremonyTime: '19:00 - Lễ Thành Hôn',
+  dinnerTime: '19:30 - Khai tiệc tối mừng Lễ Thành Hôn',
   isoDate: '2027-01-24T17:30:00+07:00',
 };
 
@@ -95,11 +95,11 @@ export const groomVenueConfig = {
 
 export const groomTranslations = {
   vi: {
-    pageTitle: 'Lễ Tân Hôn | Đình Huy & Thu Hiền • 24.01.2027',
+    pageTitle: 'Lễ Thành Hôn | Đình Huy & Thu Hiền • 24.01.2027',
     envelope: {
-      header: 'THIỆP MỜI LỄ TÂN HÔN',
-      ceremonyHeading: 'LỄ TÂN HÔN',
-      invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Tân Hôn của chúng mình tại Nhà Hàng White Palace.',
+      header: 'THIỆP MỜI LỄ THÀNH HÔN',
+      ceremonyHeading: 'LỄ THÀNH HÔN',
+      invitation: 'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Thành Hôn của chúng mình tại Nhà Hàng White Palace.',
     },
     hero: {
       date: '24.01.2027',
@@ -107,9 +107,9 @@ export const groomTranslations = {
       cityCaps: 'WHITE PALACE • TP. HỒ CHÍ MINH',
     },
     formal: {
-      saveTheDate: 'LỄ TÂN HÔN • TRÂN TRỌNG KÍNH MỜI',
-      title: 'THIỆP MỜI LỄ TÂN HÔN',
-      welcome: 'Trân trọng kính mời quý khách đến dự bữa tiệc thân mật mừng Lễ Tân Hôn của hai con chúng tôi',
+      saveTheDate: 'LỄ THÀNH HÔN • TRÂN TRỌNG KÍNH MỜI',
+      title: 'THIỆP MỜI LỄ THÀNH HÔN',
+      welcome: 'Trân trọng kính mời Quý Khách đến dự bữa tiệc thân mật mừng Lễ Thành Hôn của hai con chúng tôi',
       timeDayHeader: '17:30, CHỦ NHẬT',
       monthBox: 'THÁNG 01',
       dayNumber: '24',
@@ -117,7 +117,7 @@ export const groomTranslations = {
       lunarDate: '( Tức ngày 17 tháng 12 năm Bính Ngọ )',
       venueHostName: 'NHÀ HÀNG WHITE PALACE',
       venueAddress: '588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh',
-      receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ TÂN HÔN',
+      receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ THÀNH HÔN',
       fullDate: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
       time: '17:30',
       venueName: 'NHÀ HÀNG WHITE PALACE',
@@ -126,7 +126,7 @@ export const groomTranslations = {
     },
     countdown: {
       fullDate: 'Chủ Nhật, 24 Tháng 01, 2027 • 17:30',
-      ceremonyNote: 'Lễ Tân Hôn • Đình Huy ♡ Thu Hiền',
+      ceremonyNote: 'Lễ Thành Hôn • Đình Huy ♡ Thu Hiền',
     },
     scratch: {
       revealedCaption: 'Khoảnh khắc chung đôi • Đình Huy & Thu Hiền',
@@ -134,7 +134,7 @@ export const groomTranslations = {
     theDay: {
       headingTop: 'Lịch',
       headingBottom: 'Trình',
-      intro: 'Hành trình đêm tiệc mừng Lễ Tân Hôn ấm áp và trọn vẹn tại Nhà Hàng White Palace.',
+      intro: 'Hành trình đêm tiệc mừng Lễ Thành Hôn ấm áp và trọn vẹn tại Nhà Hàng White Palace.',
       items: [
         {
           time: '17:30',
@@ -143,8 +143,8 @@ export const groomTranslations = {
         },
         {
           time: '19:00',
-          title: 'LÀM LỄ',
-          detail: 'Cử hành nghi lễ Tân Hôn trang trọng trước sự chứng kiến của hai họ và quý khách',
+          title: 'LỄ THÀNH HÔN',
+          detail: 'Cử hành nghi lễ Thành Hôn trang trọng trước sự chứng kiến của hai họ và quý khách',
         },
         {
           time: '19:30',
@@ -154,27 +154,27 @@ export const groomTranslations = {
       ],
     },
     transportation: {
-      stamp1: 'LỄ TÂN HÔN',
+      stamp1: 'LỄ THÀNH HÔN',
       stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hiền',
       stamp3: 'WHITE PALACE',
-      para2: 'Tiệc tối mừng Lễ Tân Hôn được tổ chức tại Nhà Hàng Tiệc Cưới White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh, với sảnh đón tiếp sang trọng và khu vực đỗ xe rộng rãi.',
-      para3: 'Gia đình kính mời quý khách thu xếp đến đón khách từ 17:30 tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) tại White Palace để cùng lưu giữ khoảnh khắc đẹp trước khi làm lễ (19:00) và khai tiệc (19:30).',
+      para2: 'Tiệc tối mừng Lễ Thành Hôn được tổ chức tại Nhà Hàng Tiệc Cưới White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh, với sảnh đón tiếp sang trọng và khu vực đỗ xe rộng rãi.',
+      para3: 'Gia đình kính mời quý khách thu xếp đến đón khách từ 17:30 tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) tại White Palace để cùng lưu giữ khoảnh khắc đẹp trước khi cử hành Lễ Thành Hôn (19:00) và khai tiệc (19:30).',
     },
     gallery: {
       intro: 'Những khoảnh khắc đong đầy yêu thương của Đình Huy & Thu Hiền.',
     },
     venue: {
-      brideVenueTag: 'Địa điểm tổ chức Tiệc Cưới Nhà Trai (Lễ Tân Hôn)',
+      brideVenueTag: 'Địa điểm tổ chức Tiệc Cưới Nhà Trai (Lễ Thành Hôn)',
       hall: 'Nhà hàng White Palace',
       regionCaps: '588 PHẠM VĂN ĐỒNG, TP. THỦ ĐỨC, TP. HỒ CHÍ MINH',
-      para1: 'Tọa lạc tại không gian sảnh tiệc sang trọng bậc nhất của Nhà hàng Tiệc Cưới White Palace, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Tân Hôn.',
-      para2: 'Gia đình kính mời quý khách đến đón khách từ 17:30 tối Chủ Nhật 24.01.2027 tại sảnh tiệc White Palace để cùng chụp ảnh lưu niệm trước khi làm lễ (19:00) và khai tiệc (19:30).',
+      para1: 'Tọa lạc tại không gian sảnh tiệc sang trọng bậc nhất của Nhà hàng Tiệc Cưới White Palace, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Thành Hôn.',
+      para2: 'Gia đình kính mời quý khách đến đón khách từ 17:30 tối Chủ Nhật 24.01.2027 tại sảnh tiệc White Palace để cùng chụp ảnh lưu niệm trước khi cử hành Lễ Thành Hôn (19:00) và khai tiệc (19:30).',
       timeDetail: '17:30, Chủ Nhật — 24.01.2027',
       addressText: 'Nhà hàng White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh',
       schedule: [
         '17:30 - Đón khách & Chụp ảnh lưu niệm tại sảnh tiệc White Palace',
-        '19:00 - Làm lễ Tân Hôn trang trọng',
+        '19:00 - Lễ Thành Hôn trang trọng',
         '19:30 - Khai tiệc tối & Chung vui cùng gia đình, bạn bè',
       ],
     },
@@ -378,7 +378,7 @@ export const translations = {
       ceremonyHeading: 'LỄ VU QUY',
       salutation: 'Trân Trọng Kính Mời',
       defaultGuest: 'Quý Khách Quý',
-      invitation: 'Trân trọng kính mời quý khách đến dự tiệc mừng Lễ Vu Quy của chúng mình.',
+      invitation: 'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Vu Quy của chúng mình.',
       tapToOpen: 'Chạm vào con dấu để mở thiệp',
       audioNote: '(Giai điệu tình yêu sẽ tự động ngân vang khi mở thiệp)',
     },
@@ -387,12 +387,12 @@ export const translations = {
       scroll: 'Cuộn xuống để khám phá',
       date: '17.01.2027',
       venueTitle: 'Tư Gia Nhà Gái',
-      cityCaps: 'PHƯỜNG TRẢNG DÀI, ĐỒNG NAI',
+      cityCaps: 'PHƯỜNG TRẢNG DÀI, THÀNH PHỐ ĐỒNG NAI',
     },
     formal: {
       saveTheDate: 'LỄ VU QUY • TRÂN TRỌNG KÍNH MỜI',
       title: 'THIỆP MỜI LỄ VU QUY',
-      welcome: 'Trân trọng kính mời quý khách đến dự bữa tiệc thân mật mừng Lễ Vu Quy của hai con chúng tôi',
+      welcome: 'Trân trọng kính mời Quý Khách đến dự bữa tiệc thân mật mừng Lễ Vu Quy của hai con chúng tôi',
       brideSide: 'ĐẠI DIỆN NHÀ GÁI',
       brideSideTitle: 'NHÀ GÁI',
       brideFather: 'Ông: Nguyễn Thanh Tâm',
@@ -408,10 +408,10 @@ export const translations = {
       dob: 'Sinh ngày:',
       sonOf: 'Trưởng nam của:',
       daughterOf: 'Ái nữ của:',
-      announcementLine1: 'KÍNH MỜI THAM DỰ TIỆC CHUNG\u00A0VUI',
+      announcementLine1: 'KÍNH MỜI QUÝ KHÁCH DỰ TIỆC CHUNG\u00A0VUI',
       announcementLine2: 'CỦA GIA ĐÌNH CHÚNG TÔI',
       quoteLine1: 'Tình yêu và sự gắn kết đưa hai trái tim về chung một mái nhà,',
-      quoteLine2: 'rất mong sự hiện diện của quý khách để cùng sẻ chia khoảnh khắc ý nghĩa này.',
+      quoteLine2: 'rất mong sự hiện diện của Quý Khách để cùng sẻ chia khoảnh khắc ý nghĩa này.',
       honorTag: 'TRÂN TRỌNG KÍNH MỜI',
       defaultGuest: 'Quý Khách Quý',
       timeDayHeader: '11:20 AM, CHỦ NHẬT',
@@ -565,8 +565,8 @@ export const translations = {
       title: 'Nơi Hạnh Phúc Đơm Hoa',
       brideVenueTag: 'Địa điểm tổ chức Lễ Vu Quy (Bên Nhà Gái)',
       hall: 'Tư gia Nhà Gái',
-      regionCaps: 'PHƯỜNG TRẢNG DÀI, ĐỒNG NAI',
-      para1: 'Tọa lạc tại không gian ấm cúng của gia đình tại Phường Trảng Dài, Đồng Nai, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của ngày Lễ Vu Quy.',
+      regionCaps: 'PHƯỜNG TRẢNG DÀI, THÀNH PHỐ ĐỒNG NAI',
+      para1: 'Tọa lạc tại không gian ấm cúng của gia đình tại Phường Trảng Dài, Thành Phố Đồng Nai, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của ngày Lễ Vu Quy.',
       para2: 'Gia đình kính mời quý khách đến sớm ít phút để cùng hòa mình vào không khí hân hoan và chụp ảnh lưu niệm trước khi nghi lễ bắt đầu.',
       timeTitle: 'Thời Gian Tổ Chức',
       timeDetail: '11:20 AM, Chủ Nhật — 17.01.2027',
@@ -665,6 +665,9 @@ export const translations = {
       reopen: 'Xem lại thiệp cưới',
     },
     footer: {
+      line1: 'Cảm ơn quý khách đã hiện diện và cùng chia sẻ niềm vui trong ngày đặc biệt này.',
+      line2: 'Sự hiện diện của quý khách chính là món quà ý nghĩa nhất dành cho chúng tôi.',
+      thankYou: 'Thank you!',
       quote: '“Cảm ơn bạn đã luôn là một phần trân quý trong hành trình hạnh phúc của chúng mình.”',
       tagline: 'Gửi trọn yêu thương cho ngày hạnh phúc trăm năm',
     },
@@ -695,7 +698,7 @@ export const translations = {
       scroll: 'Scroll to explore',
       date: '17.01.2027',
       venueTitle: "Bride's Family Residence",
-      cityCaps: 'TRANG DAI, DONG NAI',
+      cityCaps: 'TRANG DAI, DONG NAI CITY',
     },
     formal: {
       saveTheDate: 'SAVE THE DATE • CORDIALLY INVITED',
@@ -873,8 +876,8 @@ export const translations = {
       title: 'Where Love Blooms',
       brideVenueTag: "Bride's Family Wedding Ceremony Venue",
       hall: "Bride's Family Residence",
-      regionCaps: 'TRANG DAI, DONG NAI',
-      para1: "Set in the warm embrace of the Bride's family home in Trang Dai, Dong Nai, surrounded by loving family and heartfelt blessings for our celebration.",
+      regionCaps: 'TRANG DAI, DONG NAI CITY',
+      para1: "Set in the warm embrace of the Bride's family home in Trang Dai, Dong Nai City, surrounded by loving family and heartfelt blessings for our celebration.",
       para2: 'We recommend arriving a little early to settle in and enjoy the warm atmosphere before the ceremony begins.',
       timeTitle: 'Date & Time',
       timeDetail: '11:20 AM, Sunday — January 17, 2027',
@@ -973,6 +976,9 @@ export const translations = {
       reopen: 'Reopen Sealed Envelope',
     },
     footer: {
+      line1: 'Thank you for your presence and for sharing the joy with us on this special day.',
+      line2: 'Your presence is truly the most meaningful gift to us.',
+      thankYou: 'Thank you!',
       quote: '“Thank you for being such a cherished part of our journey toward lifelong happiness.”',
       tagline: 'With All Our Love • Dedicated to our special wedding day',
     },
@@ -1281,6 +1287,9 @@ export const translations = {
       reopen: '重新查看请柬封面',
     },
     footer: {
+      line1: '感谢您的莅临，与我们共同分享这特别之日的喜悦。',
+      line2: '您的到来，便是赐予我们最珍贵、最有意义的礼物。',
+      thankYou: 'Thank you!',
       quote: '“感谢您成为我们迈向幸福婚姻旅途中珍贵而温暖的一部分。”',
       tagline: '执子之手，与子偕老',
     },
@@ -1315,15 +1324,48 @@ export function LanguageProvider({ children }) {
     [basePack, isGroomSide, language]
   );
 
-  // Keep <html lang="..."> and document title localized
+  // Keep <html lang="...">, document.title, and Open Graph meta tags synced with active side & language
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = t.htmlLang || language;
-      if (t.pageTitle && !location.pathname.includes('admin')) {
-        document.title = t.pageTitle;
+      if (!location.pathname.includes('admin')) {
+        if (t.pageTitle) {
+          document.title = t.pageTitle;
+        }
+        const activeCouple =
+          language === 'zh'
+            ? chineseCouple
+            : language === 'en'
+              ? englishCouple
+              : weddingConfig;
+        const firstFull = isGroomSide ? activeCouple.groom.name : activeCouple.bride.name;
+        const secondFull = isGroomSide ? activeCouple.bride.name : activeCouple.groom.name;
+        const suffix =
+          language === 'en'
+            ? 'Wedding Invitation'
+            : language === 'zh'
+              ? isGroomSide
+                ? '新婚喜宴请柬'
+                : '归宁喜宴请柬'
+              : isGroomSide
+                ? 'Thiệp Mời Lễ Thành Hôn'
+                : 'Thiệp Mời Lễ Vu Quy';
+        const dynamicOgTitle = `${firstFull} & ${secondFull} — ${suffix}`;
+        const dynamicDesc = t.envelope?.invitation || '';
+
+        const setMeta = (selector, value) => {
+          if (!value) return;
+          const el = document.querySelector(selector);
+          if (el) el.setAttribute('content', value);
+        };
+        setMeta('meta[property="og:title"]', dynamicOgTitle);
+        setMeta('meta[name="twitter:title"]', dynamicOgTitle);
+        setMeta('meta[property="og:description"]', dynamicDesc);
+        setMeta('meta[name="twitter:description"]', dynamicDesc);
+        setMeta('meta[name="description"]', dynamicDesc);
       }
     }
-  }, [t, language, location.pathname]);
+  }, [t, language, isGroomSide, location.pathname]);
 
   const setLanguage = (lang) => {
     if (translations[lang]) {

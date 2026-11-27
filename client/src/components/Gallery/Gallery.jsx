@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
+import { fullWeddingPhotoUrl } from '../../utils/weddingPhotos';
 import Smooth3DSlideshow from './Smooth3DSlideshow';
 import styles from './Gallery.module.css';
 
@@ -129,10 +130,10 @@ export default function Gallery() {
         }
       }
 
+      const src = fullWeddingPhotoUrl(photo.src || photo.thumbnail);
       return {
-        src: photo.src,
-        thumbnail: photo.thumbnail || photo.src,
-        image: { src: photo.thumbnail || photo.src, fullSrc: photo.src, alt: localizedTitle },
+        src,
+        image: { src, alt: localizedTitle },
         title: localizedTitle,
         caption: localizedCaption,
         category: photo.category || 'grand-hall',

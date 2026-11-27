@@ -102,7 +102,7 @@ export default function Admin() {
 
   const playlist = weddingConfig.playlist || [];
   const [selectedSongId, setSelectedSongId] = useState(
-    weddingConfig.music?.id || playlist[0]?.id || 'wildest-dreams-piano'
+    weddingConfig.music?.id || playlist[0]?.id || 'young-and-beautiful'
   );
   const [previewSongId, setPreviewSongId] = useState(null);
   const [showOnlyCPreview, setShowOnlyCPreview] = useState(false);
@@ -300,7 +300,7 @@ ${generatedUrl}
 
 衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
       } else {
-        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Tân Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace — 588 Phạm Văn Đồng, TP. Thủ Đức, TP. Hồ Chí Minh (17:30 đón khách, 19:00 làm lễ, 19:30 khai tiệc — tối Chủ Nhật, ngày 24/01/2027)!
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Thành Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace — 588 Phạm Văn Đồng, TP. Thủ Đức, TP. Hồ Chí Minh (17:30 đón khách, 19:00 lễ thành hôn, 19:30 khai tiệc — tối Chủ Nhật, ngày 24/01/2027)!
 
 🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
 ✨ Xem thiệp mời cưới online tại đây:
@@ -480,7 +480,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
           </Link>
           <span className={styles.badge}>
             {isGroomSide
-              ? 'Quản Trị Thiệp Nhà Trai (Lễ Tân Hôn • 24.01.2027)'
+              ? 'Quản Trị Thiệp Nhà Trai (Lễ Thành Hôn • 24.01.2027)'
               : 'Quản Trị Thiệp Nhà Gái (Lễ Vu Quy • 17.01.2027)'}
           </span>
           <h1 className={styles.title}>
@@ -490,7 +490,7 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
           </h1>
           <p className={styles.subtitle}>
             {isGroomSide
-              ? 'Tạo liên kết thiệp mời Lễ Tân Hôn (Đình Huy & Thu Hiền — Tiệc tối 24/01/2027 tại Nhà Hàng White Palace) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
+              ? 'Tạo liên kết thiệp mời Lễ Thành Hôn (Đình Huy & Thu Hiền — Tiệc tối 24/01/2027 tại Nhà Hàng White Palace) riêng cho khách nhà trai — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'
               : 'Tạo liên kết thiệp mời Lễ Vu Quy (Thu Hiền & Đình Huy — 11:20 ngày 17/01/2027) riêng cho khách nhà gái — hỗ trợ 3 ngôn ngữ, giai điệu riêng và mã QR.'}
           </p>
         </div>

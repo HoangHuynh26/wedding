@@ -241,7 +241,7 @@
 
 /* 2. Card Content Body */
 .cardContentBody {
-  padding: 2.75rem 1.25rem 3.5rem;
+  padding: 2.75rem 1rem 3.5rem;
   position: relative;
   text-align: center;
   background: #ffffff;
@@ -335,16 +335,18 @@
   margin-bottom: 2.75rem;
   position: relative;
   z-index: 2;
+  container-type: inline-size;
 }
 
 .announcementTitle {
   font-family: var(--font-serif);
-  font-size: clamp(0.82rem, 3.2vw, 1.25rem);
+  font-size: clamp(0.88rem, 4.35vw, 1.32rem);
+  font-size: clamp(0.88rem, 4.38cqi, 1.38rem);
   font-weight: 600;
-  letter-spacing: clamp(0.02em, 0.4vw, 0.07em);
+  letter-spacing: 0.042em;
   color: #453e4b;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+  line-height: 1.54;
+  margin-bottom: 1.2rem;
   text-transform: uppercase;
   width: 100%;
   display: flex;
@@ -367,11 +369,11 @@
 }
 
 .vietnameseQuote {
-  font-size: clamp(0.92rem, 3vw, 1.05rem);
+  font-size: clamp(0.95rem, 3.85cqi, 1.08rem);
   color: #5e5566;
   font-style: italic;
   line-height: 1.7;
-  max-width: 440px;
+  max-width: min(96%, 440px);
   margin: 0 auto;
 }
 
@@ -708,38 +710,71 @@
   line-height: 1.5;
 }
 
-/* Prominent Couture Slate-Plum Directions Button */
+/* Transparent Outlined Directions Button with Heartbeat Icon & Label */
 .directionsBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
   padding: 0.9rem 2.2rem;
   border-radius: 2px;
-  background: #63687c;
-  color: #f6f2f6;
-  border: 1px solid rgba(78, 68, 88, 0.35);
-  outline: 1px solid rgba(78, 68, 88, 0.35);
+  background: transparent;
+  color: #453e4b;
+  border: 1px solid rgba(78, 68, 88, 0.42);
+  outline: 1px solid rgba(78, 68, 88, 0.22);
   outline-offset: 4px;
   font-family: var(--font-sans);
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(58, 48, 66, 0.18);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none;
+  transition: border-color 0.3s ease, outline-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .directionsBtn:hover {
-  background: #4e5366;
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(58, 48, 66, 0.26);
+  background: transparent;
+  color: #2d2733;
+  border-color: rgba(69, 62, 75, 0.72);
+  outline-color: rgba(69, 62, 75, 0.38);
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+.directionsBtnPulse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  transform-origin: center center;
+  will-change: transform;
+  animation: directionsHeartbeat 1.75s ease-in-out infinite;
 }
 
 .pinIcon {
-  color: #eee7f0;
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+@keyframes directionsHeartbeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.13);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.09);
+  }
+  62% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -967,8 +1002,8 @@
   }
 
   .announcementTitle {
-    font-size: 1.12rem;
-    letter-spacing: 0.06em;
+    font-size: 1.02rem;
+    letter-spacing: 0.04em;
     line-height: 1.55;
     margin-bottom: 0.9rem;
   }

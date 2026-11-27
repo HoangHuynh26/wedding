@@ -13,12 +13,20 @@ export default function MobileQuickActions() {
 
   const contactItems = isGroomSide
     ? [
-        { person: groom, roleLabel: t.quickActions.groomLabel, fallbackPhone: '0987654321', fallbackAvatar: '/groom.jpg' },
-        { person: bride, roleLabel: t.quickActions.brideLabel, fallbackPhone: '0912345678', fallbackAvatar: '/bride.jpg' },
+        {
+          person: groom,
+          roleLabel: t.quickActions.groomLabel,
+          fallbackPhone: '0921779799',
+          fallbackAvatar: '/groom.jpg',
+        },
       ]
     : [
-        { person: bride, roleLabel: t.quickActions.brideLabel, fallbackPhone: '0912345678', fallbackAvatar: '/bride.jpg' },
-        { person: groom, roleLabel: t.quickActions.groomLabel, fallbackPhone: '0987654321', fallbackAvatar: '/groom.jpg' },
+        {
+          person: bride,
+          roleLabel: t.quickActions.brideLabel,
+          fallbackPhone: '0912345678',
+          fallbackAvatar: '/bride.jpg',
+        },
       ];
 
   useEffect(() => {
