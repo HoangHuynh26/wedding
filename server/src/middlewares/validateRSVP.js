@@ -29,12 +29,23 @@ const validateRSVP = (req, res, next) => {
 
   // Sanitize values
   const rawType = String(req.body.invitationType || '').trim().toLowerCase();
-  if (rawType === 'chu-re' || rawType === 'groom' || rawType === 'nha-trai') {
-    req.body.invitationType = 'chu-re';
+  if (rawType === 'groom' || rawType === 'chu-re' || rawType === 'nha-trai') {
+    req.body.invitationType = 'groom';
   } else {
-    req.body.invitationType = 'co-dau';
+    req.body.invitationType = 'bride';
   }
-  const defaultSide = req.body.invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)';
+
+  const rawLang = String(req.body.language || '').trim().toLowerCase();
+  const normalizedLang = rawLang === 'en' ? 'en' : rawLang === 'zh' || rawLang.startsWith('zh-') ? 'zh' : rawLang === 'vi' ? 'vi' : 'en';
+  req.body.language = normalizedLang;
+
+  const defaultSideByLang = {
+    en: req.body.invitationType === 'groom' ? "Groom's Side" : "Bride's Side",
+    vi: req.body.invitationType === 'groom' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)',
+    zh: req.body.invitationType === 'groom' ? '男方亲友（新郎方）' : '女方亲友（新娘方）',
+  };
+  const defaultSide = defaultSideByLang[normalizedLang] || defaultSideByLang.en;
+
   req.body.fullName = fullName.trim();
   req.body.location = location && typeof location === 'string' ? location.trim().substring(0, 100) : '';
   req.body.side = req.body.side ? String(req.body.side).trim().substring(0, 80) : defaultSide;

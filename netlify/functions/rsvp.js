@@ -1,7 +1,26 @@
 // In-memory cache across serverless warm invocations
 const recentSubmissions = new Map();
 
-exports.handler = async function (event, context) {
+function formatDateTimeICT(date) {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(date);
+
+  const map = {};
+  for (const part of parts) {
+    map[part.type] = part.value;
+  }
+  return `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second}`;
+}
+
+exports.handler = async function (event) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -39,43 +58,58 @@ exports.handler = async function (event, context) {
       let body;
       try {
         body = JSON.parse(event.body || '{}');
-      } catch (e) {
+      } catch {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
             success: false,
-            message: 'Dữ liệu gửi lên không đúng định dạng JSON.',
+            message: 'Invalid JSON request body.',
           }),
         };
       }
 
-      const { fullName, side, invitationType: rawInvitationType, message = '' } = body;
+      const {
+        fullName,
+        side,
+        invitationType: rawInvitationType,
+        language: rawLanguage,
+        attendance = true,
+        message = '',
+      } = body;
 
-      // Validation: only fullName is required; message (lời chúc) is completely optional
       if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 2) {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
             success: false,
-            message: 'Vui lòng nhập họ và tên hợp lệ (ít nhất 2 ký tự).',
+            message: 'Please enter a valid full name (at least 2 characters).',
           }),
         };
       }
 
       const normalizedType = String(rawInvitationType || '').trim().toLowerCase();
-      let invitationType;
-      if (normalizedType === 'chu-re' || normalizedType === 'groom' || normalizedType === 'nha-trai') {
-        invitationType = 'chu-re';
-      } else {
-        invitationType = 'co-dau';
-      }
+      const invitationType =
+        normalizedType === 'groom' || normalizedType === 'chu-re' || normalizedType === 'nha-trai'
+          ? 'groom'
+          : 'bride';
+
+      const normLang = String(rawLanguage || '').trim().toLowerCase();
+      const language =
+        normLang === 'vi' ? 'vi' : normLang === 'zh' || normLang.startsWith('zh-') ? 'zh' : 'en';
+
+      const defaultSideByLang = {
+        en: invitationType === 'groom' ? "Groom's Side" : "Bride's Side",
+        vi: invitationType === 'groom' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)',
+        zh: invitationType === 'groom' ? '男方亲友（新郎方）' : '女方亲友（新娘方）',
+      };
 
       const trimmedName = fullName.trim();
-      const defaultSide = invitationType === 'chu-re' ? 'Nhà Trai (Chú Rể)' : 'Nhà Gái (Cô Dâu)';
+      const defaultSide = defaultSideByLang[language] || defaultSideByLang.en;
       const trimmedSide = side && String(side).trim() ? String(side).trim() : defaultSide;
       const trimmedMessage = typeof message === 'string' ? message.trim() : '';
+      const confirmedAttendance = Boolean(attendance);
       const cacheKey = `${invitationType}_${trimmedName.toLowerCase()}_${trimmedSide.toLowerCase()}`;
 
       // Duplicate prevention within warm instance
@@ -87,7 +121,7 @@ exports.handler = async function (event, context) {
           body: JSON.stringify({
             success: true,
             isDuplicate: true,
-            message: 'Bạn đã xác nhận tham dự rồi! Thông tin đã được ghi nhận vào Excel qua Make.com ♡',
+            message: 'RSVP already confirmed and recorded.',
             guest: last,
             storage: 'Excel via Make.com',
           }),
@@ -95,34 +129,20 @@ exports.handler = async function (event, context) {
       }
 
       const now = new Date();
-      // Format in Vietnam Time (ICT, UTC+7) for clean Excel formatting
-      const formattedDate = new Intl.DateTimeFormat('vi-VN', {
-        timeZone: 'Asia/Ho_Chi_Minh',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).format(now);
-
+      const formattedDate = formatDateTimeICT(now);
       const submittedAt = now.toISOString();
 
+      // 100% English schema keys & system values; only user/language data varies by language
       const formattedPayload = {
         fullName: trimmedName,
         side: trimmedSide,
         invitationType,
+        language,
+        attendance: confirmedAttendance,
         message: trimmedMessage,
         dateFormatted: formattedDate,
         submittedAt,
-        source: 'Website Thiệp Cưới (Netlify)',
-        // Formatted columns for Make.com -> Google Sheets
-        'Họ và Tên': trimmedName,
-        'Khách Của': trimmedSide,
-        'Loại Thiệp': invitationType,
-        'Lời Chúc': trimmedMessage,
-        'Thời Gian': formattedDate,
+        source: 'Wedding Invitation Website',
       };
 
       const webhookUrl = (process.env.MAKE_WEBHOOK_URL || '').trim();
@@ -147,7 +167,7 @@ exports.handler = async function (event, context) {
           console.error('Make.com webhook dispatch error:', err);
         }
       } else if (webhookUrl) {
-        console.error('MAKE_WEBHOOK_URL must be an HTTP(S) Custom Webhook URL (https://hook.eu1.make.com/...), not a Mailhook email address.');
+        console.error('MAKE_WEBHOOK_URL must be an HTTP(S) Custom Webhook URL (https://hook.eu1.make.com/...).');
       } else {
         console.warn('MAKE_WEBHOOK_URL is not set in Netlify environment variables.');
       }
@@ -156,8 +176,9 @@ exports.handler = async function (event, context) {
         fullName: trimmedName,
         side: trimmedSide,
         invitationType,
+        language,
         message: trimmedMessage,
-        attendance: true,
+        attendance: confirmedAttendance,
         submittedAt,
         deliveredToMake: webhookDelivered,
       };
@@ -182,7 +203,7 @@ exports.handler = async function (event, context) {
         headers,
         body: JSON.stringify({
           success: false,
-          message: 'Đã có lỗi xảy ra khi xử lý xác nhận RSVP.',
+          message: 'An error occurred while processing the RSVP confirmation.',
           error: error.message,
         }),
       };

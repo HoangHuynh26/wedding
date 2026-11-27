@@ -25,6 +25,13 @@
   margin: 3rem auto 0;
 }
 
+.contactsGridSingle {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 460px;
+  margin: 3rem auto 0;
+}
+
 @media (min-width: 680px) {
   .contactsGrid {
     grid-template-columns: repeat(2, 1fr);

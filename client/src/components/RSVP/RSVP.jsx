@@ -110,11 +110,12 @@ export default function RSVP() {
 
     try {
       const sideLabel = selectedOption.label;
-      const invitationType = isGroomSide ? 'chu-re' : 'co-dau';
+      const invitationType = isGroomSide ? 'groom' : 'bride';
       const response = await rsvpService.submitRSVP({
         fullName: formData.fullName.trim(),
         side: sideLabel,
         invitationType,
+        language,
         message: formData.message.trim(),
         attendance: true,
       });
@@ -135,14 +136,6 @@ export default function RSVP() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleReset = () => {
-    setFormData({ fullName: '', sideId: defaultSideId, message: '' });
-    setErrors({});
-    setSubmitSuccess(false);
-    setConfirmedGuest(null);
-    setServerError('');
   };
 
   return (
@@ -331,7 +324,10 @@ export default function RSVP() {
                   >
                     <span className={styles.successHeading}>{t.rsvp.successHeading}</span>
                     <h3 className={styles.successGuestName}>
-                      {t.rsvp.thankYou} {confirmedGuest?.fullName || ''}
+                      <span className={styles.thankYouLine}>{t.rsvp.thankYou}</span>
+                      {confirmedGuest?.fullName && (
+                        <span className={styles.guestNameLine}>{confirmedGuest.fullName}</span>
+                      )}
                     </h3>
                     <div className={styles.headerRule} aria-hidden="true">
                       <span />
@@ -357,14 +353,6 @@ export default function RSVP() {
                         <strong>{t.rsvp.statusLabel}</strong> {t.rsvp.statusConfirmed}
                       </div>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className={styles.resetLinkBtn}
-                    >
-                      {t.rsvp.resetBtn}
-                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>

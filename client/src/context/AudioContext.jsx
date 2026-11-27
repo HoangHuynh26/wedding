@@ -53,8 +53,9 @@ export function AudioProvider({ children }) {
     }
   }, []);
 
-  // Gentle studio volume swell on desktop/Android browsers (iOS uses the file's baked-in qsin fade)
-  const rampVolume = useCallback((audio, from = 0.25, to = 1, durationMs = 1100) => {
+  // Studio dynamic swell synced to audio.currentTime so pre-chorus builds gently (0..5.35s)
+  // and crests to 100% full climax volume right at 5.98s when the Bride & Groom names appear!
+  const rampVolume = useCallback((audio, from = 0.25, to = 1, durationMs = 1100, openingSwell = false) => {
     stopFade();
     try {
       audio.volume = from;
@@ -63,6 +64,38 @@ export function AudioProvider({ children }) {
     }
     const startedAt = performance.now();
     const tick = (now) => {
+      if (audio.paused) {
+        fadeRafRef.current = null;
+        return;
+      }
+      if (openingSwell) {
+        const t = audio.currentTime || (now - startedAt) / 1000;
+        let targetVol = to;
+        if (t < 0.45) {
+          const p = Math.max(0, Math.min(1, t / 0.45));
+          targetVol = from + (0.78 - from) * (p * p * (3 - 2 * p));
+        } else if (t < 5.35) {
+          targetVol = 0.78;
+        } else if (t < 5.98) {
+          const p = Math.max(0, Math.min(1, (t - 5.35) / 0.63));
+          targetVol = 0.78 + (to - 0.78) * (p * p * (3 - 2 * p));
+        } else {
+          targetVol = to;
+        }
+        try {
+          audio.volume = targetVol;
+        } catch {
+          fadeRafRef.current = null;
+          return;
+        }
+        if (t < 6.05) {
+          fadeRafRef.current = requestAnimationFrame(tick);
+        } else {
+          fadeRafRef.current = null;
+        }
+        return;
+      }
+
       const progress = Math.min(1, (now - startedAt) / durationMs);
       const eased = progress * progress * (3 - 2 * progress);
       try {
@@ -80,13 +113,18 @@ export function AudioProvider({ children }) {
     fadeRafRef.current = requestAnimationFrame(tick);
   }, [stopFade]);
 
-  // Initialize Audio instance once
+  // Initialize Audio instance once & eagerly buffer opening frames while envelope is sealed
   useEffect(() => {
     const audio = new Audio();
     const initialTrack = getTrackFromQuery();
-    audio.src = initialTrack?.src || defaultTrack.src;
-    audio.loop = true;
     audio.preload = 'auto';
+    audio.loop = true;
+    audio.src = initialTrack?.src || defaultTrack.src;
+    try {
+      audio.load();
+    } catch {
+      // Ignore load errors before user interaction
+    }
 
     audio.onerror = () => {
       console.warn('Primary music source failed, attempting fallback...');
@@ -173,15 +211,28 @@ export function AudioProvider({ children }) {
         await audioRef.current.play();
         if (fromStart && typeof syncWithTimestamp === 'number') {
           const driftSec = (performance.now() - syncWithTimestamp) / 1000;
-          if (driftSec > 0.18 && driftSec < 3.5) {
-            try {
-              audioRef.current.currentTime = Math.max(0, startAtSec + driftSec);
-            } catch {
-              // Ignore seek failure
+          if (driftSec > 0.05 && driftSec < 3.5) {
+            const targetTime = Math.max(0, startAtSec + driftSec);
+            const buf = audioRef.current.buffered;
+            const hasBuffer =
+              buf && buf.length > 0 && buf.end(buf.length - 1) >= targetTime + 0.35;
+            if (hasBuffer) {
+              try {
+                audioRef.current.currentTime = targetTime;
+              } catch {
+                // Ignore seek failure
+              }
             }
           }
         }
-        rampVolume(audioRef.current, fromStart ? 0.65 : 0.45, 1, fadeMs);
+        const useOpeningSwell = fromStart && startAtSec === 0;
+        rampVolume(
+          audioRef.current,
+          useOpeningSwell ? 0.52 : fromStart ? 0.65 : 0.45,
+          1,
+          fadeMs,
+          useOpeningSwell
+        );
         setIsPlaying(true);
         return true;
       } catch (err) {
@@ -208,6 +259,12 @@ export function AudioProvider({ children }) {
     }
   };
 
+  const getPlaybackTime = useCallback(() => {
+    const a = audioRef.current;
+    if (!a || a.paused) return null;
+    return typeof a.currentTime === 'number' ? a.currentTime : null;
+  }, []);
+
   return (
     <AudioContext.Provider
       value={{
@@ -218,6 +275,7 @@ export function AudioProvider({ children }) {
         playAudio,
         pauseAudio,
         toggleAudio,
+        getPlaybackTime,
       }}
     >
       {children}

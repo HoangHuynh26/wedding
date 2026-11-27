@@ -5,6 +5,12 @@
   command = "npm --prefix client install && npm --prefix client run build"
   publish = "client/dist"
   functions = "netlify/functions"
+  edge_functions = "netlify/edge-functions"
+
+[[edge_functions]]
+  path = "/*"
+  excludedPath = ["/assets/*", "/audio/*", "/photos/*", "/mauve-theme/*", "/flowers/*", "/videos/*", "/api/*", "/*.webp", "/*.jpg", "/*.png", "/*.m4a", "/*.mp4", "/*.ico"]
+  function = "og-meta"
 
 [build.environment]
   NODE_VERSION = "20"

@@ -15,6 +15,11 @@ const PERSPECTIVE = 1600;
 const SCALE_STEP = 0.16;
 const MAX_VISIBLE = 2;
 
+function slideImageSource(slide) {
+  return slide?.image?.fullSrc || slide?.src || slide?.image?.src || slide?.thumbnail ||
+    (typeof slide?.image === 'string' ? slide.image : '');
+}
+
 // Derive a CSS transition (duration + easing) from a transition config
 function cssTransition(t) {
   const dur = t && typeof t.duration === 'number' ? t.duration : 0.55;
@@ -44,7 +49,7 @@ export default function Smooth3DSlideshow({
   tilt = 12,
   sideTilt = 7,
   gap,
-  opacity = 60,
+  opacity = 88,
   transition = { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 3.5 },
   autoplay = false,
   autoplayDirection = 'rightToLeft',
@@ -140,21 +145,6 @@ export default function Smooth3DSlideshow({
     }
   }, [n, active, setActive]);
 
-  // Preload only immediate neighbor thumbnails (5 cards) so mobile RAM & scroll stay silky smooth
-  useEffect(() => {
-    if (n === 0) return;
-    for (let offset = -2; offset <= 2; offset++) {
-      const idx = (((active + offset) % n) + n) % n;
-      const s = list[idx];
-      const imgSrc = s?.thumbnail || s?.image?.src || s?.src || s?.image;
-      if (imgSrc) {
-        const img = new Image();
-        img.decoding = 'async';
-        img.src = imgSrc;
-      }
-    }
-  }, [active, list, n]);
-
   // Short debounce lock so rapid touch swipes remain smooth & responsive
   const lockRef = useRef(false);
   const lock = useCallback((ms = 140) => {
@@ -218,7 +208,12 @@ export default function Smooth3DSlideshow({
     const ms = Math.max(0.5, delay) * 1000;
     const dir = autoplayDirection === 'leftToRight' ? -1 : 1;
     const id = window.setInterval(() => {
-      if (!isTouchingRef.current && isInViewRef.current) {
+      if (isTouchingRef.current || !isInViewRef.current) return;
+      // Leave the current photo in place until the next original is available.
+      const next = (active + dir + n) % n;
+      const currentImage = rootRef.current?.querySelector(`img[data-slide-index="${active}"]`);
+      const nextImage = rootRef.current?.querySelector(`img[data-slide-index="${next}"]`);
+      if (currentImage?.complete && nextImage?.complete && nextImage.naturalWidth > 0) {
         step(dir, 260);
       }
     }, ms);
@@ -316,8 +311,8 @@ export default function Smooth3DSlideshow({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    perspective: isTouch ? 'none' : `${PERSPECTIVE}px`,
-    WebkitPerspective: isTouch ? 'none' : `${PERSPECTIVE}px`,
+    perspective: 'none',
+    WebkitPerspective: 'none',
     overflow: 'hidden',
     outline: 'none',
     padding: '10px 0',
@@ -347,8 +342,8 @@ export default function Smooth3DSlideshow({
           position: 'relative',
           width: cardWidth,
           height: cardHeight,
-          transformStyle: isTouch ? 'flat' : 'preserve-3d',
-          WebkitTransformStyle: isTouch ? 'flat' : 'preserve-3d',
+          transformStyle: 'flat',
+          WebkitTransformStyle: 'flat',
         }}
         className={styles.coverflowStage}
       >
@@ -364,11 +359,14 @@ export default function Smooth3DSlideshow({
           const visible = ax <= MAX_VISIBLE;
           const isActive = rel === 0;
           const sc = Math.max(0.4, 1 - ax * SCALE_STEP);
-          const tx = rel * (effectiveGap * 30);
+          const tx = Math.round(rel * (effectiveGap * 30));
           const tz = -ax * depth;
           const ry = -rel * tilt;
           const rz = rel * sideTilt;
-          const src = slide.thumbnail || slide.image?.src || slide.src || slide.image || '';
+          const src = slideImageSource(slide);
+          const sideTransform = isTouch
+            ? `translateX(${tx}px) scale(${sc})`
+            : `perspective(${PERSPECTIVE}px) translate3d(${tx}px, 0px, ${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`;
 
           const cardStyle = {
             position: 'absolute',
@@ -379,26 +377,18 @@ export default function Smooth3DSlideshow({
             borderRadius: effectiveRadius,
             overflow: 'hidden',
             transformOrigin: 'center center',
-            transformStyle: isTouch ? 'flat' : (isActive ? 'flat' : 'preserve-3d'),
-            WebkitTransformStyle: isTouch ? 'flat' : (isActive ? 'flat' : 'preserve-3d'),
-            transform: isActive
-              ? 'translateX(0px) scale(1)'
-              : (isTouch
-                ? `translateX(${tx}px) scale(${sc})`
-                : `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`),
-            WebkitTransform: isActive
-              ? 'translateX(0px) scale(1)'
-              : (isTouch
-                ? `translateX(${tx}px) scale(${sc})`
-                : `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`),
+            transformStyle: 'flat',
+            WebkitTransformStyle: 'flat',
+            transform: isActive ? 'none' : sideTransform,
+            WebkitTransform: isActive ? 'none' : sideTransform,
             transition: transitionCss,
             opacity: visible ? 1 : 0,
             cursor: isActive ? 'zoom-in' : 'pointer',
             pointerEvents: visible ? 'auto' : 'none',
             backgroundColor: '#e2dae3',
             zIndex: 10 - ax,
-            boxShadow: 'none',
-            border: 'none',
+            boxShadow: isActive ? '0 16px 38px rgba(48, 38, 58, 0.18)' : 'none',
+            border: isActive ? '1px solid rgba(255, 255, 255, 0.78)' : 'none',
           };
 
           return (
@@ -410,14 +400,15 @@ export default function Smooth3DSlideshow({
               aria-hidden={!visible}
               className={styles.coverflowCard}
             >
-              {/* Photo Image — Razor sharp native rendering on Mobile, iPad & Desktop */}
               {src ? (
                 <img
                   src={src}
                   alt={slide.image?.alt || slide.title || ''}
                   draggable={false}
                   decoding="async"
-                  loading={ax <= 1 ? 'eager' : 'lazy'}
+                  data-slide-index={i}
+                  fetchPriority={isActive ? 'high' : 'low'}
+                  loading="lazy"
                   style={{
                     position: 'absolute',
                     inset: 0,
@@ -432,14 +423,14 @@ export default function Smooth3DSlideshow({
                 />
               ) : null}
 
-              {/* Inactive Card Dim Overlay — Only mounted for inactive cards to prevent composite blur */}
+              {/* Inactive Card Subtle Depth Shading — Keeps side photos clear and bright */}
               {!isActive && (
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    backgroundColor: '#000000',
-                    opacity: dim,
+                    backgroundColor: '#1e1826',
+                    opacity: Math.min(0.24, ax * dim),
                     transition: `opacity ${dur}s ${ease}`,
                     pointerEvents: 'none',
                   }}
