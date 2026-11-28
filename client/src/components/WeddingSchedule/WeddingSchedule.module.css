@@ -1,393 +1,208 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   STEP 7 — "THE DAY / LỊCH TRÌNH" SCROLL-OPENING 3D EMBOSSED CURTAINS (Image 13)
-   ═══════════════════════════════════════════════════════════════════════════ */
-
 .scheduleSection {
-  position: relative;
-  width: 100%;
-  background: #dfd7df;
-  display: grid;
-  place-items: center;
+  --schedule-ink: #52123f;
+  --schedule-paper-color: #f8edef;
   overflow: hidden;
-  contain: layout paint;
-  border-top: 1px solid rgba(114, 102, 122, 0.16);
-  border-bottom: 1px solid rgba(114, 102, 122, 0.16);
+  background: #eae3ee;
 }
 
 .curtainFolio {
   position: relative;
-  width: 100%;
-  max-width: none;
-  min-height: clamp(640px, 92svh, 860px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background: #d2c7cf;
   isolation: isolate;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  min-block-size: clamp(43rem, 182vw, 58rem);
+  overflow: hidden;
+  background: var(--schedule-paper-color);
 }
 
-.curtainWallTile {
+.curtainFolio::before {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background-color: #d2c7cf;
-  background-image: url('/mauve-theme/curtain-wall-tile.webp');
-  background-repeat: repeat-x;
-  background-position: center top;
-  background-size: auto 100%;
+  background: var(--schedule-paper) center / 100% 100% no-repeat;
+  filter: saturate(0.68) brightness(1.006);
   pointer-events: none;
-  user-select: none;
 }
 
-/* Edge-pinned tied-back drapes live at z-index: 1 (BEHIND text at z-index: 3) so they NEVER erase text */
-.tiebackDrape {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-  height: 100%;
-  width: auto;
-  max-width: 31vw;
-  object-fit: cover;
-  pointer-events: none;
-  user-select: none;
-  will-change: transform, opacity;
-}
-
-.tiebackLeft {
-  left: 0;
-  object-position: left center;
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 82%, transparent 100%);
-  mask-image: linear-gradient(90deg, #000 0%, #000 82%, transparent 100%);
-}
-
-.tiebackRight {
-  right: 0;
-  object-position: right center;
-  -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 82%, transparent 100%);
-  mask-image: linear-gradient(270deg, #000 0%, #000 82%, transparent 100%);
-}
-
+.drapes,
 .curtainCanvas {
   position: absolute;
   inset: 0;
-  z-index: 4;
-  width: 100%;
-  height: 100%;
-  display: block;
   pointer-events: none;
-  user-select: none;
+  filter: saturate(0.56) hue-rotate(-11deg) brightness(1.3) contrast(0.95)
+    drop-shadow(0 2px 6px #36172f33);
 }
 
-/* Tablet, iPad & Desktop — Full Edge-to-Edge Curtain Stage */
-@media (min-width: 680px) {
-  .scheduleSection {
-    padding: 0;
-    background: #d2c7cf;
-  }
-
-  .curtainFolio {
-    width: 100%;
-    max-width: none;
-    min-height: clamp(720px, 90svh, 900px);
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .tiebackDrape {
-    max-width: 30vw;
-  }
+.drapes {
+  z-index: 1;
 }
 
-/* Center content column safely nested inside the open middle between both edge-hugging curtains */
+.drape {
+  position: absolute;
+  inset-block: 0;
+  inline-size: min(32%, 18rem);
+  background-image: var(--schedule-velvet);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+}
+
+.left {
+  inset-inline-start: 0;
+  background-position: left top;
+}
+
+.right {
+  inset-inline-end: 0;
+  background-position: right top;
+}
+
+.curtainCanvas {
+  z-index: 3;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  visibility: hidden;
+}
+
 .scheduleContent {
   position: relative;
-  z-index: 3;
-  width: min(64%, 380px);
-  padding: clamp(3.25rem, 9vw, 4.5rem) 0.5rem;
-  color: #463e4d;
-  will-change: transform, opacity;
+  z-index: 2;
+  inline-size: min(62%, 31rem);
+  padding-block: clamp(5.15rem, 14vw, 7.55rem) clamp(4.8rem, 14vw, 7.3rem);
+  color: var(--schedule-ink);
 }
 
 .headerBlock {
+  margin-block-end: clamp(1.65rem, 5.4vw, 2.65rem);
   text-align: center;
-  margin-bottom: clamp(2rem, 5.5vw, 2.75rem);
 }
 
 .scriptHeading {
-  margin: 0 0 0.85rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--font-script, 'Great Vibes', cursive);
-  font-size: clamp(3.15rem, 11.5vw, 4.1rem);
-  font-weight: 400;
-  line-height: 0.94;
-  color: #494052;
-  text-shadow: 0 1px 0 rgba(255, 250, 254, 0.55);
-}
-
-:global(html[lang="zh-CN"]) .scriptHeading {
-  font-family: 'Noto Serif SC', serif;
-  font-size: clamp(2.35rem, 8.8vw, 3.1rem);
-  line-height: 1.25;
-  letter-spacing: 0.16em;
-}
-
-.introText {
-  margin: 0 auto;
-  max-width: 290px;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1rem, 3.8vw, 1.18rem);
-  line-height: 1.58;
-  color: #5d5368;
-  text-wrap: balance;
-}
-
-:global(html[lang="zh-CN"]) .introText {
-  font-style: normal;
-  font-size: clamp(0.98rem, 3.6vw, 1.14rem);
-}
-
-/* Vertical Minimalist Hairline Timeline */
-.timelineList {
-  position: relative;
-  list-style: none;
+  display: grid;
+  justify-items: center;
   margin: 0;
-  padding: 0.35rem 0 0.35rem 1.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.95rem;
+  color: inherit;
+  font-family: var(--font-script);
+  font-size: clamp(3.05rem, 12vw, 5.2rem);
+  font-weight: 400;
+  line-height: 0.92;
+}
+
+.scheduleSection:lang(zh) .scriptHeading {
+  font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+  font-size: clamp(2rem, 8vw, 3.65rem);
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+}
+
+.timelineList {
+  --node-size: clamp(0.64rem, 2.8vw, 0.96rem);
+  --text-indent: clamp(1.35rem, 5.2vw, 2.35rem);
+  position: relative;
+  display: grid;
+  gap: clamp(1.65rem, 6.5vw, 3.45rem);
+  margin: 0;
+  padding-inline-start: var(--text-indent);
+  list-style: none;
 }
 
 .timelineList::before {
   content: '';
   position: absolute;
-  left: 6px;
-  top: 0.85rem;
-  bottom: 0.85rem;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    rgba(90, 78, 98, 0.52) 0%,
-    rgba(90, 78, 98, 0.38) 80%,
-    rgba(90, 78, 98, 0.12) 100%
-  );
+  inset-block: 0.55rem 0.45rem;
+  inset-inline-start: 0;
+  inline-size: 1px;
+  background: linear-gradient(var(--schedule-ink) 70%, transparent);
 }
 
 .timelineRow {
   position: relative;
-  text-align: left;
 }
 
 .nodeGem {
   position: absolute;
-  left: -1.85rem;
-  top: 0.48rem;
-  width: 13px;
-  height: 13px;
+  inset-block-start: 0.42em;
+  inset-inline-start: calc(-1 * var(--text-indent) - var(--node-size) / 2 + 0.5px);
   display: grid;
   place-items: center;
-}
-
-.nodeGem::before {
-  content: '';
-  width: 6px;
-  height: 6px;
+  inline-size: var(--node-size);
+  block-size: var(--node-size);
+  border: 1px solid var(--schedule-ink);
   border-radius: 50%;
-  background: #6c6176;
-  box-shadow: 0 0 0 3px rgba(225, 217, 225, 0.9), 0 0 0 4px rgba(108, 97, 118, 0.35);
+  background: var(--schedule-paper-color);
 }
 
-.rowBody {
-  display: flex;
-  flex-direction: column;
-  gap: 0.22rem;
+.nodeGem::after {
+  content: '';
+  inline-size: 54%;
+  block-size: 54%;
+  border-radius: 50%;
+  background: var(--schedule-ink);
 }
 
 .rowTime {
+  display: block;
   font-family: 'Cinzel', var(--font-serif);
+  font-size: clamp(1rem, 4.1vw, 1.6rem);
   font-variant-numeric: lining-nums tabular-nums;
-  font-feature-settings: 'lnum' 1, 'tnum' 1;
-  font-size: clamp(1rem, 3.6vw, 1.2rem);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  line-height: 1.35;
-  color: #453c4e;
-}
-
-:global(html[lang="zh-CN"]) .rowTime {
-  font-family: 'Cinzel', 'Noto Serif SC', var(--font-serif);
-  letter-spacing: 0.08em;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: 0.07em;
 }
 
 .rowTitle {
-  margin: 0;
+  margin-block-start: 0.42em;
+  color: inherit;
   font-family: var(--font-sans);
-  font-size: clamp(0.88rem, 3.2vw, 1.02rem);
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: clamp(0.88rem, 3.55vw, 1.34rem);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: 0.095em;
   text-transform: uppercase;
-  color: #3f3647;
-}
-
-:global(html[lang="zh-CN"]) .rowTitle {
-  font-size: clamp(0.98rem, 3.6vw, 1.12rem);
-  letter-spacing: 0.16em;
+  overflow-wrap: break-word;
 }
 
 .rowDetail {
-  margin: 0.12rem 0 0;
+  margin: 0.5em 0 0;
   font-family: var(--font-serif);
+  font-size: clamp(0.96rem, 3.85vw, 1.45rem);
   font-style: italic;
-  font-size: clamp(0.98rem, 3.6vw, 1.12rem);
-  line-height: 1.54;
-  color: #5e5468;
+  font-weight: 500;
+  line-height: 1.39;
 }
 
-:global(html[lang="zh-CN"]) .rowDetail {
+.scheduleSection:lang(zh) .rowTime {
+  font-family: 'Cinzel', 'Noto Serif SC', serif;
+}
+
+.scheduleSection:lang(zh) .rowTitle,
+.scheduleSection:lang(zh) .rowDetail {
+  font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+}
+
+.scheduleSection:lang(zh) .rowDetail {
+  font-size: clamp(0.88rem, 3.4vw, 1.25rem);
   font-style: normal;
-  font-size: clamp(0.96rem, 3.5vw, 1.08rem);
+  line-height: 1.52;
 }
 
-/* Tablet & iPad (680px – 1023px) */
 @media (min-width: 680px) {
-  .scheduleContent {
-    width: min(62%, 560px);
-    padding: clamp(4.25rem, 6vw, 5.5rem) 1.25rem;
-  }
-
-  .headerBlock {
-    margin-bottom: 3rem;
-  }
-
-  .scriptHeading {
-    font-size: clamp(4rem, 7vw, 5rem);
-  }
-
-  :global(html[lang="zh-CN"]) .scriptHeading {
-    font-size: clamp(2.9rem, 5.2vw, 3.7rem);
-  }
-
-  .introText {
-    max-width: 460px;
-    font-size: clamp(1.18rem, 2.2vw, 1.38rem);
-  }
-
-  :global(html[lang="zh-CN"]) .introText {
-    font-size: clamp(1.14rem, 2.1vw, 1.32rem);
-  }
-
-  .timelineList {
-    gap: 2.35rem;
-    padding-left: 2.35rem;
-  }
-
-  .timelineList::before {
-    left: 7px;
-  }
-
-  .nodeGem {
-    left: -2.35rem;
-    top: 0.56rem;
-    width: 15px;
-    height: 15px;
-  }
-
-  .nodeGem::before {
-    width: 7px;
-    height: 7px;
-  }
-
-  .rowTime {
-    font-size: clamp(1.18rem, 2.1vw, 1.38rem);
-  }
-
-  .rowTitle {
-    font-size: clamp(1rem, 1.8vw, 1.18rem);
-  }
-
-  :global(html[lang="zh-CN"]) .rowTitle {
-    font-size: clamp(1.12rem, 2vw, 1.32rem);
-  }
-
-  .rowDetail {
-    font-size: clamp(1.12rem, 2.1vw, 1.3rem);
-  }
-
-  :global(html[lang="zh-CN"]) .rowDetail {
-    font-size: clamp(1.08rem, 2vw, 1.24rem);
-  }
-}
-
-/* Laptop, Large iPad Landscape & Desktop (>= 1024px) — Compact to fit cleanly in one viewport */
-@media (min-width: 1024px) {
   .curtainFolio {
-    min-height: clamp(520px, 78svh, 680px);
+    min-block-size: clamp(48rem, 98svh, 62rem);
   }
 
   .scheduleContent {
-    width: min(50%, 480px);
-    padding: 2.65rem 1.25rem 2.9rem;
-  }
-
-  .headerBlock {
-    margin-bottom: 1.85rem;
-  }
-
-  .scriptHeading {
-    font-size: clamp(3.35rem, 4.1vw, 4.1rem);
-    margin-bottom: 0.35rem;
-  }
-
-  :global(html[lang="zh-CN"]) .scriptHeading {
-    font-size: clamp(2.45rem, 3vw, 3rem);
-  }
-
-  .introText {
-    max-width: 440px;
-    font-size: clamp(1.05rem, 1.25vw, 1.2rem);
-  }
-
-  :global(html[lang="zh-CN"]) .introText {
-    font-size: clamp(1.02rem, 1.2vw, 1.15rem);
-  }
-
-  .timelineList {
-    gap: 1.65rem;
-    padding-left: 2.15rem;
-  }
-
-  .nodeGem {
-    left: -2.15rem;
-    top: 0.46rem;
-  }
-
-  .rowTime {
-    font-size: clamp(1.06rem, 1.25vw, 1.2rem);
-  }
-
-  .rowTitle {
-    font-size: clamp(0.92rem, 1.08vw, 1.04rem);
-  }
-
-  :global(html[lang="zh-CN"]) .rowTitle {
-    font-size: clamp(1.02rem, 1.2vw, 1.16rem);
-  }
-
-  .rowDetail {
-    font-size: clamp(1.02rem, 1.2vw, 1.14rem);
-  }
-
-  :global(html[lang="zh-CN"]) .rowDetail {
-    font-size: clamp(0.98rem, 1.15vw, 1.1rem);
+    padding-block: clamp(5rem, 8svh, 7.5rem);
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 360px) {
+  .drape {
+    inline-size: 29.5%;
+  }
+
   .scheduleContent {
-    width: 66%;
+    inline-size: 65%;
   }
 }

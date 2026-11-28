@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const rsvpRoutes = require('./routes/rsvpRoutes');
+const cmsRoutes = require('./routes/cmsRoutes');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 const config = require('./config/env');
 
@@ -11,7 +12,7 @@ const app = express();
 app.use(
   cors({
     origin: '*', // Allow connections from frontend dev server or production preview
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
@@ -36,6 +37,7 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 app.use('/api/rsvp', rsvpRoutes);
+app.use('/api/cms', cmsRoutes);
 
 // Error handling
 app.use(notFoundHandler);

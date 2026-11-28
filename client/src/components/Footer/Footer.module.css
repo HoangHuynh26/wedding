@@ -4,7 +4,7 @@
   isolation: isolate;
   width: 100%;
   min-height: clamp(465px, 125vw, 680px);
-  padding: clamp(6.5rem, 25vw, 9.4rem) clamp(2.15rem, 12vw, 6rem) clamp(6.2rem, 25vw, 9rem);
+  padding: clamp(6.5rem, 25vw, 9.4rem) clamp(1.75rem, 10.5vw, 5rem) clamp(6.2rem, 25vw, 9rem);
   display: grid;
   justify-items: center;
   align-items: center;
@@ -66,19 +66,21 @@
   margin: clamp(1.25rem, 2.1vw, 2.9rem) 0 clamp(1.35rem, 2.55vw, 3.1rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(0.42rem, 0.5vw, 0.75rem);
+  gap: clamp(0.6rem, 2vw, 0.85rem);
 }
 
 .messageLine {
   margin: 0;
   font-family: var(--font-serif, 'Cormorant Garamond', Georgia, serif);
-  font-size: clamp(1.125rem, 4.9vw, 1.55rem);
+  font-size: clamp(0.88rem, 3.85vw, 1.3rem);
   font-weight: 600;
-  line-height: 1.42;
+  line-height: 1.48;
+  text-wrap: balance;
 }
 
 :global(html[lang="zh-CN"]) .messageLine {
   font-family: 'Noto Serif SC', serif;
+  font-size: clamp(0.86rem, 3.65vw, 1.2rem);
   font-weight: 400;
   line-height: 1.7;
 }
@@ -146,40 +148,4 @@
     transform: scaleY(1.1);
     font-size: clamp(4.75rem, 8.75vw, 11.5rem);
   }
-
-  :global(.wedding-home[data-footer-in-view]) {
-    --footer-action-size: clamp(44px, 4.35vw, 82px);
-    --footer-action-gap: clamp(12px, 1.14vw, 22px);
-    --footer-action-right: clamp(20px, 1.75vw, 34px);
-    --footer-action-bottom: clamp(20px, 1.9vw, 36px);
-  }
-
-  :global(.wedding-home[data-footer-in-view] [data-footer-actions]) {
-    right: var(--footer-action-right);
-    gap: var(--footer-action-gap);
-  }
-
-  :global(.wedding-home[data-footer-in-view] [data-footer-actions="music"]) {
-    bottom: var(--footer-action-bottom);
-  }
-
-  :global(.wedding-home[data-footer-in-view] [data-footer-actions="contact"]) {
-    bottom: calc(var(--footer-action-bottom) + var(--footer-action-size) + var(--footer-action-gap));
-  }
-
-  :global(.wedding-home[data-footer-in-view] [data-footer-actions] :is(button, a)) {
-    width: var(--footer-action-size);
-    height: var(--footer-action-size);
-    min-height: var(--footer-action-size);
-  }
-
-  :global(.wedding-home[data-footer-in-view] [data-footer-actions] svg) {
-    width: clamp(18px, 1.7vw, 32px);
-    height: clamp(18px, 1.7vw, 32px);
-  }
-}
-
-:global(.wedding-home[data-footer-in-view] [data-sticky-countdown]) {
-  visibility: hidden;
-  pointer-events: none;
 }

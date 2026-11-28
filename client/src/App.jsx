@@ -4,6 +4,7 @@ import { AudioProvider } from './context/AudioContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
 import Admin from './pages/Admin/Admin';
+import AdminGate from './pages/Admin/AdminGate';
 import NotFound from './pages/NotFound/NotFound';
 
 export default function App() {
@@ -30,16 +31,18 @@ export default function App() {
             <Route path="/groom" element={<Home />} />
 
             {/* Trang Admin Riêng Cho 2 Bên (Cô Dâu & Chú Rể) */}
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/co-dau" element={<Admin />} />
-            <Route path="/co-dau/admin" element={<Admin />} />
-            <Route path="/admin/nha-gai" element={<Admin />} />
-            <Route path="/admin/bride" element={<Admin />} />
+            <Route element={<AdminGate />}>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/co-dau" element={<Admin />} />
+              <Route path="/co-dau/admin" element={<Admin />} />
+              <Route path="/admin/nha-gai" element={<Admin />} />
+              <Route path="/admin/bride" element={<Admin />} />
 
-            <Route path="/admin/chu-re" element={<Admin />} />
-            <Route path="/chu-re/admin" element={<Admin />} />
-            <Route path="/admin/nha-trai" element={<Admin />} />
-            <Route path="/admin/groom" element={<Admin />} />
+              <Route path="/admin/chu-re" element={<Admin />} />
+              <Route path="/chu-re/admin" element={<Admin />} />
+              <Route path="/admin/nha-trai" element={<Admin />} />
+              <Route path="/admin/groom" element={<Admin />} />
+            </Route>
 
             <Route path="*" element={<NotFound />} />
           </Routes>

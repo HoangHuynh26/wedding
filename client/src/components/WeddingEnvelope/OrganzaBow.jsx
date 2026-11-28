@@ -68,17 +68,53 @@ function silkPoint(hem, u, v) {
 
 const vertex = (x, y, sx, sy, light = 1, alpha = 1) => [x, y, sx, sy, light, alpha];
 
-function paintBow(painter, time) {
+function getDesktopBowScale() {
+  if (typeof window === 'undefined' || window.innerWidth < 1024) return 1;
+  const canvasCssW = window.innerWidth * 1.02;
+  const unscaledBowH = canvasCssW * (514 / width);
+  const targetMaxH = window.innerHeight * 0.58;
+  return Math.max(0.58, Math.min(0.76, targetMaxH / Math.max(1, unscaledBowH)));
+}
+
+function paintBow(painter, time, s = 1) {
   painter.begin();
 
-  // Before untying starts (0..1400ms), render the pure 1:1 studio photograph quad
-  // and cross-blend smoothly (1400..1540ms) into the articulated silk mesh while still at rest.
+  // Before untying starts (0..1400ms), render the pure studio photograph with full-bleed
+  // horizontal ribbon wings and isotropically scaled center bow (s < 1 on desktop),
+  // cross-blending smoothly (1400..1540ms) into the articulated silk mesh while at rest.
   const meshBlend = smooth(time, 1400, 1540);
   if (meshBlend < 0.999) {
     const photoAlpha = 1 - meshBlend;
-    painter.surface(1, 1, (u, v) =>
-      vertex(u * width, v * photoHeight, u * width, v * photoHeight, 1, photoAlpha)
-    );
+    if (Math.abs(s - 1) < 0.001) {
+      painter.surface(1, 1, (u, v) =>
+        vertex(u * width, v * photoHeight, u * width, v * photoHeight, 1, photoAlpha)
+      );
+    } else {
+      const coreL = 230;
+      const coreR = 1050;
+      const dstL = knotX + (coreL - knotX) * s;
+      const dstR = knotX + (coreR - knotX) * s;
+      const mapY = (sy) => waist + (sy - waist) * s;
+
+      // Left full-bleed horizontal ribbon wing (sx: 0..230 -> x: 0..dstL)
+      painter.surface(1, 1, (u, v) => {
+        const sx = u * coreL;
+        const sy = v * photoHeight;
+        return vertex(u * dstL, mapY(sy), sx, sy, 1, photoAlpha);
+      });
+      // Isotropically scaled center bow, loops, knot & tails (sx: 230..1050 -> x: dstL..dstR)
+      painter.surface(1, 1, (u, v) => {
+        const sx = mix(coreL, coreR, u);
+        const sy = v * photoHeight;
+        return vertex(mix(dstL, dstR, u), mapY(sy), sx, sy, 1, photoAlpha);
+      });
+      // Right full-bleed horizontal ribbon wing (sx: 1050..1280 -> x: dstR..1280)
+      painter.surface(1, 1, (u, v) => {
+        const sx = mix(coreR, width, u);
+        const sy = v * photoHeight;
+        return vertex(mix(dstR, width, u), mapY(sy), sx, sy, 1, photoAlpha);
+      });
+    }
     if (meshBlend <= 0.001) {
       painter.end();
       return;
@@ -99,8 +135,8 @@ function paintBow(painter, time) {
   const speed = Math.sin(partP * Math.PI);
 
   for (const side of [-1, 1]) {
-    const hingeX = knotX + side * (15 * undo + travel);
-    const hingeY = waist + 11 * undo;
+    const hingeX = knotX + side * (15 * s * undo + travel);
+    const hingeY = waist + 11 * s * undo;
 
     // 1. Continuous horizontal silk sash curving smoothly downward at the gathered waist fold
     painter.surface(36, 14, (u, v) => {
@@ -110,18 +146,19 @@ function paintBow(painter, time) {
 
       const outerX = knotX + side * (650 + travel * 0.15);
       const bendZone = (1 - smooth(u, 0, 0.25)) * undo;
-      const cx = mix(hingeX, outerX, u) - side * 8 * bendZone * (1 - u);
+      const cx = mix(hingeX, outerX, u) - side * 8 * s * bendZone * (1 - u);
       const cy =
         mix(hingeY, waist, smooth(u, 0, 0.28)) +
-        (10 * undo + 7 * speed) * Math.sin(Math.PI * u) +
-        14 * Math.pow(bendZone, 1.6);
+        s * ((10 * undo + 7 * speed) * Math.sin(Math.PI * u) + 14 * Math.pow(bendZone, 1.6));
 
       const elbowAng = -side * 0.86 * Math.pow(bendZone, 1.35);
-      const halfH = mix(
-        mix(25, 67, smooth(u, 0, 0.14)),
-        mix(26, 67, smooth(u, 0, 0.22)),
-        undo
-      );
+      const halfH =
+        s *
+        mix(
+          mix(25, 67, smooth(u, 0, 0.14 * s)),
+          mix(26, 67, smooth(u, 0, 0.22 * s)),
+          undo
+        );
       const offset = (2 * v - 1) * halfH;
       const nx = -Math.sin(elbowAng) * offset;
       const ny = Math.cos(elbowAng) * offset;
@@ -134,32 +171,34 @@ function paintBow(painter, time) {
     painter.surface(34, 10, (u, v) => {
       const [sx, sy] = silkPoint(tailHem, u, v);
       const [bx, by] = silkPoint(tailHem, u, 0.5);
-      const offX = sx - bx;
-      const offY = sy - by;
+      const offX = (sx - bx) * s;
+      const offY = (sy - by) * s;
 
-      const rootX0 = knotX + side * 33;
-      const rootY0 = 333;
-      const anchorX = mix(rootX0, hingeX - side * 7, undo);
-      const anchorY = mix(rootY0, hingeY + 7, undo);
+      const rootSrcX = knotX + side * 33;
+      const rootSrcY = 333;
+      const rootX0 = knotX + side * 33 * s;
+      const rootY0 = waist + (rootSrcY - waist) * s;
+      const anchorX = mix(rootX0, hingeX - side * 7 * s, undo);
+      const anchorY = mix(rootY0, hingeY + 7 * s, undo);
 
-      const restDx = bx - rootX0;
-      const restDy = by - rootY0;
+      const restDx = (bx - rootSrcX) * s;
+      const restDy = (by - rootSrcY) * s;
 
       const pullLen = 1 + 0.26 * pull;
-      const pulledDx = restDx * pullLen + side * 16 * pull * u;
-      const pulledDy = restDy * pullLen + 32 * pull * Math.pow(u, 1.3);
+      const pulledDx = restDx * pullLen + side * 16 * s * pull * u;
+      const pulledDy = restDy * pullLen + 32 * s * pull * Math.pow(u, 1.3);
 
       const tailLen = 335;
       const hangDx =
-        side * (34 * u + 18 * Math.pow(u, 1.8)) -
-        side * speed * 124 * Math.pow(u, 1.4);
-      const hangDy = tailLen * Math.pow(u, 0.96) - speed * 26 * Math.pow(u, 1.4);
+        s *
+        (side * (34 * u + 18 * Math.pow(u, 1.8)) - side * speed * 124 * Math.pow(u, 1.4));
+      const hangDy = s * (tailLen * Math.pow(u, 0.96) - speed * 26 * Math.pow(u, 1.4));
 
       const dx = mix(pulledDx, hangDx, drape);
       const dy = mix(pulledDy, hangDy, drape);
 
       const restAng = Math.atan2(restDx, Math.max(1, restDy));
-      const curAng = Math.atan2(dx + side * 4, Math.max(1, dy + 8));
+      const curAng = Math.atan2(dx + side * 4 * s, Math.max(1, dy + 8 * s));
       const dAng = (curAng - restAng) * drape;
       const ca = Math.cos(dAng);
       const sa = Math.sin(dAng);
@@ -167,7 +206,7 @@ function paintBow(painter, time) {
       const rx = (offX * ca + offY * sa) * widthScale;
       const ry = (-offX * sa + offY * ca) * widthScale;
 
-      const flutter = 8 * speed * Math.sin(u * 4.8 - time * 0.005) * Math.pow(u, 1.25);
+      const flutter = 8 * s * speed * Math.sin(u * 4.8 - time * 0.005) * Math.pow(u, 1.25);
       const rootFeather = mix(1, smooth(u, 0, 0.05), undo);
       const shade = 1 - 0.07 * undo * (1 - smooth(u, 0, 0.18));
       return vertex(
@@ -186,8 +225,8 @@ function paintBow(painter, time) {
     const loopAlpha = (1 - smooth(pull, 0.78, 0.995)) * meshBlend;
     for (const side of [-1, 1]) {
       const loopHem = side > 0 ? hems.rightLoop : hems.leftLoop;
-      const tx = knotX + side * 22;
-      const ty = waist + 2;
+      const tx = knotX + side * 22 * s;
+      const ty = waist + 2 * s;
       const lenScale = Math.pow(1 - pull, 1.12);
       const rot = side * 0.28 * pull;
       const ca = Math.cos(rot);
@@ -195,8 +234,10 @@ function paintBow(painter, time) {
 
       painter.surface(32, 10, (u, v) => {
         const [sx, sy] = silkPoint(loopHem, u, v);
-        const dx0 = (sx - tx) * lenScale;
-        const dy0 = (sy - ty) * lenScale * (1 - 0.28 * pull);
+        const sxScaled = knotX + (sx - knotX) * s;
+        const syScaled = waist + (sy - waist) * s;
+        const dx0 = (sxScaled - tx) * lenScale;
+        const dy0 = (syScaled - ty) * lenScale * (1 - 0.28 * pull);
         const px = tx + dx0 * ca - dy0 * sa;
         const py = ty + dx0 * sa + dy0 * ca;
         return vertex(px, py, sx, sy, 1 - 0.07 * pull * (1 - u), loopAlpha);
@@ -216,8 +257,8 @@ function paintBow(painter, time) {
       const edgeU = Math.abs(u - 0.5) * 2;
       const edgeV = Math.abs(v - 0.5) * 2;
       const feather = (1 - smooth(edgeU, 0.76, 1)) * (1 - smooth(edgeV, 0.8, 1));
-      const x = knotX + (sx - knotX) * kxScale;
-      const y = waist + (sy - waist) * kyScale + 8 * undo;
+      const x = knotX + (sx - knotX) * s * kxScale;
+      const y = waist + (sy - waist) * s * kyScale + 8 * s * undo;
       return vertex(x, y, sx, sy, 1 - 0.09 * tighten, knotAlpha * feather);
     });
   }
@@ -439,6 +480,7 @@ export default function OrganzaBow({ opening }) {
     let frame;
     let wake;
     let lastTime;
+    let lastScale;
     let painter;
 
     const run = (now) => {
@@ -448,8 +490,12 @@ export default function OrganzaBow({ opening }) {
       const elapsed = start.current === null ? 0 : now - start.current;
       const time = motion.matches && start.current !== null ? finishTime : elapsed;
       const visibleTime = time < 1400 ? 0 : time;
-      if (visibleTime !== lastTime) paintBow(painter, visibleTime);
+      const bowScale = getDesktopBowScale();
+      if (visibleTime !== lastTime || bowScale !== lastScale) {
+        paintBow(painter, visibleTime, bowScale);
+      }
       lastTime = visibleTime;
+      lastScale = bowScale;
       if (fallback.current) fallback.current.hidden = true;
       if (start.current !== null && time < 1400) {
         wake = window.setTimeout(refresh, 1400 - time);
@@ -461,6 +507,7 @@ export default function OrganzaBow({ opening }) {
     const refresh = () => run(performance.now());
     animation.current = refresh;
     motion.addEventListener('change', refresh);
+    window.addEventListener('resize', refresh);
 
     const image = new Image();
     const switchToCanvas = () => setUseCpu(true);
@@ -486,6 +533,7 @@ export default function OrganzaBow({ opening }) {
       image.onload = null;
       element.removeEventListener('webglcontextlost', switchToCanvas);
       motion.removeEventListener('change', refresh);
+      window.removeEventListener('resize', refresh);
       cancelAnimationFrame(frame);
       clearTimeout(wake);
       painter?.dispose();
