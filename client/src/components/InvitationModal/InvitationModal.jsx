@@ -65,7 +65,7 @@ export default function InvitationModal({ isOpen, onClose }) {
                 <div className={`${styles.envelopeCornerDecor} ${styles.bottomLeft}`} />
                 <div className={`${styles.envelopeCornerDecor} ${styles.bottomRight}`} />
 
-                <img src="./logo.png" />
+                <img src="/logo.webp" alt="" />
                 <span className={styles.invitationHeaderTitle}>
                   THIỆP MỜI THÀNH HÔN &bull; WEDDING INVITATION
                 </span>
@@ -77,7 +77,7 @@ export default function InvitationModal({ isOpen, onClose }) {
                 </h1>
 
                 <p className={styles.cordiallyInvitedText}>
-                  Trân trọng kính mời quý khách đến dự buổi tiệc chung vui cùng hai gia đình chúng mình.
+                  Trân trọng kính mời Quý khách đến dự buổi tiệc chung vui cùng hai gia đình chúng mình.
                 </p>
 
                 {/* Wax Seal Interactive Button */}

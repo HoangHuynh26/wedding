@@ -82,12 +82,14 @@ const englishInviterLabels = new Map([
 
 export function formatChineseInviter(inviter) {
   if (!inviter) return '';
-  if (/\p{Script=Han}/u.test(inviter) && /^[\p{Script=Han}\p{P}\p{N}\s]+$/u.test(inviter)) {
-    return inviter;
+  const trimmed = String(inviter).trim();
+  if (!trimmed) return '';
+  if (inviterLabels.has(trimmed)) {
+    return inviterLabels.get(trimmed);
   }
 
-  const key = normalizeInviterKey(inviter);
-  return inviterLabels.get(key) || '婚礼邀请方';
+  const key = normalizeInviterKey(trimmed);
+  return inviterLabels.get(key) || trimmed;
 }
 
 export function formatEnglishInviter(inviter) {

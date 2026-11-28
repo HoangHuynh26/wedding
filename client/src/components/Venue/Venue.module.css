@@ -1,23 +1,33 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    STEP 6 — LOCATION SECTION (Image 12)
-   Pale blush-lavender paper + fine-line plum etching + double-border button
+   Pale blush-lavender paper + balanced full-width address + slide-up lazy map
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .venueSection {
   position: relative;
   width: 100%;
-  padding: clamp(4rem, 9vw, 6.5rem) 1.35rem clamp(4.25rem, 9vw, 6.5rem);
+  padding: clamp(3.75rem, 8.5vw, 6.25rem) 1rem clamp(4rem, 8.5vw, 6.25rem);
   background:
     radial-gradient(ellipse at 50% 0%, rgba(246, 241, 246, 0.7) 0%, transparent 65%),
     linear-gradient(180deg, #eae3ea 0%, #e6dfe7 52%, #e3dbe4 100%);
   color: #453e4b;
   text-align: center;
   overflow: hidden;
+  contain: layout paint;
 }
 
 .locationFolio {
+  width: 100%;
   max-width: 540px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  container-type: inline-size;
+}
+
+.headerGroup {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,120 +44,173 @@
 }
 
 .venueScript {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
   font-family: var(--font-script, 'Great Vibes', cursive);
-  font-size: clamp(2.15rem, 7.6vw, 2.95rem);
+  font-size: clamp(2.2rem, 7.8vw, 3rem);
   font-weight: 400;
   line-height: 1.25;
-  word-spacing: 0.18em;
+  word-spacing: 0.16em;
   color: #504659;
 }
 
 :global(html[lang="zh-CN"]) .venueScript {
   font-family: 'Noto Serif SC', serif;
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  letter-spacing: 0.14em;
+  font-size: clamp(1.65rem, 5.8cqi, 2.15rem);
+  letter-spacing: 0.16em;
 }
 
 .regionCaps {
-  margin: 0 0 1.75rem;
-  font-family: var(--font-sans);
-  font-size: clamp(0.64rem, 2.3vw, 0.78rem);
-  font-weight: 500;
-  letter-spacing: clamp(0.14em, 0.5vw, 0.22em);
-  text-transform: uppercase;
-  color: #6b6175;
-  text-wrap: balance;
-}
-
-.editorialCopy {
-  max-width: 440px;
-  margin: 0 auto 2rem;
+  width: 100%;
+  margin: 0 0 1.65rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-}
-
-.editorialCopy p {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(0.98rem, 3.3vw, 1.12rem);
-  line-height: 1.68;
-  color: #5d5366;
-  text-wrap: balance;
-}
-
-.addressLine {
-  font-family: var(--font-sans) !important;
-  font-size: clamp(0.76rem, 2.4vw, 0.85rem) !important;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.74rem, 3.32vw, 0.92rem);
+  font-size: clamp(0.74rem, 3.45cqi, 0.94rem);
   font-weight: 500;
-  letter-spacing: 0.05em;
-  color: #4b4252 !important;
-  padding-top: 0.35rem;
+  letter-spacing: clamp(0.08em, 0.95cqi, 0.15em);
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: #63596d;
 }
 
-/* Embedded Interactive Google Map Card */
+:global(html[lang="zh-CN"]) .regionCaps {
+  font-family: 'Noto Serif SC', 'Noto Sans SC', serif;
+  font-size: clamp(1rem, 4.3cqi, 1.18rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.65;
+  color: #584e62;
+}
+
+.regionLine {
+  display: block;
+  width: 100%;
+}
+
+/* Embedded Interactive Google Map Card with Slide-Up & Shimmer Lazy Loading */
 .mapFrameSection {
   width: 100%;
   margin: 0.25rem auto 0;
+  will-change: transform, opacity;
 }
 
 .mapFrameWrap {
   padding: 6px;
   border: 1px solid rgba(78, 68, 88, 0.36);
-  background: rgba(246, 242, 247, 0.78);
-  box-shadow: 0 14px 34px rgba(56, 46, 66, 0.14);
+  background: rgba(246, 242, 247, 0.82);
+  box-shadow: 0 14px 34px rgba(56, 46, 66, 0.12);
 }
 
-.mapIframe {
+.mapViewport {
+  position: relative;
   width: 100%;
   height: clamp(280px, 52vw, 360px);
-  border: 0;
-  display: block;
+  overflow: hidden;
+  background: #ede6ee;
 }
 
-/* Minimalist Double-Lined Rectangular Outlined Button (Image 12) */
-.actionsStack {
+.mapSkeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
-  width: 100%;
-}
-
-.doubleBorderBtn {
-  display: inline-block;
-  padding: 4px;
-  border: 1px solid rgba(78, 68, 88, 0.45);
-  background: rgba(244, 239, 245, 0.32);
-  color: #463e4d;
-  text-decoration: none;
-  min-width: min(260px, 84%);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.doubleBorderInner {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 0.85rem 2.25rem;
-  border: 1px solid rgba(78, 68, 88, 0.32);
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #efe8f0 0%, #e4dbe6 50%, #efe8f0 100%);
+  color: #62586c;
+  transition: opacity 0.48s ease, visibility 0.48s ease;
+}
+
+.mapSkeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 252, 255, 0.55) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: venueMapShimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.mapSkeletonHidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mapSkeletonHidden::after,
+.mapSkeletonHidden .mapPinBadge {
+  animation: none;
+}
+
+.mapPinBadge {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 252, 255, 0.78);
+  border: 1px solid rgba(98, 88, 108, 0.24);
+  color: #53485e;
+  animation: venuePinPulse 1.8s ease-in-out infinite;
+}
+
+.mapLoadingText {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: all 0.35s ease;
+  color: #6b6175;
 }
 
-.doubleBorderBtn:hover {
-  background: #5f6478;
-  border-color: #5f6478;
-  color: #f6f2f6;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(68, 60, 78, 0.2);
+:global(html[lang="zh-CN"]) .mapLoadingText {
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
 }
 
-.doubleBorderBtn:hover .doubleBorderInner {
-  border-color: rgba(246, 242, 246, 0.45);
+.mapIframe {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.52s ease;
+}
+
+.mapIframeReady {
+  opacity: 1;
+}
+
+@keyframes venueMapShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes venuePinPulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.06);
+  }
 }

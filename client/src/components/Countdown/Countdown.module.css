@@ -81,21 +81,59 @@
   color: #584e5d;
 }
 
+:global(html[lang="zh-CN"]) .unitLabel {
+  font-size: clamp(0.76rem, 2.5vw, 0.88rem);
+  letter-spacing: 0.08em;
+}
+
 .seeYouScript {
   margin: clamp(.75rem, 2.8vw, 1.15rem) 0 0;
+  max-width: 100%;
   font-family: var(--font-script, 'Great Vibes', cursive);
   font-size: clamp(1.75rem, 5.5vw, 2.3rem);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.28;
   letter-spacing: .02em;
   color: #eee7f0;
   text-shadow: 0 1px 1px rgb(44 41 60 / 35%);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.guestNameScript {
+  font-family: inherit;
+  font-size: 0.9em;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Match CJK characters inside Great Vibes script line to the exact calligraphic slant & optical height */
+.cjkGuestSpan {
+  display: inline-block;
+  font-family: 'STKaiti', 'KaiTi', 'Kaiti SC', 'Noto Serif SC', serif;
+  font-size: 0.62em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  transform: skewX(-7deg);
+  vertical-align: 0.04em;
 }
 
 :global(html[lang="zh-CN"]) .seeYouScript {
   font-family: 'Noto Serif SC', serif;
   font-size: 1.15rem;
   letter-spacing: .18em;
+}
+
+:global(html[lang="zh-CN"]) .guestNameScript {
+  font-size: 1em;
+}
+
+:global(html[lang="zh-CN"]) .cjkGuestSpan {
+  font-family: inherit;
+  font-size: 1em;
+  transform: none;
+  vertical-align: baseline;
 }
 
 /* ==========================================================================
@@ -173,6 +211,11 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+:global(html[lang="zh-CN"]) .stickyLabel {
+  font-size: clamp(0.66rem, 2vw, 0.76rem);
+  letter-spacing: 0.06em;
 }
 
 /* iPad & Tablet Portrait (including iPad Pro 13: 1032 × 1376) — larger, proportional top bar */

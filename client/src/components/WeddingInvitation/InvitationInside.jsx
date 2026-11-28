@@ -10,7 +10,7 @@ export default function InvitationInside() {
   const togetherHeading = language === 'en' ? 'Together with our families' : 'Trân trọng kính báo tin vui cùng gia đình';
   const celebrateSubtext = language === 'en'
     ? 'invite you to celebrate our sacred wedding union'
-    : 'kính mời quý khách đến chung vui ngày thành hôn của chúng mình';
+    : 'kính mời Quý khách đến chung vui ngày thành hôn của chúng mình';
 
   return (
     <div className={styles.invitationInside}>

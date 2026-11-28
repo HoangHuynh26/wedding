@@ -9,16 +9,16 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion";
 
 const DEFAULT_IMAGES = [
-    { image: "/groom.jpg", offsetY: 0, title: "Chú Rể Đình Huy" },
-    { image: "/bride.jpg", offsetY: 0, title: "Cô Dâu Thu Hiền" },
-    { image: "/couple.jpg", offsetY: 0, title: "Sánh Bước Thành Đôi" },
-    { image: "/photos/tuan-1196.jpg", offsetY: 0, title: "Nụ Hôn Ngọt Ngào" },
-    { image: "/photos/tuan-0058.jpg", offsetY: 0, title: "Khoảnh Khắc Bình Yên" },
-    { image: "/photos/tuan-0992.jpg", offsetY: 0, title: "Tà Khăn Voan Bay" },
-    { image: "/photos/tuan-1514.jpg", offsetY: 0, title: "Ánh Nhìn Ngọt Ngào" },
-    { image: "/photos/tuan-2015.jpg", offsetY: 0, title: "Áo Dài Truyền Thống" },
-    { image: "/photos/tuan-0544.jpg", offsetY: 0, title: "Cá Tính & Rạng Rỡ" },
-    { image: "/photos/tuan-9792.jpg", offsetY: 0, title: "Lời Hẹn Ước Trăm Năm" },
+    { image: "/groom.webp", offsetY: 0, title: "Chú Rể Đình Huy" },
+    { image: "/bride.webp", offsetY: 0, title: "Cô Dâu Thu Hiền" },
+    { image: "/couple.webp", offsetY: 0, title: "Sánh Bước Thành Đôi" },
+    { image: "/photos/tuan-1196.webp", offsetY: 0, title: "Nụ Hôn Ngọt Ngào" },
+    { image: "/photos/tuan-0058.webp", offsetY: 0, title: "Khoảnh Khắc Bình Yên" },
+    { image: "/photos/tuan-0992.webp", offsetY: 0, title: "Tà Khăn Voan Bay" },
+    { image: "/photos/tuan-1514.webp", offsetY: 0, title: "Ánh Nhìn Ngọt Ngào" },
+    { image: "/photos/tuan-2015.webp", offsetY: 0, title: "Áo Dài Truyền Thống" },
+    { image: "/photos/tuan-0544.webp", offsetY: 0, title: "Cá Tính & Rạng Rỡ" },
+    { image: "/photos/tuan-9792.webp", offsetY: 0, title: "Lời Hẹn Ước Trăm Năm" },
 ];
 
 const DEFAULT_BACKGROUND = "transparent";

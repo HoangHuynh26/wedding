@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { partingProgress } from './openingTiming';
 import styles from './OrganzaBow.module.css';
 
-const photoUrl = '/mauve-theme/silk-organza-bow.webp?v=2';
+const photoUrl = '/mauve-theme/silk-organza-bow.webp?v=4';
 const width = 1280;
 const height = 960;
 const photoHeight = 714;
@@ -118,8 +118,8 @@ function paintBow(painter, time) {
 
       const elbowAng = -side * 0.86 * Math.pow(bendZone, 1.35);
       const halfH = mix(
-        mix(25, 67, smooth(u, 0, 0.34)),
-        mix(26, 66, smooth(u, 0, 0.26)),
+        mix(25, 67, smooth(u, 0, 0.14)),
+        mix(26, 67, smooth(u, 0, 0.22)),
         undo
       );
       const offset = (2 * v - 1) * halfH;

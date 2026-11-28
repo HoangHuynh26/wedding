@@ -36,13 +36,24 @@ export const rsvpService = {
       });
       return response.data;
     } catch (error) {
-      if (error.response?.data) {
-        throw new Error(error.response.data.message || 'Lỗi khi gửi phản hồi RSVP.');
+      if (error.response?.status === 400 && /name/i.test(error.response?.data?.message || '')) {
+        const err = new Error('VALIDATION_NAME');
+        err.code = 'VALIDATION_NAME';
+        throw err;
       }
       if (error.code === 'ECONNABORTED') {
-        throw new Error('Kết nối quá thời gian chờ. Vui lòng thử lại sau giây lát.');
+        const err = new Error('TIMEOUT');
+        err.code = 'TIMEOUT';
+        throw err;
       }
-      throw new Error('Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại mạng hoặc thử lại.');
+      if (!error.response) {
+        const err = new Error('NETWORK');
+        err.code = 'NETWORK';
+        throw err;
+      }
+      const err = new Error('SERVER');
+      err.code = 'SERVER';
+      throw err;
     }
   },
 

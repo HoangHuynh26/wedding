@@ -17,15 +17,15 @@ export default function MobileQuickActions() {
           person: groom,
           roleLabel: t.quickActions.groomLabel,
           fallbackPhone: '0921779799',
-          fallbackAvatar: '/groom.jpg',
+          fallbackAvatar: '/groom.webp',
         },
       ]
     : [
         {
           person: bride,
           roleLabel: t.quickActions.brideLabel,
-          fallbackPhone: '0912345678',
-          fallbackAvatar: '/bride.jpg',
+          fallbackPhone: '0774182334',
+          fallbackAvatar: '/bride.webp',
         },
       ];
 
@@ -52,6 +52,7 @@ export default function MobileQuickActions() {
           <motion.aside
             key="mobile-quick-actions-bar"
             className={styles.actionPillFrame}
+            data-footer-actions="contact"
             initial={{ opacity: 0, y: 18, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.92 }}

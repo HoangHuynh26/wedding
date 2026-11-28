@@ -311,7 +311,8 @@
   box-shadow: 0 25px 80px rgba(24, 20, 32, 0.8), 0 0 40px rgba(206, 190, 206, 0.22);
   border: 1px solid rgba(232, 222, 234, 0.38);
   cursor: zoom-in;
-  max-height: 80vh;
+  max-height: 75vh;
+  user-select: none;
 }
 
 .lightboxImageWrapper.isZoomed {
@@ -320,8 +321,11 @@
 
 .lightboxImg {
   max-width: 100%;
-  max-height: 80vh;
+  max-height: 75vh;
   object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -388,9 +392,65 @@
 }
 
 .lightboxInfo {
-  margin-top: 0.85rem;
+  margin-top: 0.55rem;
   text-align: center;
   color: #f6f2f6;
+}
+
+.lightboxSwipeHint {
+  margin-top: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.42rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 250, 255, 0.08);
+  border: 1px solid rgba(236, 226, 238, 0.22);
+  color: rgba(244, 238, 246, 0.88);
+  font-family: var(--font-sans, inherit);
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+.swipeArrowLeft,
+.swipeArrowRight {
+  color: rgba(238, 228, 242, 0.92);
+  flex-shrink: 0;
+}
+
+.swipeArrowLeft {
+  animation: lightboxArrowLeft 1.6s ease-in-out infinite;
+}
+
+.swipeArrowRight {
+  animation: lightboxArrowRight 1.6s ease-in-out infinite;
+}
+
+@keyframes lightboxArrowLeft {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxArrowRight {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(4px);
+    opacity: 1;
+  }
 }
 
 .lightboxCounter {
@@ -496,14 +556,13 @@
   }
 }
 
-@media (max-width: 768px) {
-  .coverflowCard,
-  .expandIconBtn,
-  .categoryBtn,
-  .categoryBtnActive,
-  .lightboxImageWrapper {
-    box-shadow: none !important;
-  }
+.coverflowCard,
+.expandIconBtn,
+.mainNavBtn,
+.categoryBtn,
+.categoryBtnActive,
+.lightboxImageWrapper {
+  box-shadow: none !important;
 }
 
 @media (max-width: 640px) {

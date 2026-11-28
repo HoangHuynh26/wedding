@@ -21,7 +21,7 @@ export default function MusicButton() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 220);
+      setShowScrollTop(window.scrollY > 200);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -93,7 +93,7 @@ export default function MusicButton() {
   };
 
   return (
-    <div className={styles.musicButtonWrapper}>
+    <div className={styles.musicButtonWrapper} data-footer-actions="music">
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
@@ -102,9 +102,9 @@ export default function MusicButton() {
             type="button"
             className={styles.scrollTopButton}
             onClick={handleScrollToHero}
-            initial={{ opacity: 0, scale: 0.75, x: 10 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.75, x: 10 }}
+            initial={{ opacity: 0, scale: 0.78 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.78 }}
             whileHover={{ scale: 1.08, translateY: -2 }}
             whileTap={{ scale: 0.92 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}

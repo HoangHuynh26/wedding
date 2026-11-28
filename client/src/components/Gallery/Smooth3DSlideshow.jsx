@@ -387,7 +387,7 @@ export default function Smooth3DSlideshow({
             pointerEvents: visible ? 'auto' : 'none',
             backgroundColor: '#e2dae3',
             zIndex: 10 - ax,
-            boxShadow: isActive ? '0 16px 38px rgba(48, 38, 58, 0.18)' : 'none',
+            boxShadow: 'none',
             border: isActive ? '1px solid rgba(255, 255, 255, 0.78)' : 'none',
           };
 
@@ -401,26 +401,31 @@ export default function Smooth3DSlideshow({
               className={styles.coverflowCard}
             >
               {src ? (
-                <img
-                  src={src}
-                  alt={slide.image?.alt || slide.title || ''}
-                  draggable={false}
-                  decoding="async"
-                  data-slide-index={i}
-                  fetchPriority={isActive ? 'high' : 'low'}
-                  loading="lazy"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: slide.position || '50% 28%',
-                    display: 'block',
-                    userSelect: 'none',
-                    pointerEvents: 'none',
-                  }}
-                />
+                <picture>
+                  {slide.image?.srcSet && (
+                    <source type="image/webp" srcSet={slide.image.srcSet} />
+                  )}
+                  <img
+                    src={src}
+                    alt={slide.image?.alt || slide.title || ''}
+                    draggable={false}
+                    decoding="async"
+                    data-slide-index={i}
+                    fetchPriority={isActive ? 'high' : 'low'}
+                    loading="lazy"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: slide.position || '50% 28%',
+                      display: 'block',
+                      userSelect: 'none',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                </picture>
               ) : null}
 
               {/* Inactive Card Subtle Depth Shading — Keeps side photos clear and bright */}
