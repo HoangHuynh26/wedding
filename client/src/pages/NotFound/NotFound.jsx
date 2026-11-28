@@ -1,11 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function NotFound() {
-  const { t } = useLanguage();
+  const location = useLocation();
+  const { t, language, isGroomSide } = useLanguage();
   const nf = t.notFound || {};
+
+  const params = new URLSearchParams(location.search);
+  if (
+    language &&
+    language !== 'vi' &&
+    !params.get('lang') &&
+    !params.get('language') &&
+    !params.get('locale')
+  ) {
+    params.set('lang', language);
+  }
+  const queryString = params.toString();
+  const backToPath = `${isGroomSide ? '/chu-re' : '/'}${queryString ? `?${queryString}` : ''}`;
 
   return (
     <div
@@ -70,7 +84,7 @@ export default function NotFound() {
       </p>
 
       <Link
-        to="/"
+        to={backToPath}
         style={{
           display: 'inline-flex',
           alignItems: 'center',

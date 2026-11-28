@@ -12,6 +12,13 @@
   gap: 12px;
 }
 
+@media (min-width: 768px) {
+  .musicButtonWrapper {
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+
 @media (max-width: 480px) {
   .musicButtonWrapper {
     bottom: 16px;

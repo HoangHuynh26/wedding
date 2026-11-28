@@ -63,9 +63,11 @@ const LANGUAGE_OPTIONS = [
 
 const PREFIXES_BY_LANG = {
   vi: ['Bạn', 'Anh', 'Chị', 'Em', 'Gia đình', 'Cô & Chú', 'Bác'],
-  en: ['Dear', 'Mr.', 'Ms.', 'Mrs.', 'Mr. & Mrs.', 'Family of'],
-  zh: ['亲爱的', '尊敬的', '先生', '女士', '阖家'],
+  en: ['Mr.', 'Ms.', 'Mrs.', 'Mr. & Mrs.', 'Dr.', 'Family of'],
+  zh: ['先生', '女士', '阖家', '亲爱的', '尊敬的'],
 };
+
+const ZH_SUFFIX_HONORIFICS = new Set(['先生', '女士', '阖家']);
 
 const STORAGE_KEY_BRIDE = 'wedding_invitation_links_history';
 const STORAGE_KEY_GROOM = 'wedding_invitation_links_history_groom';
@@ -116,6 +118,7 @@ export default function Admin() {
   const [historySearch, setHistorySearch] = useState('');
   const [historyPage, setHistoryPage] = useState(1);
   const qrRef = useRef(null);
+  const guestInputRef = useRef(null);
 
   // Stop preview audio when leaving page
   useEffect(() => {
@@ -276,13 +279,17 @@ export default function Admin() {
   const handleCopyMessage = async () => {
     if (!generatedUrl || !guestName.trim()) return;
     const cleanGuest = guestName.trim();
+    const enGuest = cleanGuest.replace(/^dear\s+/i, '').trim() || cleanGuest;
+    const zhGreeting = /^(亲爱的|尊敬的)/.test(cleanGuest)
+      ? `${cleanGuest}：`
+      : `${cleanGuest}，您好：`;
     let msg = '';
 
     if (isGroomSide) {
       if (selectedLang === 'en') {
-        msg = `Dear ${cleanGuest},
+        msg = `Dear ${enGuest},
 
-Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet at White Palace (588 Pham Van Dong, Thu Duc, Ho Chi Minh City) on Sunday, January 24, 2027 (Welcome at 05:30 PM, Ceremony at 07:00 PM, Banquet at 07:30 PM)!
+Together with our families, Dinh Huy & Thu Hien joyfully invite you to celebrate our Evening Wedding Banquet at White Palace (588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City) on Sunday, January 24, 2027 (Welcome at 05:30 PM, Ceremony at 07:00 PM, Banquet at 07:30 PM)!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -290,17 +297,17 @@ ${generatedUrl}
 
 Your presence and warm blessings would mean the world to us!`;
       } else if (selectedLang === 'zh') {
-        msg = `${cleanGuest} 您好：
+        msg = `${zhGreeting}
 
-谨以满怀喜悦之心，${chineseNames.groom.shortName}与${chineseNames.bride.shortName}诚挚邀请您莅临 White Palace 宴会厅（胡志明市守德市范文同街 588 号）参加我们的新婚晚宴（2027年01月24日 星期日 17:30迎宾 · 19:00典礼 · 19:30开席）！
+谨以满怀喜悦之心，我们全家诚挚邀请您莅临 White Palace 宴会厅（胡志明市守德市协平政坊范文同街 588 号）参加${chineseNames.groom.shortName}与${chineseNames.bride.shortName}的新婚晚宴（2027年01月24日 星期日 下午 05:30 喜迎宾客 · 晚上 07:00 新婚典礼 · 晚上 07:30 晚宴开席）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
 ${generatedUrl}
 
-衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
+衷心期待您的光临，与我们全家共享这份珍贵的幸福时刻！`;
       } else {
-        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Thành Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace — 588 Phạm Văn Đồng, TP. Thủ Đức, TP. Hồ Chí Minh (17:30 đón khách, 19:00 lễ thành hôn, 19:30 khai tiệc — tối Chủ Nhật, ngày 24/01/2027)!
+        msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc tối mừng Lễ Thành Hôn của Đình Huy & Thu Hiền tại Nhà Hàng White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh (05:30 PM đón khách, 07:00 PM lễ thành hôn, 07:30 PM khai tiệc tối — Chủ Nhật, ngày 24/01/2027)!
 
 🎵 Giai điệu dành riêng cho ${cleanGuest}: "${activeSong.title}" - ${activeSong.artist}
 ✨ Xem thiệp mời cưới online tại đây:
@@ -309,9 +316,9 @@ ${generatedUrl}
 Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc lớn của gia đình chúng mình!`;
       }
     } else if (selectedLang === 'en') {
-      msg = `Dear ${cleanGuest},
+      msg = `Dear ${enGuest},
 
-Together with our families, Thu Hien & Dinh Huy joyfully invite you to celebrate our Wedding Ceremony on Sunday, January 17, 2027!
+Together with our families, Thu Hien & Dinh Huy joyfully invite you to celebrate our family's Wedding Reception on Sunday, January 17, 2027!
 
 🎵 Dedicated melody for you: "${activeSong.title}" - ${activeSong.artist}
 ✨ Open your personalized English wedding invitation here:
@@ -319,15 +326,15 @@ ${generatedUrl}
 
 Your presence and warm blessings would mean the world to us!`;
     } else if (selectedLang === 'zh') {
-      msg = `${cleanGuest} 您好：
+      msg = `${zhGreeting}
 
-谨以满怀喜悦之心，${chineseNames.bride.shortName}与${chineseNames.groom.shortName}诚挚邀请您莅临参加我们的归宁婚礼喜宴（2027年01月17日 星期日）！
+谨以满怀喜悦之心，我们全家诚挚邀请您莅临参加${chineseNames.bride.shortName}与${chineseNames.groom.shortName}的女方婚礼仪式暨喜宴（2027年01月17日 星期日 上午 10:30 喜迎宾客 · 上午 11:20 女方婚礼仪式 · 上午 11:45 喜宴开席）！
 
 🎵 为您专属挑选的旋律：《${activeSong.title}》- ${activeSong.artist}
 ✨ 点击开启您的专属中文电子婚礼请柬：
 ${generatedUrl}
 
-衷心期待您的光临，与我们共享这份珍贵的幸福时刻！`;
+衷心期待您的光临，与我们全家共享这份珍贵的幸福时刻！`;
     } else {
       msg = `Trân trọng kính mời ${cleanGuest} đến tham dự tiệc mừng Lễ Vu Quy của Thu Hiền & Đình Huy!
 
@@ -438,11 +445,29 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
   };
 
   const handleAddPrefix = (prefix) => {
+    const isZhSuffix = selectedLang === 'zh' && ZH_SUFFIX_HONORIFICS.has(prefix);
     setGuestName((prev) => {
       const trimmed = prev.trim();
+      if (isZhSuffix) {
+        if (!trimmed) {
+          requestAnimationFrame(() => {
+            if (guestInputRef.current) {
+              guestInputRef.current.focus();
+              guestInputRef.current.setSelectionRange(0, 0);
+            }
+          });
+          return prefix;
+        }
+        if (trimmed.endsWith(prefix)) return trimmed;
+        if (trimmed.startsWith(prefix) && trimmed.length > prefix.length) {
+          return `${trimmed.slice(prefix.length).trim()}${prefix}`;
+        }
+        return `${trimmed}${prefix}`;
+      }
+
       const sep = selectedLang === 'zh' ? '' : ' ';
       if (!trimmed) return `${prefix}${sep}`;
-      if (trimmed.startsWith(prefix)) return trimmed;
+      if (trimmed.toLowerCase().startsWith(prefix.toLowerCase())) return trimmed;
       return `${prefix}${sep}${trimmed}`;
     });
   };
@@ -576,11 +601,12 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
           <div className={styles.formGroup}>
             <label className={styles.label}>3. Tên Khách Mời (Hiển thị nổi bật trên bì thư & thiệp)</label>
             <input
+              ref={guestInputRef}
               type="text"
               className={styles.input}
               placeholder={
                 selectedLang === 'en'
-                  ? 'Ví dụ: Mr. David & Mrs. Sarah, Dear Emily...'
+                  ? 'Ví dụ: Mr. David & Mrs. Sarah, Ms. Emily...'
                   : selectedLang === 'zh'
                     ? 'Ví dụ: 王伟先生, 亲爱的陈明, 李总阖家...'
                     : 'Ví dụ: Anh Hoàng & Chị Lan, Bạn Minh, Gia đình Bác Hùng...'
@@ -592,16 +618,19 @@ Sự hiện diện của ${cleanGuest} là niềm vinh hạnh và hạnh phúc l
 
             <div className={styles.quickPrefixes}>
               <span className={styles.prefixLabel}>Thêm nhanh danh xưng ({activeLangObj.code.toUpperCase()}):</span>
-              {activePrefixes.map((prefix) => (
-                <button
-                  key={prefix}
-                  type="button"
-                  className={styles.prefixPill}
-                  onClick={() => handleAddPrefix(prefix)}
-                >
-                  +{prefix}
-                </button>
-              ))}
+              {activePrefixes.map((prefix) => {
+                const isZhSuffix = selectedLang === 'zh' && ZH_SUFFIX_HONORIFICS.has(prefix);
+                return (
+                  <button
+                    key={prefix}
+                    type="button"
+                    className={styles.prefixPill}
+                    onClick={() => handleAddPrefix(prefix)}
+                  >
+                    {isZhSuffix ? `+…${prefix}` : `+${prefix}`}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

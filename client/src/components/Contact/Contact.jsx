@@ -32,7 +32,7 @@ export default function Contact() {
       }
     : {
         person: bride,
-        fallbackPhone: '0912 345 678',
+        fallbackPhone: '077 418 2334',
         roleBadge: t.contact.brideRole,
         note: t.contact.brideNote,
         copiedToast: t.contact.copiedBrideToast,

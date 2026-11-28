@@ -1,98 +1,99 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { chineseNames } from '../../config/chineseInvitation';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
-import { fullWeddingPhotoUrl } from '../../utils/weddingPhotos';
+import { albumPhotoSrcSet, fullWeddingPhotoUrl } from '../../utils/weddingPhotos';
 import Smooth3DSlideshow from './Smooth3DSlideshow';
 import styles from './Gallery.module.css';
 
-// Localized photo titles & captions for English & Chinese guests
+// Localized photo titles & captions aligned 1-to-1 with weddingConfig.gallery IDs 1..40
 const PHOTO_I18N = {
   en: {
-    1: ['Walking Together', 'A sacred moment walking side by side in the grand hall'],
-    2: ['Royal Elegance', 'Radiant smiles beneath the majestic grand staircase'],
-    3: ['Flowing White Veil', 'A gentle breeze lifting the bridal veil in soft light'],
-    4: ['Sweet Kiss', 'A tender kiss shared beneath the soaring classical dome'],
-    5: ['Melody of Love', 'Romantic framing cherishing every shared heartbeat'],
-    6: ['Peaceful Sanctuary', 'Standing strong together at the beginning of forever'],
-    7: ['Loving Gaze', 'Looking into each other’s eyes with warmth and devotion'],
-    8: ['Devoted Glances', 'Eyes filled with trust and unconditional love'],
-    9: ['Circle of Happiness', 'Classic architecture embracing the flowing bridal gown'],
-    10: ['Take My Hand', 'Every step forward leads into our shared future'],
-    11: ['Serene Balcony Moments', 'Quiet, affectionate conversations overlooking the hall'],
-    12: ['Gentle Whispers', 'Little stories that create a lifetime of happiness'],
-    13: ['Dashing Groom', 'Warm and refined portrait of Groom Dinh Huy'],
-    14: ['Radiant Bride', 'Graceful beauty and bright smile of Bride Thu Hien'],
-    15: ['By the Arched Window', 'Timeless elegance bathed in natural sunlight'],
-    16: ['Bright Smiles', 'Joyful laughter lighting up the entire hall'],
-    17: ['Hand in Hand', 'Holding hands tightly through every chapter of life'],
-    18: ['Side by Side', 'Stepping joyfully toward our special wedding day'],
-    19: ['City Heritage', 'Strolling past timeless architecture in the heart of the city'],
-    20: ['Youth Together', 'Crossing the avenue with vibrant energy and joy'],
-    21: ['Fond Affection', 'A tender gaze reserved only for his beloved'],
-    22: ['Stone Colonnade', 'Wandering peacefully beside stately stone columns'],
-    23: ['Morning Sunlight', 'Soft morning light reflecting boundless happiness'],
-    24: ['Warm Embrace', 'A gentle hug that melts away the rush of the city'],
-    25: ['Modern Style', 'Effortless charm and contemporary romance'],
-    26: ['Vibrant Spirit', 'Confident, joyful energy in every frame'],
-    27: ['Sunlit Laughter', 'Pure, candid, and heartfelt joy together'],
-    28: ['Playful Moments', 'Sweet and lighthearted memories of just the two of us'],
-    29: ['Stepping Forward', 'Looking ahead toward a bright tomorrow'],
-    30: ['Refined Poise', 'Gentle poise and sincerity of Groom Dinh Huy'],
-    31: ['Graceful Ao Dai', 'Timeless Vietnamese white Ao Dai paired with a bridal veil'],
-    32: ['Pure Vietnamese Charm', 'Gentle, graceful portrait in traditional attire'],
-    33: ['Lifelong Bond', 'Where cherished tradition meets modern love'],
-    34: ['Corridor of Memories', 'Walking hand in hand down a nostalgic heritage corridor'],
-    35: ['Wholehearted Love', 'Shared glances filled with care and understanding'],
-    36: ['Peaceful Together', 'Quiet warmth beside a lifelong partner'],
-    37: ['Graceful Silhouette', 'Elegant lace bridal gown in soft studio light'],
-    38: ['Artistic Moment', 'Time passes by, yet true love remains timeless'],
-    39: ['Timeless Poise', 'Poised and luminous in every delicate detail'],
-    40: ['Forever Vow', 'Arm in arm stepping into a joyful marriage'],
+    1: ['Lifting the Bridal Veil', 'The groom gently lifts the veil with a loving gaze beside the window'],
+    2: ['Walking Side by Side', 'A sacred moment walking hand in hand through the classical grand hall'],
+    3: ['Flowing White Veil', 'A gentle breeze lifting the white bridal veil in soft light'],
+    4: ['Sweet Kiss', 'Sharing a tender kiss beneath the majestic vaulted dome'],
+    5: ['Royal Grandeur', 'A panoramic view of the grand hall lit up by radiant smiles'],
+    6: ['Touch of Happiness', 'Sweet, loving glances shared on the classical grand staircase'],
+    7: ['Peaceful Sanctuary', 'The groom standing steadfastly behind his beloved bride'],
+    8: ['Melody of Love', 'Romantic framing cherishing every moment side by side'],
+    9: ['Devoted Gaze', 'Eyes brimming with trust and unconditional love'],
+    10: ['Circle of Happiness', 'An overhead view embracing classical architecture and the flowing bridal gown'],
+    11: ['Take My Hand', 'Each step along the staircase leads toward our shared future'],
+    12: ['Radiant Smiles', 'Bright, joyful smiles lighting up the entire grand hall'],
+    13: ['Serene Balcony Moments', 'Quiet, affectionate moments leaning together by the balcony'],
+    14: ['Hands Intertwined', 'Holding hands tightly through every chapter of life together'],
+    15: ['Steps Together', 'Walking side by side in the joy of our milestone celebration'],
+    16: ['Graceful Bride', 'Radiant smile and gentle beauty of Bride Thu Hien'],
+    17: ['Dashing Groom', 'Warm, refined portrait of Groom Dinh Huy'],
+    18: ['By the Arched Window', 'Refined silhouette of the groom beside the sunlit arched window'],
+    19: ['Fond Affection', 'Tender glances and happy smiles together along the heritage street'],
+    20: ['Warm Embrace', 'A gentle embrace that melts away the bustle of the city'],
+    21: ['Youth Together', 'Crossing the lively city street with bright, youthful smiles'],
+    22: ['Morning Dance', 'Morning sunlight illuminating the boundless joy in their eyes'],
+    23: ['City Heritage Stroll', 'Strolling beside timeless architecture in the heart of the vibrant city'],
+    24: ['Stone Colonnade', 'Walking leisurely beside stately classical stone columns'],
+    25: ['Modern & Vibrant', 'Confident individuality shining through every artistic frame'],
+    26: ['Sunlit Laughter', 'Pure, natural, and heartfelt joy shared together'],
+    27: ['Distinctive Style', 'A bold, contemporary moment filled with signature charm'],
+    28: ['Playful & Sweet', 'Lighthearted, adorable moments of laughter between the two of us'],
+    29: ['Composed Profile', 'Gentlemanly poise and charisma of Groom Dinh Huy'],
+    30: ['Confident Stride', 'The young groom stepping confidently toward a bright future'],
+    31: ['Lifelong Bond', 'A harmonious blend of solemn tradition and modern romance'],
+    32: ['Wholehearted Love', 'Shared glances filled with tender care and deep understanding'],
+    33: ['Graceful Ao Dai', 'Timeless elegance in a traditional white Ao Dai paired with a bridal veil'],
+    34: ['Corridor of Memories', 'Walking down a nostalgic heritage corridor adorned with vintage patterns'],
+    35: ['Peaceful Together', 'A quiet, heartwarming moment beside a lifelong partner'],
+    36: ['Pure Vietnamese Charm', 'Pure, gentle grace of a Vietnamese bride in traditional attire'],
+    37: ['Refined Elegance', 'Radiant smiles and affectionate glances in every graceful detail'],
+    38: ['Forever Vow', 'Arm in arm stepping across the threshold of a fulfilling marriage'],
+    39: ['Artistic Moment', 'Artistic motion where time rushes past, yet true love stands still'],
+    40: ['Poised Bridal Silhouette', 'Regal silhouette of the bride in a couture lace mermaid gown'],
     41: ['Wedding Photobook Cover', 'Opening page of Thu Hien & Dinh Huy’s love story'],
   },
   zh: {
-    1: ['并肩同行', '在古典殿堂中携手步入幸福时刻'],
-    2: ['浪漫殿堂', '宏伟阶梯下的灿烂幸福笑容'],
-    3: ['白纱轻扬', '微风轻拂洁白头纱，温柔而浪漫'],
-    4: ['甜蜜亲吻', '在穹顶之下定格深情一吻'],
-    5: ['爱的旋律', '温柔镜头珍藏相依相伴的每一刻'],
-    6: ['安心港湾', '彼此依靠，携手开启一生幸福'],
-    7: ['深情对望', '目光交汇间满载温柔与爱意'],
-    8: ['含情脉脉', '眼眸中盛满信任与笃定的幸福'],
-    9: ['幸福回旋', '古典建筑与洁白婚纱交相辉映'],
-    10: ['执子之手', '每一级台阶都延伸向共同的未来'],
-    11: ['露台絮语', '凭栏相依，细语温柔时光'],
-    12: ['轻声呢喃', '点滴温暖汇聚成一生的幸福'],
-    13: ['温润新郎', '新郎温暖俊朗的肖像'],
-    14: ['明艳新娘', '新娘温婉动人的笑容'],
-    15: ['拱窗沐光', '沐浴在柔和阳光下的优雅身影'],
-    16: ['笑靥如花', '灿烂笑容点亮整座礼堂'],
-    17: ['十指紧扣', '紧握双手，共度岁月漫长'],
-    18: ['携手共进', '满怀喜悦迈向大喜之日'],
-    19: ['城市印记', '漫步在充满历史韵味的街区'],
-    20: ['青春有你', '并肩走过街头巷尾，洋溢青春活力'],
-    21: ['满眼是你', '新郎望向挚爱时最温柔的目光'],
-    22: ['古典廊柱', '悠然漫步于庄重石柱长廊'],
-    23: ['晨光熹微', '清晨暖阳映照眼底的幸福'],
-    24: ['温暖相拥', '温柔拥抱驱散城市的喧嚣'],
-    25: ['时尚格调', '现代简约又独具个性的浪漫瞬间'],
-    26: ['自在欢愉', '每一帧画面都洋溢着自然喜悦'],
-    27: ['阳光笑颜', '最自然、最真挚的快乐时光'],
-    28: ['俏皮甜蜜', '属于两人的轻松可爱瞬间'],
-    29: ['笃定前行', '意气风发迈向美好未来'],
-    30: ['儒雅风度', '新郎沉稳温雅的气质'],
-    31: ['优雅奥黛', '越南传统白色奥黛与头纱的柔美结合'],
-    32: ['东方温婉', '纯净柔美的传统新娘风采'],
-    33: ['百年好合', '传统礼韵与现代爱情的美好交融'],
-    34: ['时光长廊', '携手漫步在古韵悠长的回廊'],
-    35: ['情深意长', '目光流转间尽是呵护与默契'],
-    36: ['岁月静好', '与挚爱相伴的宁静温馨时刻'],
-    37: ['曼妙身姿', '精致蕾丝鱼尾婚纱勾勒高雅气质'],
-    38: ['光影艺术', '时光流转，唯有真爱恒久留存'],
-    39: ['高雅风姿', '举手投足间的从容与优雅'],
-    40: ['白首之约', '挽手步入圆满幸福的婚姻殿堂'],
+    1: ['轻掀头纱', '新郎在窗畔温柔掀开头纱，目光深情而专注'],
+    2: ['并肩同行', '在古典殿堂中携手并肩的神圣幸福时刻'],
+    3: ['白纱轻扬', '微风轻拂洁白头纱，在柔和光影中温柔飘逸'],
+    4: ['甜蜜一吻', '在宏伟穹顶之下定格深情甜蜜的一吻'],
+    5: ['华美殿堂', '恢弘大厅全景与新人灿烂幸福的笑容交相辉映'],
+    6: ['触碰幸福', '在古典阶梯间深情对望，流露满满爱意'],
+    7: ['安心依靠', '新郎伫立身后，成为新娘最温暖坚实的依靠'],
+    8: ['爱的旋律', '浪漫视角珍藏相依相伴的每一个美好瞬间'],
+    9: ['深情凝望', '眼眸中盛满信任与圆满真挚的爱意'],
+    10: ['幸福回旋', '俯瞰视角将古典建筑与盛放的裙摆尽收眼底'],
+    11: ['执子之手', '每一级台阶都延伸向两人共同的美好未来'],
+    12: ['笑靥如花', '灿烂明媚的笑容点亮整座古典礼堂'],
+    13: ['露台絮语', '凭栏相依，在静谧时光里轻声细语'],
+    14: ['十指紧扣', '紧握彼此双手，携手走过人生的每一段旅程'],
+    15: ['携手同行', '满怀大喜之日的欢欣，并肩迈步向前'],
+    16: ['明艳新娘', `新娘${chineseNames.bride.shortName}温婉动人的气质与灿烂笑容`],
+    17: ['温润新郎', `新郎${chineseNames.groom.shortName}优雅俊朗而温暖的肖像`],
+    18: ['拱窗沐光', '新郎伫立在洒满暖阳的拱形窗畔，尽显儒雅风度'],
+    19: ['情深意浓', '古街漫步间深情相望，洋溢幸福笑颜'],
+    20: ['温暖相拥', '温柔的拥抱驱散了都市的喧嚣与烦忧'],
+    21: ['青春有你', '携手走过繁华街道，绽放充满朝气的笑容'],
+    22: ['晨光之舞', '清晨暖阳映照着眼眸中满溢的幸福'],
+    23: ['漫步城央', '在繁华都市中心漫步于古典建筑之间'],
+    24: ['古典石廊', '在庄重典雅的石柱长廊旁悠然漫步'],
+    25: ['时尚活力', '在每一帧艺术画面中自信展现独特个性'],
+    26: ['阳光笑颜', '最自然纯真、发自内心的欢乐时刻'],
+    27: ['摩登格调', '独具匠心、充满现代时尚魅力的定格瞬间'],
+    28: ['俏皮甜蜜', '属于两人轻松欢快又可爱的嬉笑瞬间'],
+    29: ['儒雅侧影', `新郎${chineseNames.groom.shortName}沉稳绅士的优雅气质`],
+    30: ['笃定前行', '年轻自信的新郎满怀热忱迈向美好未来'],
+    31: ['百年好合', '庄重传统礼韵与现代真挚爱情的美好交融'],
+    32: ['情深意长', '目光交汇间尽是温柔呵护与彼此默契'],
+    33: ['温婉奥黛', '传统白色越南奥黛搭配轻盈头纱的曼妙风姿'],
+    34: ['时光回廊', '漫步在充满复古花纹与怀旧韵味的长廊'],
+    35: ['岁月静好', '与相伴一生的挚爱共度宁静温馨时光'],
+    36: ['东方温婉', '越南新娘纯净柔美、温婉动人的传统风采'],
+    37: ['高雅风姿', '灿烂笑容与深情目光勾勒出隽永高雅格调'],
+    38: ['白首之约', '挽手并肩迈入美满幸福的婚姻殿堂'],
+    39: ['光影定格', '光影流转间时光匆匆掠过，唯有真爱恒久驻留'],
+    40: ['曼妙身姿', '高定蕾丝鱼尾婚纱映衬新娘绰约高贵身姿'],
     41: ['精装相册封面', '开启新人的幸福篇章'],
   },
 };
@@ -133,7 +134,7 @@ export default function Gallery() {
       const src = fullWeddingPhotoUrl(photo.src || photo.thumbnail);
       return {
         src,
-        image: { src, alt: localizedTitle },
+        image: { src, srcSet: albumPhotoSrcSet(src), alt: localizedTitle },
         title: localizedTitle,
         caption: localizedCaption,
         category: photo.category || 'grand-hall',
@@ -216,14 +217,17 @@ export default function Gallery() {
     [filteredPhotos.length]
   );
 
-  // Lightbox touch swipe for mobile
+  // Lightbox touch & pointer swipe (works on Mobile, iPad, and Desktop drag)
   const lbTouchStartX = useRef(0);
   const lbTouchDeltaX = useRef(0);
+  const lbPointerDown = useRef(false);
+  const lbDidSwipe = useRef(false);
 
   const handleLbTouchStart = (e) => {
     if (!e.touches || e.touches.length === 0) return;
     lbTouchStartX.current = e.touches[0].clientX;
     lbTouchDeltaX.current = 0;
+    lbDidSwipe.current = false;
   };
 
   const handleLbTouchMove = (e) => {
@@ -234,6 +238,35 @@ export default function Gallery() {
   const handleLbTouchEnd = () => {
     if (isZoomed) return;
     if (Math.abs(lbTouchDeltaX.current) > 36) {
+      lbDidSwipe.current = true;
+      if (lbTouchDeltaX.current > 0) {
+        showPrevLightbox();
+      } else {
+        showNextLightbox();
+      }
+    }
+    lbTouchStartX.current = 0;
+    lbTouchDeltaX.current = 0;
+  };
+
+  const handleLbPointerDown = (e) => {
+    if (e.pointerType === 'touch' || isZoomed) return;
+    lbPointerDown.current = true;
+    lbTouchStartX.current = e.clientX;
+    lbTouchDeltaX.current = 0;
+    lbDidSwipe.current = false;
+  };
+
+  const handleLbPointerMove = (e) => {
+    if (!lbPointerDown.current || e.pointerType === 'touch') return;
+    lbTouchDeltaX.current = e.clientX - lbTouchStartX.current;
+  };
+
+  const handleLbPointerUp = (e) => {
+    if (!lbPointerDown.current || e.pointerType === 'touch') return;
+    lbPointerDown.current = false;
+    if (!isZoomed && Math.abs(lbTouchDeltaX.current) > 40) {
+      lbDidSwipe.current = true;
       if (lbTouchDeltaX.current > 0) {
         showPrevLightbox();
       } else {
@@ -246,6 +279,10 @@ export default function Gallery() {
 
   const toggleZoom = (e) => {
     e?.stopPropagation();
+    if (lbDidSwipe.current) {
+      lbDidSwipe.current = false;
+      return;
+    }
     setIsZoomed((prev) => !prev);
   };
 
@@ -300,15 +337,30 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={closeLightbox}
+            onClick={() => {
+              if (lbDidSwipe.current) {
+                lbDidSwipe.current = false;
+                return;
+              }
+              closeLightbox();
+            }}
             onTouchStart={handleLbTouchStart}
             onTouchMove={handleLbTouchMove}
             onTouchEnd={handleLbTouchEnd}
+            onPointerDown={handleLbPointerDown}
+            onPointerMove={handleLbPointerMove}
+            onPointerUp={handleLbPointerUp}
           >
             {/* Close Button */}
             <button
               className={styles.closeButton}
-              onClick={closeLightbox}
+              onClick={() => {
+              if (lbDidSwipe.current) {
+                lbDidSwipe.current = false;
+                return;
+              }
+              closeLightbox();
+            }}
               aria-label={t.gallery.closeLabel || 'Close photo viewer'}
             >
               <X size={24} />
@@ -341,12 +393,25 @@ export default function Gallery() {
                 className={`${styles.lightboxImageWrapper} ${isZoomed ? styles.isZoomed : ''}`}
                 onClick={toggleZoom}
               >
-                <img
-                  src={currentLightboxPhoto.src || currentLightboxPhoto.image?.src}
-                  alt={currentLightboxPhoto.title}
-                  className={`${styles.lightboxImg} ${isZoomed ? styles.zoomed : ''}`}
-                />
+                  <img
+                    src={currentLightboxPhoto.src || currentLightboxPhoto.image?.src}
+                    alt={currentLightboxPhoto.title}
+                    decoding="async"
+                    draggable={false}
+                    className={`${styles.lightboxImg} ${isZoomed ? styles.zoomed : ''}`}
+                  />
               </div>
+
+              {/* Swipe Left / Right Gesture Hint when viewing expanded photo */}
+              {!isZoomed && filteredPhotos.length > 1 && (
+                <div className={styles.lightboxSwipeHint} aria-hidden="true">
+                  <ChevronLeft size={15} className={styles.swipeArrowLeft} />
+                  <span>
+                    {t.gallery.lightboxSwipeHint || 'Vuốt sang trái hoặc phải để chuyển ảnh'}
+                  </span>
+                  <ChevronRight size={15} className={styles.swipeArrowRight} />
+                </div>
+              )}
 
               {/* Lightbox Info Bar (Counter only on desktop) */}
               {!isMobile && (

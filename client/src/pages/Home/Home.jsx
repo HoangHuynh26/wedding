@@ -33,6 +33,7 @@ const sectionIds = new Set([
   'story',
   'rsvp',
   'contact',
+  'footer',
 ]);
 
 const { theme } = weddingConfig;
@@ -84,14 +85,13 @@ export default function WeddingExperience() {
   useEffect(() => {
     if (phase === 'sealed') return undefined;
     const criticalAssets = [
-      weddingConfig.formalPhoto || '/photos/tuan-0992.jpg',
+      weddingConfig.formalPhoto || '/photos/tuan-0992.webp',
       '/mauve-theme/mother-of-pearl.webp',
-      '/mauve-theme/jeweled-frame-cutout.webp?v=3',
+      '/mauve-theme/jeweled-frame-cutout.webp?v=4',
       '/mauve-theme/curtain-pleats-matched.webp',
       '/mauve-theme/curtain-tieback-left.webp',
       '/mauve-theme/curtain-tieback-right.webp',
       '/mauve-theme/wax-seal-hh.webp',
-      '/mauve-theme/footer-curtain.webp',
     ];
     const imgs = criticalAssets.map((src) => {
       const img = new Image();

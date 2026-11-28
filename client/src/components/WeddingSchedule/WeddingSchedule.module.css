@@ -9,6 +9,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
+  contain: layout paint;
   border-top: 1px solid rgba(114, 102, 122, 0.16);
   border-bottom: 1px solid rgba(114, 102, 122, 0.16);
 }
@@ -215,6 +216,11 @@
   letter-spacing: 0.1em;
   line-height: 1.35;
   color: #453c4e;
+}
+
+:global(html[lang="zh-CN"]) .rowTime {
+  font-family: 'Cinzel', 'Noto Serif SC', var(--font-serif);
+  letter-spacing: 0.08em;
 }
 
 .rowTitle {

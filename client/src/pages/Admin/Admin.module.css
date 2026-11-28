@@ -59,15 +59,18 @@
   transition: all 0.22s ease;
 }
 
-.sideSwitchTab:hover {
+.sideSwitchTab:not(.sideSwitchTabActive):hover {
   color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
 }
 
-.sideSwitchTabActive {
+.sideSwitchTabActive,
+.sideSwitchTabActive:hover,
+.sideSwitchTabActive:focus-visible {
   background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
-  color: #ffffff !important;
-  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.16);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
+  outline: none;
 }
 
 .backHomeLink {
@@ -531,13 +534,14 @@
   gap: 0.3rem;
 }
 
-.musicCatPill:hover {
+.musicCatPill:not(.musicCatPillActive):hover {
   border-color: var(--silver-dark);
   color: var(--text-dark);
   background: #f8fafc;
 }
 
-.musicCatPillActive {
+.musicCatPillActive,
+.musicCatPillActive:hover {
   background: #0f172a;
   color: #ffffff;
   border-color: #0f172a;
@@ -892,7 +896,7 @@
   gap: 0.35rem;
 }
 
-.langCard:hover {
+.langCard:not(.langCardActive):hover {
   border-color: var(--silver-primary);
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
@@ -1250,13 +1254,14 @@
   transition: all 0.2s ease;
 }
 
-.historyFilterBtn:hover {
+.historyFilterBtn:not(.historyFilterBtnActive):hover {
   border-color: var(--silver-primary);
   color: var(--text-dark);
   background: #f8fafc;
 }
 
-.historyFilterBtnActive {
+.historyFilterBtnActive,
+.historyFilterBtnActive:hover {
   background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
   color: #ffffff;
   border-color: #0f172a;
@@ -1360,7 +1365,7 @@
   transition: all 0.2s ease;
 }
 
-.pageBtn:hover:not(:disabled) {
+.pageBtn:not(.pageBtnActive):hover:not(:disabled) {
   border-color: var(--silver-primary);
   color: var(--text-dark);
   background: #f8fafc;
@@ -1371,7 +1376,8 @@
   cursor: not-allowed;
 }
 
-.pageBtnActive {
+.pageBtnActive,
+.pageBtnActive:hover {
   background: #0f172a;
   color: #ffffff;
   border-color: #0f172a;

@@ -2,41 +2,40 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Pointer } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import weddingConfig from '../../config/weddingConfig';
-import { fullWeddingPhotoUrl } from '../../utils/weddingPhotos';
 import styles from './ScratchReveal.module.css';
 
-// Use full-resolution portraits to retain detail through the oval crop and zoom.
+// High-resolution Retina WebP portraits (1467x2200) retain crisp detail through the oval crop & zoom with fast loading.
 const CAMEO_COUPLE_SLIDES = [
   { src: weddingConfig.couplePhoto, pos: '48% 8%', zoom: 1.0 },
-  { src: '/photos/tuan-0389.jpg', pos: '50% 18%', zoom: 1.04 },
-  { src: '/photos/tuan-9751.jpg', pos: '50% 14%', zoom: 1.0 },
-  { src: '/photos/tuan-1196.jpg', pos: '48% 54%', zoom: 1.22 },
-  { src: '/photos/tuan-0269.jpg', pos: '50% 34%', zoom: 1.18 },
-  { src: '/photos/tuan-2031.jpg', pos: '50% 36%', zoom: 1.2 },
-  { src: '/photos/tuan-2135.jpg', pos: '50% 16%', zoom: 1.02 },
-  { src: '/photos/tuan-1157.jpg', pos: '50% 34%', zoom: 1.18 },
-  { src: '/photos/tuan-0992.jpg', pos: '49% 40%', zoom: 1.16 },
-  { src: '/photos/tuan-0923.jpg', pos: '50% 36%', zoom: 1.18 },
-  { src: '/photos/tuan-0974.jpg', pos: '50% 36%', zoom: 1.18 },
-  { src: '/photos/tuan-0876.jpg', pos: '50% 18%', zoom: 1.14 },
-  { src: '/photos/tuan-1202.jpg', pos: '46% 52%', zoom: 1.22 },
-  { src: '/photos/tuan-1235.jpg', pos: '50% 38%', zoom: 1.22 },
-  { src: '/photos/tuan-1341.jpg', pos: '50% 38%', zoom: 1.16 },
-  { src: '/photos/tuan-1369.jpg', pos: '51% 38%', zoom: 1.22 },
-  { src: '/photos/tuan-1423.jpg', pos: '50% 14%', zoom: 1.02 },
-  { src: '/photos/tuan-0998.jpg', pos: '50% 34%', zoom: 1.22 },
-  { src: '/photos/tuan-0150.jpg', pos: '51% 46%', zoom: 1.24 },
-  { src: '/photos/tuan-0229.jpg', pos: '48% 52%', zoom: 1.2 },
-  { src: '/photos/tuan-0058.jpg', pos: '48% 36%', zoom: 1.14 },
-  { src: '/photos/tuan-0375.jpg', pos: '48% 46%', zoom: 1.24 },
-  { src: '/photos/tuan-0558.jpg', pos: '50% 38%', zoom: 1.18 },
-  { src: '/photos/tuan-0620.jpg', pos: '46% 50%', zoom: 1.2 },
-  { src: '/photos/tuan-0654.jpg', pos: '50% 38%', zoom: 1.2 },
-  { src: '/photos/tuan-2015.jpg', pos: '50% 36%', zoom: 1.2 },
-  { src: '/photos/tuan-2109.jpg', pos: '49% 34%', zoom: 1.18 },
-  { src: '/photos/tuan-2171.jpg', pos: '51% 42%', zoom: 1.22 },
-  { src: '/photos/tuan-9792.jpg', pos: '50% 28%', zoom: 1.14 },
-].map((slide) => ({ ...slide, src: fullWeddingPhotoUrl(slide.src) }));
+  { src: '/photos/tuan-0389.webp', pos: '50% 18%', zoom: 1.04 },
+  { src: '/photos/tuan-9751.webp', pos: '50% 14%', zoom: 1.0 },
+  { src: '/photos/tuan-1196.webp', pos: '48% 54%', zoom: 1.22 },
+  { src: '/photos/tuan-0269.webp', pos: '50% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-2031.webp', pos: '50% 36%', zoom: 1.2 },
+  { src: '/photos/tuan-2135.webp', pos: '50% 16%', zoom: 1.02 },
+  { src: '/photos/tuan-1157.webp', pos: '50% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-0992.webp', pos: '49% 40%', zoom: 1.16 },
+  { src: '/photos/tuan-0923.webp', pos: '50% 36%', zoom: 1.18 },
+  { src: '/photos/tuan-0974.webp', pos: '50% 36%', zoom: 1.18 },
+  { src: '/photos/tuan-0876.webp', pos: '50% 18%', zoom: 1.14 },
+  { src: '/photos/tuan-1202.webp', pos: '46% 52%', zoom: 1.22 },
+  { src: '/photos/tuan-1235.webp', pos: '50% 38%', zoom: 1.22 },
+  { src: '/photos/tuan-1341.webp', pos: '50% 38%', zoom: 1.16 },
+  { src: '/photos/tuan-1369.webp', pos: '51% 38%', zoom: 1.22 },
+  { src: '/photos/tuan-1423.webp', pos: '50% 14%', zoom: 1.02 },
+  { src: '/photos/tuan-0998.webp', pos: '50% 34%', zoom: 1.22 },
+  { src: '/photos/tuan-0150.webp', pos: '51% 46%', zoom: 1.24 },
+  { src: '/photos/tuan-0229.webp', pos: '48% 52%', zoom: 1.2 },
+  { src: '/photos/tuan-0058.webp', pos: '48% 36%', zoom: 1.14 },
+  { src: '/photos/tuan-0375.webp', pos: '48% 46%', zoom: 1.24 },
+  { src: '/photos/tuan-0558.webp', pos: '50% 38%', zoom: 1.18 },
+  { src: '/photos/tuan-0620.webp', pos: '46% 50%', zoom: 1.2 },
+  { src: '/photos/tuan-0654.webp', pos: '50% 38%', zoom: 1.2 },
+  { src: '/photos/tuan-2015.webp', pos: '50% 36%', zoom: 1.2 },
+  { src: '/photos/tuan-2109.webp', pos: '49% 34%', zoom: 1.18 },
+  { src: '/photos/tuan-2171.webp', pos: '51% 42%', zoom: 1.22 },
+  { src: '/photos/tuan-9792.webp', pos: '50% 28%', zoom: 1.14 },
+];
 
 function shuffleOrder(total, avoidFirst) {
   const arr = Array.from({ length: total }, (_, i) => i).filter((i) => i !== avoidFirst);
@@ -54,15 +53,31 @@ function shuffleOrder(total, avoidFirst) {
  */
 export default function ScratchReveal() {
   const { t, bride, groom, isGroomSide } = useLanguage();
+  const sectionRef = useRef(null);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef(null);
   const strokeCountRef = useRef(0);
   const [hasScratched, setHasScratched] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   const [activeSlide, setActiveSlide] = useState(() => ({ ...CAMEO_COUPLE_SLIDES[0], key: 0 }));
   const [prevSlide, setPrevSlide] = useState(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setIsInView(Boolean(entry?.isIntersecting)),
+      { rootMargin: '160px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!isRevealed) return undefined;
@@ -108,7 +123,7 @@ export default function ScratchReveal() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = Math.max(180, Math.round(rect.width));
     const h = Math.max(230, Math.round(rect.height));
 
@@ -258,8 +273,10 @@ export default function ScratchReveal() {
 
   return (
     <section
+      ref={sectionRef}
       className={styles.scratchSection}
       id="scratch-photo"
+      data-inview={isInView}
       aria-label={t.scratch?.revealedCaption || 'Scratch to reveal couple photo'}
     >
       {/* Full-bleed seamless iridescent Mother-of-Pearl backdrop */}
@@ -275,7 +292,7 @@ export default function ScratchReveal() {
       {/* Photorealistic 3D Hand-Set Crystal Rhinestone & Pearl Frame directly on the main Mother-of-Pearl background */}
       <div className={styles.jeweledStage}>
         <img
-          src="/mauve-theme/jeweled-frame-cutout.webp?v=3"
+          src="/mauve-theme/jeweled-frame-cutout.webp?v=4"
           alt=""
           className={styles.jeweledFrameImg}
           loading="eager"

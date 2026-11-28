@@ -2,6 +2,7 @@
   background: linear-gradient(180deg, #e7e0e8 0%, #e1d8e3 100%);
   position: relative;
   overflow: hidden;
+  contain: layout paint;
   padding: 2.5rem 0.75rem 3.5rem;
   border-bottom: none;
 }
@@ -86,9 +87,6 @@
     width: 100%;
     height: 100%;
     display: block;
-    filter:
-      drop-shadow(0 0 4px rgba(255, 255, 255, 0.95))
-      drop-shadow(0 1px 3px rgba(96, 80, 112, 0.28));
     animation: snowSpin 16s linear infinite;
   }
 
@@ -546,6 +544,20 @@
   font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
+:global(html[lang="zh-CN"]) .timeHeader {
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: 0.12em;
+}
+
+:global(html[lang="zh-CN"]) .timeHeader .numSpan {
+  font-family: var(--font-number, 'Cinzel', 'Playfair Display', serif);
+  font-size: 1.24em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0 0.08em;
+  vertical-align: -0.02em;
+}
+
 @media (max-width: 380px) {
   .timeHeader {
     font-size: 0.94rem;
@@ -601,6 +613,31 @@
   color: #453e4b;
   padding: 0 clamp(0.35rem, 1.5vw, 0.75rem);
   letter-spacing: -0.02em;
+}
+
+.dateCenterNumber > span {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.dayDigits {
+  display: inline-block;
+  font-size: 1em;
+}
+
+.dayUnitSuffix {
+  display: inline-block;
+  font-family: 'Noto Serif SC', var(--font-serif);
+  font-size: 0.34em;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  margin-left: 0.1em;
+}
+
+:global(html[lang="zh-CN"]) .dateCenterNumber {
+  font-size: clamp(3.8rem, 13vw, 5.2rem);
 }
 
 .lunarDateText {
@@ -888,6 +925,10 @@
     padding: 0 1rem;
   }
 
+  :global(html[lang="zh-CN"]) .dateCenterNumber {
+    font-size: 5.4rem;
+  }
+
   .lunarDateText {
     font-size: 1.35rem;
     margin-top: 1.25rem;
@@ -1084,6 +1125,10 @@
   .dateCenterNumber {
     font-size: 4.1rem;
     padding: 0 0.65rem;
+  }
+
+  :global(html[lang="zh-CN"]) .dateCenterNumber {
+    font-size: 3.7rem;
   }
 
   .lunarDateText {

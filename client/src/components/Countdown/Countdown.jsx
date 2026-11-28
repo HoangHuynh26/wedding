@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import weddingConfig from '../../config/weddingConfig';
 import { useLanguage } from '../../context/LanguageContext';
+import useInvitationParams from '../../hooks/useInvitationParams';
 import styles from './Countdown.module.css';
 
 const minute = 60;
@@ -19,8 +20,30 @@ function getSecondsLeft(isoDateStr) {
  * signed off with delicate italic calligraphy ("Hẹn sớm gặp bạn!" / "See you soon!"),
  * plus a harmonious frosted slate-mauve sticky bar when scrolled past.
  */
+const CJK_REGEX = /([\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)/g;
+
+function renderBalancedGuestName(name) {
+  const parts = String(name).split(CJK_REGEX);
+  return parts.map((part, idx) => {
+    if (!part) return null;
+    if (CJK_REGEX.test(part)) {
+      CJK_REGEX.lastIndex = 0;
+      return (
+        <span key={idx} className={styles.cjkGuestSpan}>
+          {part}
+        </span>
+      );
+    }
+    return <React.Fragment key={idx}>{part}</React.Fragment>;
+  });
+}
+
 export default function Countdown() {
   const { t, eventConfig } = useLanguage();
+  const { guestName } = useInvitationParams();
+  const cleanGuestName = (guestName || '').trim();
+  const guestTemplate = t.countdown.seeYouSoonGuest || 'Hẹn sớm gặp {guest}!';
+  const [guestPrefix, guestSuffix = ''] = guestTemplate.split('{guest}');
   const targetIsoDate = eventConfig?.isoDate || weddingConfig.event.isoDate;
   const [secondsLeft, setSecondsLeft] = useState(() => getSecondsLeft(targetIsoDate));
   const [isSticky, setIsSticky] = useState(false);
@@ -37,15 +60,18 @@ export default function Countdown() {
   }, [targetIsoDate]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      setIsSticky(rect.bottom <= 48);
-    };
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        setIsSticky(!entry.isIntersecting && entry.boundingClientRect.bottom <= 48);
+      },
+      { rootMargin: '-48px 0px 0px 0px', threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   const scrollToCountdown = () => {
@@ -118,7 +144,17 @@ export default function Countdown() {
           </div>
 
           <p className={styles.seeYouScript}>
-            {t.countdown.seeYouSoon || 'Hẹn sớm gặp bạn!'}
+            {cleanGuestName ? (
+              <>
+                {guestPrefix}
+                <span className={styles.guestNameScript}>
+                  {renderBalancedGuestName(cleanGuestName)}
+                </span>
+                {guestSuffix}
+              </>
+            ) : (
+              t.countdown.seeYouSoon || 'Hẹn sớm gặp bạn!'
+            )}
           </p>
         </div>
       </section>
@@ -126,6 +162,7 @@ export default function Countdown() {
       {/* Sticky Mini Countdown Bar in matching Twilight Slate-Mauve Glass */}
       <div
         className={`${styles.stickyCountdown} ${isSticky ? styles.stickyVisible : ''}`}
+        data-sticky-countdown
         onClick={scrollToCountdown}
         role="timer"
         aria-live="polite"

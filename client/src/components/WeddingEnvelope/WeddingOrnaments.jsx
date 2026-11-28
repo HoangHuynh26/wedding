@@ -3,7 +3,7 @@ import React from 'react';
 export function WeddingMonogram({ className, alt = '' }) {
   return (
     <img
-      src="/logo.png"
+      src="/logo.webp"
       alt={alt}
       className={className}
       draggable={false}

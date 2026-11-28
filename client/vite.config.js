@@ -23,7 +23,7 @@ function sideSpecificOgHtmlPlugin() {
       const groomTitle = 'Lễ Thành Hôn | Trần Lê Đình Huy &amp; Nguyễn Thị Thu Hiền • 24.01.2027';
       const groomOgTitle = 'Trần Lê Đình Huy &amp; Nguyễn Thị Thu Hiền — Thiệp Mời Lễ Thành Hôn';
       const groomDesc =
-        'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Thành Hôn của Đình Huy &amp; Thu Hiền — 17:30 Chủ Nhật, 24.01.2027 tại Nhà Hàng White Palace.';
+        'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Thành Hôn của Đình Huy &amp; Thu Hiền — 05:30 PM Chủ Nhật, 24.01.2027 tại Nhà Hàng White Palace.';
 
       const groomHtml = baseHtml
         .replace(/<title>[\s\S]*?<\/title>/i, `<title>${groomTitle}</title>`)

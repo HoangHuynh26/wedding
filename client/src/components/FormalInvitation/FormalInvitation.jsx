@@ -146,7 +146,7 @@ export default function FormalInvitation() {
           {/* 1. TOP COUPLE HERO PHOTO (Landscape Grand Staircase with Floating Veil) */}
           <div className={styles.topPhotoFrame}>
             <img
-              src={weddingConfig.formalPhoto || '/photos/tuan-0992.jpg'}
+              src={weddingConfig.formalPhoto || '/photos/tuan-0992.webp'}
               alt={`${firstPersonName} & ${secondPersonName}`}
               className={styles.topHeroImg}
               style={{ objectPosition: weddingConfig.formalPhotoPosition || '48% 42%' }}
@@ -219,7 +219,22 @@ export default function FormalInvitation() {
                   <span>{renderWithNumHighlight(t.formal.monthBox)}</span>
                 </div>
                 <div className={styles.dateCenterNumber}>
-                  <span>{t.formal.dayNumber}</span>
+                  <span>
+                    {String(t.formal.dayNumber || '')
+                      .split(/(\d+)/)
+                      .filter(Boolean)
+                      .map((part, idx) =>
+                        /^\d+$/.test(part) ? (
+                          <span key={idx} className={styles.dayDigits}>
+                            {part}
+                          </span>
+                        ) : (
+                          <span key={idx} className={styles.dayUnitSuffix}>
+                            {part}
+                          </span>
+                        )
+                      )}
+                  </span>
                 </div>
                 <div className={styles.dateSideBox}>
                   <span>{renderWithNumHighlight(t.formal.yearBox)}</span>

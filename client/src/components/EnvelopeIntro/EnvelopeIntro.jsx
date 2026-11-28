@@ -271,7 +271,7 @@ export default function EnvelopeIntro({ isVisible, onOpenComplete }) {
                   {/* Center Cast Silver Wax Seal Medallion Image */}
                   <div className={styles.waxSealBody}>
                     <img
-                      src="/logo.png"
+                      src="/logo.webp"
                       alt="Mở thiệp cưới"
                       className={styles.sealImg}
                     />

@@ -111,14 +111,20 @@ export default function RSVP() {
     try {
       const sideLabel = selectedOption.label;
       const invitationType = isGroomSide ? 'groom' : 'bride';
-      const response = await rsvpService.submitRSVP({
-        fullName: formData.fullName.trim(),
-        side: sideLabel,
-        invitationType,
-        language,
-        message: formData.message.trim(),
-        attendance: true,
+      const minLoadingDelay = new Promise((resolve) => {
+        window.setTimeout(resolve, 900);
       });
+      const [response] = await Promise.all([
+        rsvpService.submitRSVP({
+          fullName: formData.fullName.trim(),
+          side: sideLabel,
+          invitationType,
+          language,
+          message: formData.message.trim(),
+          attendance: true,
+        }),
+        minLoadingDelay,
+      ]);
 
       setConfirmedGuest(
         response.guest || {
@@ -132,7 +138,15 @@ export default function RSVP() {
       triggerCelebrationFireworks();
     } catch (err) {
       console.error('RSVP submission error:', err);
-      setServerError(language === 'vi' ? err.message || t.rsvp.serverErrorFallback : t.rsvp.serverErrorFallback);
+      if (err?.code === 'VALIDATION_NAME') {
+        setServerError(t.rsvp.validationNameShort || t.rsvp.serverErrorFallback);
+      } else if (err?.code === 'TIMEOUT') {
+        setServerError(t.rsvp.timeoutError || t.rsvp.serverErrorFallback);
+      } else if (err?.code === 'NETWORK') {
+        setServerError(t.rsvp.networkError || t.rsvp.serverErrorFallback);
+      } else {
+        setServerError(t.rsvp.serverErrorFallback);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -282,27 +296,41 @@ export default function RSVP() {
                       />
                     </div>
 
-                    {/* Signature Couture Double-Border Rectangular Letterpress CTA Button (No Yellow Neon) */}
-                    <div className={styles.submitWrap}>
+                    {/* Signature Couture Double-Border Rectangular Letterpress CTA Button (with Lazy-Reveal & Shimmer Loading) */}
+                    <motion.div
+                      className={styles.submitWrap}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+                    >
                       <button
                         type="submit"
                         id="rsvp-submit-btn"
-                        className={styles.doubleBorderSubmit}
+                        className={`${styles.doubleBorderSubmit} ${isSubmitting ? styles.isSubmitting : ''}`}
                         disabled={isSubmitting}
-                        aria-label={t.rsvp.submitBtn}
+                        aria-busy={isSubmitting}
+                        aria-label={isSubmitting ? t.rsvp.confirming : t.rsvp.submitBtn}
                       >
                         <span className={styles.doubleBorderSubmitInner}>
                           {isSubmitting ? (
                             <>
-                              <span className={styles.spinner} />
-                              <span>{t.rsvp.confirming}</span>
+                              <span className={styles.spinner} aria-hidden="true" />
+                              <span className={styles.loadingLabel}>
+                                {String(t.rsvp.confirming || '').replace(/\.+$/, '')}
+                                <span className={styles.loadingDots} aria-hidden="true">
+                                  <i>.</i>
+                                  <i>.</i>
+                                  <i>.</i>
+                                </span>
+                              </span>
                             </>
                           ) : (
                             <span>{t.rsvp.submitBtn}</span>
                           )}
                         </span>
                       </button>
-                    </div>
+                    </motion.div>
 
                     <footer className={styles.cardBottomMark} aria-hidden="true">
                       <span>

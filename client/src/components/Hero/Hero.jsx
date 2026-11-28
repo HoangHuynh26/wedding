@@ -13,10 +13,10 @@ export default function Hero() {
   const { t } = useLanguage();
 
   const mobileSlides = weddingConfig.videos.mobileHeroPhotos || [
-    '/photos/tuan-1157.jpg',
-    '/photos/tuan-0974.jpg',
-    '/photos/tuan-1196.jpg',
-    '/photos/tuan-9792.jpg',
+    '/photos/tuan-1157.webp',
+    '/photos/tuan-0974.webp',
+    '/photos/tuan-1196.webp',
+    '/photos/tuan-9792.webp',
   ];
 
   const [isMobile, setIsMobile] = useState(() =>
@@ -123,7 +123,7 @@ export default function Hero() {
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
         >
-          <img src="/logo.png" alt="Wedding Monogram Logo" />
+          <img src="/logo.webp" alt="Wedding Monogram Logo" />
         </motion.div>
 
         {/* Subtitle */}
