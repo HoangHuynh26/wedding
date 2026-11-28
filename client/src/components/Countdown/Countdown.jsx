@@ -9,7 +9,14 @@ const hour = 60 * minute;
 const day = 24 * hour;
 
 function getSecondsLeft(isoDateStr) {
-  const targetMs = Date.parse(isoDateStr || weddingConfig.event.isoDate);
+  const normalized = String(isoDateStr || weddingConfig.event.isoDate)
+    .trim()
+    .replace(
+      /^(\d{4}-\d{2}-\d{2})\s+(\d{1,2})[-:](\d{2})(?:[-:](\d{2}))?$/,
+      (_, d, hh, mm, ss = '00') => `${d}T${String(hh).padStart(2, '0')}:${mm}:${ss}+07:00`
+    );
+  const targetMs = Date.parse(normalized);
+  if (Number.isNaN(targetMs)) return 0;
   const seconds = Math.floor((targetMs - Date.now()) / 1000);
   return seconds > 0 ? seconds : 0;
 }

@@ -1,7 +1,8 @@
+import { pbkdf2Sync } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -23,7 +24,7 @@ function sideSpecificOgHtmlPlugin() {
       const groomTitle = 'Lễ Thành Hôn | Trần Lê Đình Huy &amp; Nguyễn Thị Thu Hiền • 24.01.2027';
       const groomOgTitle = 'Trần Lê Đình Huy &amp; Nguyễn Thị Thu Hiền — Thiệp Mời Lễ Thành Hôn';
       const groomDesc =
-        'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Thành Hôn của Đình Huy &amp; Thu Hiền — 05:30 PM Chủ Nhật, 24.01.2027 tại Nhà Hàng White Palace.';
+        'Trân trọng kính mời Quý Khách đến dự tiệc mừng Lễ Thành Hôn của Đình Huy &amp; Thu Hiền — 17:30 PM Chủ Nhật, 24.01.2027 tại Nhà Hàng White Palace.';
 
       const groomHtml = baseHtml
         .replace(/<title>[\s\S]*?<\/title>/i, `<title>${groomTitle}</title>`)
@@ -57,9 +58,26 @@ function sideSpecificOgHtmlPlugin() {
   };
 }
 
+function createAdminPinVerifier(mode) {
+  const pin = process.env.ADMIN_PIN ?? loadEnv(mode, __dirname, 'ADMIN_PIN').ADMIN_PIN;
+  if (!pin || !/^[0-9]+$/.test(pin)) return null;
+
+  const salt = 'wedding-admin-pin-v1';
+  const iterations = 210_000;
+  return {
+    digits: pin.length,
+    salt,
+    iterations,
+    fingerprint: pbkdf2Sync(pin, salt, iterations, 32, 'sha256').toString('hex'),
+  };
+}
+
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), sideSpecificOgHtmlPlugin()],
+  define: {
+    __ADMIN_PIN_VERIFIER__: JSON.stringify(createAdminPinVerifier(mode)),
+  },
   server: {
     port: 5173,
     host: true,
@@ -82,4 +100,4 @@ export default defineConfig({
       '.trycloudflare.com',
     ],
   },
-});
+}));

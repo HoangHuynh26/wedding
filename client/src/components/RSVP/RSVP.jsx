@@ -126,14 +126,13 @@ export default function RSVP() {
         minLoadingDelay,
       ]);
 
-      setConfirmedGuest(
-        response.guest || {
-          fullName: formData.fullName.trim(),
-          side: sideLabel,
-          invitationType,
-          message: formData.message.trim(),
-        }
-      );
+      setConfirmedGuest({
+        ...(response.guest || {}),
+        fullName: formData.fullName.trim(),
+        side: sideLabel,
+        invitationType,
+        message: formData.message.trim(),
+      });
       setSubmitSuccess(true);
       triggerCelebrationFireworks();
     } catch (err) {

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { chineseNames } from '../config/chineseInvitation';
 import weddingConfig from '../config/weddingConfig';
+import { useCmsStore } from '../store/cmsStore';
 
 const LanguageContext = createContext(null);
 const englishCouple = {
@@ -74,10 +75,9 @@ export function resolveInvitationSide(pathname = '', search = '') {
 export const groomEventConfig = {
   dateDisplay: '24 · 01 · 2027',
   fullDateDisplay: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
-  timeDisplay: '05:30 PM',
-  receptionTime: '05:30 PM - Đón tiếp Quý Khách & Chụp ảnh lưu niệm',
-  ceremonyTime: '07:00 PM - Lễ Thành Hôn',
-  dinnerTime: '07:30 PM - Khai tiệc tối mừng Lễ Thành Hôn',
+  timeDisplay: '17:30 PM',
+  receptionTime: '17:30 PM - Đón tiếp Quý Khách & Chụp ảnh lưu niệm',
+  dinnerTime: '19:30 PM - Khai tiệc tối mừng Lễ Thành Hôn',
   isoDate: '2027-01-24T17:30:00+07:00',
 };
 
@@ -110,7 +110,7 @@ export const groomTranslations = {
       saveTheDate: 'LỄ THÀNH HÔN • TRÂN TRỌNG KÍNH MỜI',
       title: 'THIỆP MỜI LỄ THÀNH HÔN',
       welcome: 'Trân trọng kính mời Quý Khách đến dự bữa tiệc thân mật mừng Lễ Thành Hôn của hai con chúng tôi',
-      timeDayHeader: '05:30 PM, CHỦ NHẬT',
+      timeDayHeader: '17:30 PM, CHỦ NHẬT',
       monthBox: 'THÁNG 01',
       dayNumber: '24',
       yearBox: 'NĂM 2027',
@@ -119,13 +119,13 @@ export const groomTranslations = {
       venueAddress: '588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh',
       receptionTag: 'THỜI GIAN & ĐỊA ĐIỂM TỔ CHỨC LỄ THÀNH HÔN',
       fullDate: 'Chủ Nhật, ngày 24 tháng 01 năm 2027',
-      time: '05:30 PM',
+      time: '17:30 PM',
       venueName: 'NHÀ HÀNG WHITE PALACE',
       hallName: 'Nhà Hàng Tiệc Cưới White Palace',
       address: '588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh',
     },
     countdown: {
-      fullDate: 'Chủ Nhật, 24 Tháng 01, 2027 • 05:30 PM',
+      fullDate: 'Chủ Nhật, 24 Tháng 01, 2027 • 17:30 PM',
       ceremonyNote: 'Lễ Thành Hôn • Đình Huy ♡ Thu Hiền',
     },
     scratch: {
@@ -137,17 +137,12 @@ export const groomTranslations = {
       intro: 'Hành trình đêm tiệc mừng Lễ Thành Hôn ấm áp và trọn vẹn tại Nhà Hàng White Palace.',
       items: [
         {
-          time: '05:30 PM',
+          time: '17:30 PM',
           title: 'ĐÓN KHÁCH',
           detail: 'Đón tiếp Quý Khách, chụp ảnh lưu niệm và ổn định chỗ ngồi tại sảnh tiệc',
         },
         {
-          time: '07:00 PM',
-          title: 'LỄ THÀNH HÔN',
-          detail: 'Cử hành nghi thức Lễ Thành Hôn trang trọng trên sân khấu trước hai họ và Quý Khách',
-        },
-        {
-          time: '07:30 PM',
+          time: '19:30 PM',
           title: 'KHAI TIỆC TỐI',
           detail: 'Khai tiệc tối ấm cúng, cùng nâng ly chúc phúc và chung vui bên gia đình, bạn bè',
         },
@@ -159,7 +154,7 @@ export const groomTranslations = {
       stampNames: 'Huy & Hiền',
       stamp3: 'WHITE PALACE',
       para2: 'Tiệc tối mừng Lễ Thành Hôn được tổ chức tại Nhà Hàng Tiệc Cưới White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh, với sảnh đón tiếp sang trọng và khu vực đỗ xe rộng rãi.',
-      para3: 'Gia đình kính mời Quý Khách thu xếp đến đón khách từ 05:30 PM tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) tại White Palace để cùng lưu giữ khoảnh khắc đẹp trước khi cử hành Lễ Thành Hôn (07:00 PM) và khai tiệc tối (07:30 PM).',
+      para3: 'Gia đình kính mời Quý Khách thu xếp đến đón khách từ 17:30 PM tối Chủ Nhật 24.01.2027 (tức 17/12 năm Bính Ngọ) tại White Palace để cùng lưu giữ khoảnh khắc đẹp trước khi khai tiệc tối (19:30 PM).',
     },
     gallery: {
       intro: 'Những khoảnh khắc đong đầy yêu thương của Đình Huy & Thu Hiền.',
@@ -169,13 +164,12 @@ export const groomTranslations = {
       hall: 'Nhà hàng White Palace',
       regionCaps: '588 PHẠM VĂN ĐỒNG, P. HIỆP BÌNH CHÁNH,\nTP. THỦ ĐỨC, THÀNH PHỐ HỒ CHÍ MINH',
       para1: 'Tọa lạc tại không gian sảnh tiệc sang trọng bậc nhất của Nhà hàng Tiệc Cưới White Palace, nơi lưu giữ những nụ cười, tiếng chúc phúc và khoảnh khắc thiêng liêng của đêm tiệc Lễ Thành Hôn.',
-      para2: 'Gia đình kính mời Quý Khách đến đón khách từ 05:30 PM tối Chủ Nhật 24.01.2027 tại sảnh tiệc White Palace để cùng chụp ảnh lưu niệm trước khi cử hành Lễ Thành Hôn (07:00 PM) và khai tiệc tối (07:30 PM).',
-      timeDetail: '05:30 PM, Chủ Nhật — 24.01.2027',
+      para2: 'Gia đình kính mời Quý Khách đến đón khách từ 17:30 PM tối Chủ Nhật 24.01.2027 tại sảnh tiệc White Palace để cùng chụp ảnh lưu niệm trước khi khai tiệc tối (19:30 PM).',
+      timeDetail: '17:30 PM, Chủ Nhật — 24.01.2027',
       addressText: 'Nhà hàng White Palace — 588 Phạm Văn Đồng, Phường Hiệp Bình Chánh, TP. Thủ Đức, TP. Hồ Chí Minh',
       schedule: [
-        '05:30 PM - Đón tiếp Quý Khách & Chụp ảnh lưu niệm tại sảnh tiệc White Palace',
-        '07:00 PM - Cử hành nghi thức Lễ Thành Hôn trang trọng',
-        '07:30 PM - Khai tiệc tối ấm cúng cùng gia đình và bạn bè',
+        '17:30 PM - Đón tiếp Quý Khách & Chụp ảnh lưu niệm tại sảnh tiệc White Palace',
+        '19:30 PM - Khai tiệc tối ấm cúng cùng gia đình và bạn bè',
       ],
     },
     rsvp: {
@@ -183,34 +177,38 @@ export const groomTranslations = {
     },
   },
   en: {
-    pageTitle: 'Wedding Celebration | Dinh Huy & Thu Hien • 24.01.2027',
+    pageTitle: "Groom's Wedding Invitation | Dinh Huy & Thu Hien • 24.01.2027",
     envelope: {
-      header: 'WEDDING INVITATION',
+      header: "GROOM'S WEDDING INVITATION",
       ceremonyHeading: "GROOM'S WEDDING CEREMONY",
-      invitation: 'Together with our families, we joyfully invite you to celebrate our evening wedding banquet at White Palace.',
+      invitation: 'We warmly invite you to our evening wedding banquet at White Palace.',
     },
     hero: {
       date: '24.01.2027',
-      venueTitle: 'White Palace Convention Center',
+      venueTitle: 'White Palace Restaurant',
       cityCaps: 'WHITE PALACE • HO CHI MINH CITY',
     },
     formal: {
-      timeDayHeader: '05:30 PM, SUNDAY',
+      saveTheDate: "GROOM'S WEDDING CEREMONY • CORDIALLY INVITED",
+      title: "GROOM'S WEDDING INVITATION",
+      welcome: "Our family cordially invites you to an intimate dinner celebrating our children's marriage",
+      timeDayHeader: '17:30 PM, SUNDAY',
       monthBox: 'JANUARY',
       dayNumber: '24',
       yearBox: '2027',
       lunarDate: '( 17th Day of the 12th Lunar Month, Year of the Fire Horse )',
       venueHostName: 'WHITE PALACE RESTAURANT',
       venueAddress: '588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City',
+      receptionTag: "GROOM'S WEDDING CEREMONY • TIME & VENUE",
       fullDate: 'Sunday, January 24, 2027',
-      time: '05:30 PM',
+      time: '17:30 PM',
       venueName: 'WHITE PALACE RESTAURANT',
-      hallName: 'White Palace Convention Center',
+      hallName: 'White Palace Wedding Restaurant',
       address: '588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City',
     },
     countdown: {
-      fullDate: 'Sunday, January 24, 2027 • 05:30 PM',
-      ceremonyNote: "Groom's Ceremony • Dinh Huy ♡ Thu Hien",
+      fullDate: 'Sunday, January 24, 2027 • 17:30 PM',
+      ceremonyNote: "Groom's Wedding Ceremony • Dinh Huy ♡ Thu Hien",
     },
     scratch: {
       revealedCaption: 'Cherished Moments • Dinh Huy & Thu Hien',
@@ -218,53 +216,47 @@ export const groomTranslations = {
     theDay: {
       headingTop: 'The',
       headingBottom: 'Day',
-      intro: 'A joyful evening celebration at White Palace, from warm welcome to wedding feast.',
+      intro: 'An evening of celebration at White Palace, from welcoming our guests to sharing dinner together.',
       items: [
         {
-          time: '05:30 PM',
+          time: '17:30 PM',
           title: 'WELCOME',
           detail: 'Evening guest welcome, seating & commemorative photos at the White Palace hall',
         },
         {
-          time: '07:00 PM',
-          title: 'CEREMONY',
-          detail: 'Evening wedding ceremony on stage witnessed by both families & cherished guests',
-        },
-        {
-          time: '07:30 PM',
+          time: '19:30 PM',
           title: 'EVENING BANQUET',
-          detail: 'Evening wedding banquet, heartfelt toasts & joyful celebration dinner',
+          detail: 'Dinner begins with toasts and celebration among family and friends.',
         },
       ],
     },
     transportation: {
-      stamp1: 'WEDDING NIGHT',
+      stamp1: "GROOM'S WEDDING CEREMONY",
       stamp2: '24 · 01 · 2027',
       stampNames: 'Huy & Hien',
       stamp3: 'WHITE PALACE',
-      para2: 'Our evening wedding celebration takes place at White Palace — 588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City, featuring an elegant grand hall and spacious parking.',
-      para3: 'We kindly recommend arriving from 05:30 PM on Sunday, January 24, 2027 at White Palace, giving you plenty of time for photos before the ceremony (07:00 PM) and banquet (07:30 PM).',
+      para2: 'The evening wedding banquet takes place at White Palace Wedding Restaurant, 588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City, with an elegant reception hall and ample parking.',
+      para3: 'Our family welcomes you to White Palace from 17:30 PM on Sunday, January 24, 2027 (the 17th day of the 12th lunar month, Year of the Fire Horse) for photos before dinner begins at 19:30 PM.',
     },
     gallery: {
-      intro: 'Cherished memories of Dinh Huy & Thu Hien.',
+      intro: 'Cherished moments of Dinh Huy & Thu Hien.',
     },
     venue: {
-      brideVenueTag: "Groom's Evening Wedding Banquet Venue",
-      hall: 'White Palace',
+      brideVenueTag: "Groom's Wedding Venue",
+      hall: 'White Palace Restaurant',
       regionCaps: '588 PHAM VAN DONG, HIEP BINH CHANH WARD,\nTHU DUC CITY, HO CHI MINH CITY',
-      para1: 'Set in the refined elegance of White Palace Convention Center, surrounded by loving family and heartfelt blessings for our evening wedding celebration.',
-      para2: 'We recommend arriving from 05:30 PM on Sunday, January 24, 2027 at White Palace to enjoy the welcome reception and take photos before the ceremony (07:00 PM) and banquet (07:30 PM).',
-      timeDetail: '05:30 PM, Sunday — January 24, 2027',
+      para1: 'We will celebrate in the elegant banquet hall at White Palace Wedding Restaurant, surrounded by smiles and heartfelt blessings.',
+      para2: 'We recommend arriving from 17:30 PM on Sunday, January 24, 2027 at White Palace to enjoy the welcome reception and take photos before the banquet at 19:30 PM.',
+      timeDetail: '17:30 PM, Sunday — January 24, 2027',
       addressText: 'White Palace — 588 Pham Van Dong, Hiep Binh Chanh Ward, Thu Duc City, Ho Chi Minh City',
       schedule: [
-        '05:30 PM - Guest Welcome & Commemorative Photos at White Palace',
-        '07:00 PM - Evening Wedding Ceremony',
-        '07:30 PM - Evening Wedding Banquet & Celebration',
+        '17:30 PM - Guest Welcome & Commemorative Photos at White Palace',
+        '19:30 PM - Evening Wedding Banquet & Celebration',
       ],
     },
     rsvp: {
-      formSubtitle: 'To help our family prepare warmly for the evening banquet at White Palace, please kindly confirm before January 10, 2027.',
-      messagePlaceholder: 'Send your warmest wishes to Dinh Huy & Thu Hien...',
+      formSubtitle: 'Please confirm your attendance before January 10, 2027, so our family can prepare for the evening banquet at White Palace.',
+      messagePlaceholder: 'Write your wedding wishes here...',
     },
   },
   zh: {
@@ -280,23 +272,25 @@ export const groomTranslations = {
       cityCaps: 'WHITE PALACE · 胡志明市',
     },
     formal: {
+      saveTheDate: '新婚典礼 • 诚挚邀请',
       title: '新婚喜宴请柬',
-      welcome: '谨詹于良辰吉日，为长子与佳媳举行新婚晚宴，诚挚敬邀您莅临共襄盛举',
-      timeDayHeader: '下午 05:30 · 星期日',
+      welcome: '诚邀您莅临新婚晚宴，与我们一同庆贺两个孩子喜结良缘',
+      timeDayHeader: '17:30 PM · 星期日',
       monthBox: '01月',
       dayNumber: '24日',
       yearBox: '2027年',
       lunarDate: '（农历丙午年腊月十七）',
       venueHostName: 'WHITE PALACE 婚礼宴会厅',
       venueAddress: '胡志明市守德市协平政坊范文同街 588 号 (White Palace)',
+      receptionTag: '新婚典礼时间与地点',
       fullDate: '2027年01月24日（星期日）',
-      time: '下午 05:30',
+      time: '17:30 PM',
       venueName: 'WHITE PALACE 婚礼宴会厅',
       hallName: 'White Palace 宴会中心',
       address: '胡志明市守德市协平政坊范文同街 588 号 (White Palace)',
     },
     countdown: {
-      fullDate: '2027年01月24日 星期日 • 下午 05:30',
+      fullDate: '2027年01月24日 星期日 • 17:30 PM',
       ceremonyNote: `新婚喜宴 · ${chineseNames.groom.shortName} ♡ ${chineseNames.bride.shortName}`,
     },
     scratch: {
@@ -308,17 +302,12 @@ export const groomTranslations = {
       intro: '在 White Palace 宴会中心共度温馨难忘的新婚晚宴时光。',
       items: [
         {
-          time: '下午 05:30',
-          title: '喜迎宾客',
-          detail: '于 White Palace 宴会厅喜迎宾客入座并合影留念',
+          time: '17:30 PM',
+          title: '迎宾接待',
+          detail: '在 White Palace 宴会厅迎接各位宾客，合影留念并安排入座',
         },
         {
-          time: '晚上 07:00',
-          title: '新婚典礼',
-          detail: '在双方亲友与宾客的见证下，举行庄重温馨的新婚仪式',
-        },
-        {
-          time: '晚上 07:30',
+          time: '19:30 PM',
           title: '晚宴开席',
           detail: '新婚晚宴正式开席，与至亲好友举杯共庆美好夜晚',
         },
@@ -330,20 +319,22 @@ export const groomTranslations = {
       stampNames: `${chineseNames.groom.shortName} & ${chineseNames.bride.shortName}`,
       stamp3: 'WHITE PALACE',
       para2: '新婚晚宴席设于 White Palace 婚礼宴会中心（胡志明市守德市协平政坊范文同街 588 号），现场设有典雅迎宾大厅及宽敞停车位。',
-      para3: '诚邀您于 2027年01月24日（农历丙午年腊月十七）下午 05:30 起莅临 White Palace 迎宾合影，晚上 07:00 举行典礼，晚上 07:30 晚宴正式开席。',
+      para3: '诚邀您于2027年1月24日（星期日，农历丙午年腊月十七）17:30 PM 起莅临 White Palace 一同合影留念，晚宴于 19:30 PM 正式开席。',
+    },
+    gallery: {
+      intro: `记录${chineseNames.groom.shortName}与${chineseNames.bride.shortName}充满爱意的美好瞬间。`,
     },
     venue: {
-      brideVenueTag: '新婚晚宴举办地点（White Palace 宴会中心）',
+      brideVenueTag: '男方婚礼喜宴举办地点（White Palace 宴会中心）',
       hall: 'White Palace 宴会厅',
       regionCaps: '胡志明市守德市 · 协平政坊范文同街 588 号',
       para1: '席设于高雅璀璨的 White Palace 婚礼宴会中心，温馨灯火与亲友的真挚祝福将伴随我们开启幸福新篇章。',
-      para2: '诚邀您于 2027年01月24日（星期日）下午 05:30 起莅临 White Palace 宴会厅迎宾合影，晚上 07:00 举行婚礼仪式，晚上 07:30 晚宴正式开席。',
-      timeDetail: '2027年01月24日（星期日）下午 05:30',
+      para2: '诚邀您于2027年1月24日（星期日）17:30 PM 起莅临 White Palace 宴会厅合影留念，晚宴于 19:30 PM 正式开席。',
+      timeDetail: '2027年01月24日（星期日）17:30 PM',
       addressText: 'White Palace — 胡志明市守德市协平政坊范文同街 588 号',
       schedule: [
-        '下午 05:30 - 喜迎宾客 & 合影留念（White Palace）',
-        '晚上 07:00 - 举行新婚庆典仪式',
-        '晚上 07:30 - 晚宴正式开席 · 举杯同庆',
+        '17:30 PM · 在 White Palace 宴会厅迎宾并合影留念',
+        '19:30 PM · 晚宴正式开席 · 举杯同庆',
       ],
     },
     rsvp: {
@@ -699,15 +690,15 @@ export const translations = {
     langCode: 'EN',
     htmlLang: 'en',
     toggleLabel: '中文',
-    pageTitle: 'Wedding Invitation | Thu Hien & Dinh Huy • 17.01.2027',
+    pageTitle: "Bride's Wedding Invitation | Thu Hien & Dinh Huy • 17.01.2027",
     envelope: {
-      header: 'WEDDING INVITATION',
-      subHeader: 'SAVE OUR SPECIAL DAY',
-      ceremonyHeading: 'WEDDING CEREMONY',
+      header: "BRIDE'S WEDDING INVITATION",
+      subHeader: 'JOYFULLY ANNOUNCING OUR WEDDING',
+      ceremonyHeading: "BRIDE'S WEDDING CEREMONY",
       salutation: 'Cordially Invited',
       defaultGuest: 'Distinguished Guest',
-      invitation: 'Together with our families, we joyfully invite you to celebrate our wedding ceremony.',
-      tapToOpen: 'Tap to Open Invitation',
+      invitation: "We warmly invite you to our wedding reception, hosted by the bride's family.",
+      tapToOpen: 'Tap the seal to open the invitation',
       audioNote: '(Romantic background melody plays automatically upon opening)',
     },
     hero: {
@@ -718,9 +709,9 @@ export const translations = {
       cityCaps: 'TRANG DAI WARD, DONG NAI CITY',
     },
     formal: {
-      saveTheDate: 'SAVE THE DATE • CORDIALLY INVITED',
-      title: 'WEDDING INVITATION',
-      welcome: 'Our family cordially invites you to join the joyful wedding reception celebrating our children',
+      saveTheDate: "BRIDE'S WEDDING CEREMONY • CORDIALLY INVITED",
+      title: "BRIDE'S WEDDING INVITATION",
+      welcome: "Our family cordially invites you to an intimate reception celebrating our children's marriage",
       brideSide: "BRIDE'S FAMILY",
       brideSideTitle: "BRIDE'S FAMILY",
       brideFather: 'Mr. Nguyen Thanh Tam',
@@ -734,7 +725,7 @@ export const translations = {
       brideRole: 'The Bride',
       groomRole: 'The Groom',
       dob: 'Born on:',
-      sonOf: 'Son of:',
+      sonOf: 'Eldest son of:',
       daughterOf: 'Daughter of:',
       announcementLine1: 'YOU ARE CORDIALLY INVITED TO',
       announcementLine2: "OUR FAMILY'S WEDDING RECEPTION",
@@ -751,11 +742,11 @@ export const translations = {
       venueHostName: "BRIDE'S FAMILY RESIDENCE",
       venueAddress: '1322/768, Trang Dai Ward, Dong Nai City, Vietnam',
       directionsBtn: 'GET DIRECTIONS',
-      receptionTag: 'CEREMONY & RECEPTION DETAILS',
+      receptionTag: "BRIDE'S WEDDING CEREMONY • TIME & VENUE",
       fullDate: 'Sunday, January 17, 2027',
       time: '11:20 AM',
       venueName: "BRIDE'S FAMILY RESIDENCE",
-      hallName: 'Dong Nai City',
+      hallName: "Bride's Family Residence • Dong Nai City",
       address: '1322/768, Trang Dai Ward, Dong Nai City',
       rsvpBtn: 'Confirm Attendance',
       mapsBtn: 'Get Google Maps Directions',
@@ -764,29 +755,29 @@ export const translations = {
     intro: {
       tag: 'OUR WEDDING INVITATION',
       title: 'A Journey of Love',
-      quote: '“Happiness is not a destination, but a beautiful journey of sharing sweet smiles, supporting each other through every challenge, and cherishing every chapter together.”',
-      subtext: 'Together with our families, we joyfully invite you to celebrate our special wedding day with us.',
+      quote: '“Happiness is not a destination but a journey of sharing sweet moments and facing challenges together. We cherish the days that have brought us here and are delighted to begin a new chapter in our lives.”',
+      subtext: 'We warmly invite our families, relatives, and friends to celebrate this special day with us.',
       groomRole: 'The Groom',
       brideRole: 'The Bride',
       dobLabel: 'Born on:',
-      sonOf: 'Son of:',
+      sonOf: 'Eldest son of:',
       daughterOf: 'Daughter of:',
       groomDob: '14/10/1997',
       brideDob: '23/11/1999',
       groomParents: 'Mr. Tran Dinh Ly & Mrs. Le Thi Kim Dung',
       brideParents: 'Mr. Nguyen Thanh Tam & Mrs. Nguyen Xuan Mai',
-      groomBio: 'A sincere, gentle and warmhearted soul who deeply cherishes family moments and peace.',
-      brideBio: 'A graceful, thoughtful and radiant lady who brings warmth, positivity, and smiles to everyone.',
+      groomBio: 'Sincere and warmhearted, he cherishes peaceful moments with family and loved ones.',
+      brideBio: 'Gentle, intelligent, and full of positive energy, she brings smiles and warmth to everyone around her.',
     },
     story: {
       tag: 'OUR LOVE STORY',
-      title: 'How It All Began',
+      title: 'Our Journey Together',
       milestones: [
         {
           year: '2022',
           title: 'When We First Met',
-          subtitle: 'A lovely autumn afternoon at a cozy workshop',
-          description: 'A serendipitous encounter at an art workshop. First shy glances, warm smiles, and a heartfelt conversation that lasted into the evening.',
+          subtitle: 'A gentle autumn afternoon at a familiar café',
+          description: 'We met by chance at an art workshop. There were first glances, shy smiles, and a conversation that lasted until the city lights came on.',
         },
         {
           year: '2023',
@@ -797,14 +788,14 @@ export const translations = {
         {
           year: '2025',
           title: 'Growing Together',
-          subtitle: 'Exploring new horizons side by side',
+          subtitle: 'Facing challenges and exploring new places together',
           description: 'Traveling hand in hand across new places, learning empathy and patience, and becoming each other’s most peaceful sanctuary.',
         },
         {
           year: '2026',
-          title: 'A Promise For Forever',
+          title: 'A Lifelong Promise',
           subtitle: 'A sacred moment beneath a golden sunset',
-          description: 'Under a radiant sunset, a ring was offered with a lifelong vow. Happy tears and the brightest smile: "Yes, I do!".',
+          description: 'Under a glowing sunset, a ring was offered with a lifelong promise. Then came tears of joy, a radiant smile, and a heartfelt “Yes!”',
         },
         {
           year: '2027',
@@ -826,7 +817,7 @@ export const translations = {
       minutes: 'MINUTES',
       seconds: 'SECONDS',
       fullDate: 'Sunday, January 17, 2027 • 11:20 AM',
-      ceremonyNote: "Bride's Ceremony • Thu Hien ♡ Dinh Huy",
+      ceremonyNote: "Bride's Wedding Ceremony • Thu Hien ♡ Dinh Huy",
       celebratingText: 'Today we celebrate our wedding day!',
     },
     scratch: {
@@ -838,23 +829,23 @@ export const translations = {
     theDay: {
       headingTop: 'The',
       headingBottom: 'Day',
-      intro: 'A day to celebrate, from the first hello to the warmest farewell.',
+      intro: 'A day to celebrate together, from welcoming our guests to sharing an intimate lunch.',
       items: [
         { time: '10:30 AM', title: 'WELCOME', detail: 'Warm welcome, guest seating & commemorative photos with our family' },
-        { time: '11:20 AM', title: 'CEREMONY', detail: 'Wedding ceremony witnessed by both families & cherished guests' },
-        { time: '11:45 AM', title: 'BANQUET', detail: 'Wedding luncheon banquet, heartfelt toasts & joyful celebration' },
+        { time: '11:20 AM', title: "BRIDE'S WEDDING CEREMONY", detail: 'We will hold the wedding ceremony in the presence of both families and our guests.' },
+        { time: '11:45 AM', title: 'WEDDING LUNCH', detail: 'An intimate lunch begins with toasts and celebration among family and friends.' },
       ],
     },
     transportation: {
-      heading: 'Transportation',
-      stamp1: 'WEDDING DAY',
+      heading: 'Travel & Guest Welcome',
+      stamp1: "BRIDE'S WEDDING CEREMONY",
       stamp2: '17 · 01 · 2027',
       stampNames: 'Hien & Huy',
       stamp3: 'DONG NAI',
       para1: 'We want getting to and from the celebration to be as easy and pleasant as possible.',
-      para2: "Our ceremony takes place at the Bride's Family Residence — 1322/768, Trang Dai Ward, Dong Nai City, with welcoming reception and spacious parking for both cars and motorbikes.",
-      para3: 'We kindly recommend arriving from 10:30 AM on Sunday, January 17, 2027, giving you plenty of time to settle in before the ceremony begins.',
-      pickupBtn: 'VIEW PICK UP POINT',
+      para2: "The ceremony takes place at the bride's family residence, 1322/768, Trang Dai Ward, Dong Nai City. There is a reception area and ample parking for cars and motorbikes.",
+      para3: 'Our family welcomes you from 10:30 AM on Sunday, January 17, 2027 (the 10th day of the 12th lunar month, Year of the Fire Horse) to take photos together before lunch begins.',
+      pickupBtn: 'VIEW ARRIVAL LOCATION',
     },
     video: {
       tag: 'CINEMATIC HIGHLIGHTS',
@@ -868,7 +859,7 @@ export const translations = {
       tag: 'SWEET MEMORIES',
       title: 'Wedding Photo Album',
       expandBtn: 'Expand Photo',
-      intro: 'Cherished memories from our pre-wedding collection.',
+      intro: 'Cherished moments of Thu Hien & Dinh Huy.',
       carouselLabel: '3D Wedding Photo Slideshow',
       closeLabel: 'Close photo viewer',
       prevLabel: 'Previous photo',
@@ -897,7 +888,7 @@ export const translations = {
       hall: "Bride's Family Residence",
       regionCaps: 'TRANG DAI WARD, DONG NAI CITY',
       para1: "Set in the warm embrace of the Bride's family home in Trang Dai Ward, Dong Nai City, surrounded by loving family and heartfelt blessings for our celebration.",
-      para2: 'We recommend arriving a little early to settle in and enjoy the warm atmosphere before the ceremony begins.',
+      para2: 'Our family welcomes you to arrive a little early, take photos with us, and enjoy the welcome before the ceremony begins.',
       timeTitle: 'Date & Time',
       timeDetail: '11:20 AM, Sunday — January 17, 2027',
       addressTitle: 'Venue Address',
@@ -909,8 +900,8 @@ export const translations = {
       coordinatesLabel: 'Coordinates',
       schedule: [
         '10:30 AM - Welcome Guests & Commemorative Photos',
-        '11:20 AM - Wedding Ceremony & Family Toasts',
-        '11:45 AM - Intimate Wedding Banquet & Celebration',
+        "11:20 AM - Bride's Wedding Ceremony",
+        '11:45 AM - Intimate Wedding Lunch with Both Families',
       ],
     },
     qrcode: {
@@ -922,21 +913,21 @@ export const translations = {
       shareBtn: 'Share Invitation',
     },
     rsvp: {
-      before: 'Warm Wishes & Attendance',
+      before: 'Send Wishes & Confirm Attendance',
       quote: '“Your presence and heartfelt blessings are the greatest honor for our families.”',
       joining: 'WILL YOU BE JOINING US?',
       formTitle: 'Confirm Attendance',
-      formSubtitle: 'To help our family prepare warmly for your arrival, please kindly confirm before January 5, 2027.',
+      formSubtitle: 'Please confirm your attendance before January 5, 2027, so our family can prepare for your visit.',
       nameLabel: 'Your Full Name *',
       namePlaceholder: 'e.g. Emily Johnson / Nguyen Van Nam',
-      locationLabel: 'Where are you traveling from? (City / Country) *',
-      locationPlaceholder: 'e.g. Ho Chi Minh City, Singapore, Dong Nai',
+      locationLabel: 'Where are you coming from? (Province / City) *',
+      locationPlaceholder: 'e.g. Dong Nai, Ho Chi Minh City, Hanoi',
       sideLabel: 'Whose guest are you? *',
       sideBride: "Bride's Side",
       sideGroom: "Groom's Side",
       sideMutual: 'Both / Mutual Friends',
       messageLabel: 'Wedding Wish / Message for the Couple',
-      messagePlaceholder: 'Send your warmest wishes to Thu Hien & Dinh Huy...',
+      messagePlaceholder: 'Write your wedding wishes here...',
       submitBtn: "YES, I'LL BE THERE",
       confirming: 'Submitting confirmation...',
       validationNameRequired: 'Please enter your full name',
@@ -957,7 +948,7 @@ export const translations = {
       messageSummary: 'Wish:',
       statusLabel: 'Status:',
       statusConfirmed: 'Attendance Confirmed ✓',
-      resetBtn: 'Submit another confirmation for family members',
+      resetBtn: 'Send another RSVP or register for a family member',
     },
     contact: {
       tag: 'CONTACT & ASSISTANCE',
@@ -1015,7 +1006,7 @@ export const translations = {
     langCode: '中文',
     htmlLang: 'zh-CN',
     toggleLabel: '越南语',
-    pageTitle: `婚礼请柬｜${chineseNames.bride.shortName}与${chineseNames.groom.shortName} · 2027.01.17`,
+    pageTitle: `女方婚礼请柬｜${chineseNames.bride.shortName}与${chineseNames.groom.shortName} · 2027.01.17`,
     envelope: {
       header: '女方婚礼请柬',
       subHeader: '喜结良缘 • 诚挚邀请',
@@ -1023,7 +1014,7 @@ export const translations = {
       salutation: '诚挚邀请',
       defaultGuest: '尊贵的宾客',
       invitation: '谨以满怀喜悦之心，诚邀您拨冗莅临参加女方婚礼仪式暨喜宴，共证幸福时刻。',
-      tapToOpen: '轻触开启请柬',
+      tapToOpen: '轻触火漆印开启请柬',
       audioNote: '（开启请柬后将自动播放浪漫婚礼音乐）',
     },
     hero: {
@@ -1034,9 +1025,9 @@ export const translations = {
       cityCaps: '越南同奈市 · 长台坊',
     },
     formal: {
-      saveTheDate: '良辰吉日 • 诚挚邀请',
+      saveTheDate: '女方婚礼仪式 • 诚挚邀请',
       title: '女方婚礼请柬',
-      welcome: '谨詹于良辰吉日，为爱女与佳婿举行女方婚礼仪式暨喜宴，诚挚敬邀您莅临共襄盛举',
+      welcome: '诚邀您莅临女方家中参加喜宴，与我们一同庆贺两个孩子喜结良缘',
       brideSide: '女方家长',
       brideSideTitle: '女方家长',
       brideFather: `父：${chineseNames.bride.father}`,
@@ -1052,8 +1043,8 @@ export const translations = {
       dob: '出生日期：',
       sonOf: '长子：',
       daughterOf: '爱女：',
-      announcementLine1: '谨定良辰 • 诚邀莅临',
-      announcementLine2: '共赴我们全家的婚礼喜宴',
+      announcementLine1: '诚邀各位宾客莅临',
+      announcementLine2: '与我们全家共享婚礼喜悦',
       quoteLine1: '爱与缘分让两颗心携手同心、共筑温馨家园，',
       quoteLine2: '我们全家诚挚期盼您的莅临，共同分享这份珍贵而美好的喜悦。',
       honorTag: '诚挚敬邀',
@@ -1067,11 +1058,11 @@ export const translations = {
       venueHostName: '女方府邸',
       venueAddress: '越南同奈市长台坊 1322/768 号',
       directionsBtn: '地图导航',
-      receptionTag: '婚礼喜宴时间与地点',
+      receptionTag: '女方婚礼仪式时间与地点',
       fullDate: '2027年01月17日（星期日）',
       time: '上午 11:20',
       venueName: '女方府邸',
-      hallName: '同奈市',
+      hallName: '女方府邸 · 同奈市',
       address: '越南同奈市长台坊 1322/768 号',
       rsvpBtn: '宾客出席回执',
       mapsBtn: 'Google 地图导航',
@@ -1080,13 +1071,13 @@ export const translations = {
     intro: {
       tag: '爱的邀请函',
       title: '携手同行之旅',
-      quote: '“幸福不是终点，而是彼此陪伴、共同分享每一次欢笑与感动的旅程。感恩岁月里的温柔相遇，让我们满怀喜悦迈入人生的新篇章。”',
+      quote: '“幸福不是终点，而是彼此陪伴、分享甜蜜并携手面对挑战的旅程。我们珍惜一路走过的每一天，满怀喜悦迈入人生的新篇章。”',
       subtext: '诚挚邀请亲朋好友莅临见证我们的重要时刻，共享喜悦与幸福。',
       groomRole: '新郎',
       brideRole: '新娘',
       dobLabel: '生日：',
-      sonOf: '男方父母：',
-      daughterOf: '女方父母：',
+      sonOf: '新郎是以下二位的长子：',
+      daughterOf: '新娘是以下二位的爱女：',
       groomDob: '1997/10/14',
       brideDob: '1999/11/23',
       groomParents: `${chineseNames.groom.father}先生与${chineseNames.groom.mother}女士`,
@@ -1101,7 +1092,7 @@ export const translations = {
         {
           year: '2022',
           title: '初次相遇',
-          subtitle: '秋日午后的温柔邂逅',
+          subtitle: '一个温柔的秋日下午，在熟悉的小店一角',
           description: '在一场艺术工作坊中不期而遇。初见的目光、羞涩的微笑，让畅谈一直延续到华灯初上。',
         },
         {
@@ -1156,7 +1147,7 @@ export const translations = {
       headingBottom: '流程',
       intro: '良辰美景，从迎宾初见到举杯同庆的每一个珍贵时刻。',
       items: [
-        { time: '上午 10:30', title: '喜迎宾客', detail: '喜迎亲友莅临入座并合影留念' },
+        { time: '上午 10:30', title: '迎宾接待', detail: '欢迎各位宾客到场，合影留念并与家人一同入座' },
         { time: '上午 11:20', title: '女方婚礼仪式', detail: '在双方亲友与宾客的见证下，举行庄重温馨的女方婚礼仪式' },
         { time: '上午 11:45', title: '喜宴开席', detail: '午间喜宴正式开席，与至亲好友举杯同庆美好佳期' },
       ],
@@ -1168,8 +1159,8 @@ export const translations = {
       stampNames: `${chineseNames.bride.shortName} & ${chineseNames.groom.shortName}`,
       stamp3: '同奈市',
       para1: '为了让您往返喜宴的旅程更加轻松顺畅：',
-      para2: '喜宴席设于女方府邸 — 越南同奈市长台坊 1322/768 号，现场设有专属迎宾接待区及宽敞停车位。',
-      para3: '诚邀您于 2027年01月17日（农历丙午年腊月初十）上午 10:30 起莅临入席，共赴喜悦之约。',
+      para2: '女方婚礼仪式在女方府邸举行，地址为越南同奈市长台坊1322/768号。现场设有迎宾区，并有宽敞的停车区，可停放汽车和摩托车。',
+      para3: '家人诚邀您于2027年1月17日（星期日，农历丙午年腊月初十）上午10:30起莅临，在喜宴开席前一同合影留念。',
       pickupBtn: '查看地图位置',
     },
     video: {
@@ -1184,7 +1175,7 @@ export const translations = {
       tag: '甜蜜掠影',
       title: '婚纱纪念相册',
       expandBtn: '全屏查看',
-      intro: '珍藏我们满满爱意的幸福瞬间。',
+      intro: `记录${chineseNames.bride.shortName}与${chineseNames.groom.shortName}充满爱意的美好瞬间。`,
       carouselLabel: '3D 婚纱照片轮播',
       closeLabel: '关闭图片预览',
       prevLabel: '上一张照片',
@@ -1193,7 +1184,7 @@ export const translations = {
       categories: {
         all: '全部照片',
         'grand-hall': '古典殿堂',
-        'street-heritage': '城市印记',
+        'street-heritage': '古街与文化遗产',
         traditional: '越南传统奥黛',
         artistic: '艺术写真',
         album: '精装相册页',
@@ -1213,7 +1204,7 @@ export const translations = {
       hall: '女方府邸',
       regionCaps: '越南同奈市 · 长台坊',
       para1: '席设于同奈市长台坊温馨典雅的女方府邸，鲜花与亲友的真挚祝福将伴随我们开启幸福新篇章。',
-      para2: '诚邀您提前少许莅临，合影留念并共度温馨愉悦的迎宾时光。',
+      para2: '家人诚邀您稍早抵达，在仪式开始前一同合影留念，共享喜悦。',
       timeTitle: '举办时间',
       timeDetail: '2027年01月17日（星期日）上午 11:20',
       addressTitle: '喜宴地址',
@@ -1224,9 +1215,9 @@ export const translations = {
       toggleMapHide: '收起地图',
       coordinatesLabel: '坐标',
       schedule: [
-        '上午 10:30 - 喜迎宾客 & 合影留念',
+        '上午 10:30 · 迎宾接待及合影留念',
         '上午 11:20 - 举行女方婚礼仪式',
-        '上午 11:45 - 喜宴开席 · 举杯同庆',
+        '上午 11:45 · 与双方家人共进婚宴午餐',
       ],
     },
     qrcode: {
@@ -1245,7 +1236,7 @@ export const translations = {
       formSubtitle: '为便于家人周全准备席位与招待，烦请您于 2027年01月05日 前确认出席。',
       nameLabel: '您的姓名 *',
       namePlaceholder: '例如：王伟、李明',
-      locationLabel: '您来自哪里？（城市 / 地区）*',
+      locationLabel: '您来自哪里？（省／市）*',
       locationPlaceholder: '例如：胡志明市、同奈、上海、深圳、台北',
       sideLabel: '您是哪一方的宾客？*',
       sideBride: '女方亲友（新娘方）',
@@ -1258,7 +1249,7 @@ export const translations = {
       validationNameRequired: '请输入您的姓名',
       validationNameShort: '姓名至少需要 2 个字符',
       validationNameLong: '姓名不能超过 80 个字符',
-      validationLocationRequired: '请输入您所在的城市或地区',
+      validationLocationRequired: '请输入您所在的省或市',
       validationLocationShort: '地区至少需要 2 个字符',
       validationLocationLong: '地区不能超过 100 个字符',
       timeoutError: '连接超时，请稍后再试。',
@@ -1273,7 +1264,7 @@ export const translations = {
       messageSummary: '祝福语：',
       statusLabel: '回执状态：',
       statusConfirmed: '已确认出席 ✓',
-      resetBtn: '继续为其他家人或同行亲友登记',
+      resetBtn: '提交新的回执或为亲友登记',
     },
     contact: {
       tag: '联系与协助',
@@ -1281,8 +1272,8 @@ export const translations = {
       subtitle: '如您对路线导航、婚礼流程或当天接待有任何疑问，欢迎随时与我们联系。',
       brideRole: '新娘',
       groomRole: '新郎',
-      brideNote: '负责接待与协助新娘方的亲友、同学及同事',
-      groomNote: '负责接待与协助新郎方的亲友、同学及同事',
+      brideNote: '为女方的家人、朋友和同事提供接待及协助',
+      groomNote: '为男方的家人、朋友和同事提供接待及协助',
       callBtn: '拨打电话',
       zaloBtn: 'Zalo',
       copyTitle: '复制电话号码',
@@ -1330,11 +1321,35 @@ export const translations = {
 
 export function LanguageProvider({ children }) {
   const location = useLocation();
+  const { settings: cms } = useCmsStore();
   const [language, setLanguageState] = useState(() => resolveUrlLanguage(location.search));
   const side = resolveInvitationSide(location.pathname, location.search);
   const isGroomSide = side === 'groom';
-  const eventConfig = isGroomSide ? groomEventConfig : weddingConfig.event;
-  const venueConfig = isGroomSide ? groomVenueConfig : weddingConfig.venue;
+
+  const eventConfig = React.useMemo(() => {
+    const base = isGroomSide ? groomEventConfig : weddingConfig.event;
+    const sideCfg = isGroomSide ? cms?.groom : cms?.bride;
+    if (!sideCfg) return base;
+    return {
+      ...base,
+      isoDate: sideCfg.isoDate || base.isoDate,
+      dateDisplay: sideCfg.dateShort ? sideCfg.dateShort.replace(/\./g, ' · ') : base.dateDisplay,
+    };
+  }, [isGroomSide, cms]);
+
+  const venueConfig = React.useMemo(() => {
+    const base = isGroomSide ? groomVenueConfig : weddingConfig.venue;
+    const sideCfg = isGroomSide ? cms?.groom : cms?.bride;
+    if (!sideCfg) return base;
+    return {
+      ...base,
+      name: sideCfg.venueHostName || base.name,
+      hall: sideCfg.venueHall || base.hall,
+      address: sideCfg.address || base.address,
+      googleMapsUrl: sideCfg.googleMapsUrl || base.googleMapsUrl,
+      embedMapUrl: sideCfg.embedMapUrl || base.embedMapUrl,
+    };
+  }, [isGroomSide, cms]);
 
   // Automatically sync language whenever URL search query changes (?lang=en | zh | vi)
   useEffect(() => {
@@ -1343,18 +1358,96 @@ export function LanguageProvider({ children }) {
   }, [location.search]);
 
   const basePack = translations[language] || translations.vi;
-  const t = React.useMemo(
-    () =>
-      isGroomSide
-        ? mergeSideTranslations(basePack, groomTranslations[language] || groomTranslations.vi)
-        : basePack,
-    [basePack, isGroomSide, language]
-  );
+  const t = React.useMemo(() => {
+    const sideMerged = isGroomSide
+      ? mergeSideTranslations(basePack, groomTranslations[language] || groomTranslations.vi)
+      : basePack;
+
+    const sharedLang = cms?.shared?.[language];
+    const sideData = isGroomSide ? cms?.groom : cms?.bride;
+    const brideData = cms?.bride;
+    const groomData = cms?.groom;
+
+    const next = {
+      ...sideMerged,
+      hero: { ...sideMerged.hero },
+      formal: { ...sideMerged.formal },
+      countdown: { ...sideMerged.countdown },
+      theDay: { ...sideMerged.theDay },
+      venue: { ...sideMerged.venue },
+      rsvp: { ...sideMerged.rsvp },
+      footer: { ...sideMerged.footer },
+      envelope: { ...sideMerged.envelope },
+    };
+
+    // Apply shared CMS overrides (applies to both Bride & Groom cards in the selected language)
+    if (sharedLang) {
+      if (sharedLang.announcementLine1) next.formal.announcementLine1 = sharedLang.announcementLine1;
+      if (sharedLang.announcementLine2) next.formal.announcementLine2 = sharedLang.announcementLine2;
+      if (sharedLang.quoteLine1) next.formal.quoteLine1 = sharedLang.quoteLine1;
+      if (sharedLang.quoteLine2) next.formal.quoteLine2 = sharedLang.quoteLine2;
+      if (sharedLang.countdownScript) next.countdown.seeYouSoon = sharedLang.countdownScript;
+      if (sharedLang.rsvpQuote) next.rsvp.quote = sharedLang.rsvpQuote;
+      if (sharedLang.footerLine1) next.footer.line1 = sharedLang.footerLine1;
+      if (sharedLang.footerLine2) next.footer.line2 = sharedLang.footerLine2;
+      if (sharedLang.footerThankYou) next.footer.thankYou = sharedLang.footerThankYou;
+    }
+
+    // Apply universal date across VI/EN/ZH
+    if (sideData?.dateShort) {
+      next.hero.date = sideData.dateShort;
+    }
+
+    // Apply language-specific Bride & Groom CMS overrides across VI, EN, and ZH
+    const brideLoc = language === 'vi' ? brideData : brideData?.i18n?.[language];
+    const groomLoc = language === 'vi' ? groomData : groomData?.i18n?.[language];
+    const sideLoc = isGroomSide ? groomLoc : brideLoc;
+
+    if (brideLoc?.father) next.formal.brideFather = brideLoc.father;
+    if (brideLoc?.mother) next.formal.brideMother = brideLoc.mother;
+    if (groomLoc?.father) next.formal.groomFather = groomLoc.father;
+    if (groomLoc?.mother) next.formal.groomMother = groomLoc.mother;
+
+    if (sideLoc) {
+      if (sideLoc.ceremonyTitle) next.envelope.ceremonyHeading = sideLoc.ceremonyTitle;
+      if (sideLoc.cardTitle) {
+        next.envelope.header = sideLoc.cardTitle;
+        next.formal.title = sideLoc.cardTitle;
+      }
+      if (sideLoc.timeDayHeader) next.formal.timeDayHeader = sideLoc.timeDayHeader;
+      if (sideLoc.monthBox) next.formal.monthBox = sideLoc.monthBox;
+      if (sideLoc.dayNumber) next.formal.dayNumber = sideLoc.dayNumber;
+      if (sideLoc.yearBox) next.formal.yearBox = sideLoc.yearBox;
+      if (sideLoc.lunarDate) next.formal.lunarDate = sideLoc.lunarDate;
+      if (sideLoc.venueHostName) next.formal.venueHostName = sideLoc.venueHostName;
+      if (sideLoc.address) {
+        next.formal.venueAddress = sideLoc.address;
+        next.formal.address = sideLoc.address;
+        next.venue.addressText = sideLoc.address;
+      }
+      if (sideLoc.venueHall) {
+        next.hero.venueTitle = sideLoc.venueHall;
+        next.venue.hall = sideLoc.venueHall;
+      }
+      if (sideLoc.regionCaps) next.venue.regionCaps = sideLoc.regionCaps;
+      if (sideLoc.venueIntro) next.venue.para1 = sideLoc.venueIntro;
+      if (sideLoc.rsvpSubtitle) next.rsvp.formSubtitle = sideLoc.rsvpSubtitle;
+      if (Array.isArray(sideLoc.scheduleItems) && sideLoc.scheduleItems.length > 0) {
+        next.theDay.items = sideLoc.scheduleItems;
+      }
+    }
+
+    return next;
+  }, [basePack, isGroomSide, language, cms]);
 
   // Keep <html lang="...">, document.title, and Open Graph meta tags synced with active side & language
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = t.htmlLang || language;
+      if (document.getElementById('invitation-not-found')) {
+        document.title = `404 — ${t.notFound.title}`;
+        return;
+      }
       if (!location.pathname.includes('admin')) {
         if (t.pageTitle) {
           document.title = t.pageTitle;
@@ -1369,7 +1462,9 @@ export function LanguageProvider({ children }) {
         const secondFull = isGroomSide ? activeCouple.bride.name : activeCouple.groom.name;
         const suffix =
           language === 'en'
-            ? 'Wedding Invitation'
+            ? isGroomSide
+              ? "Groom's Wedding Invitation"
+              : "Bride's Wedding Invitation"
             : language === 'zh'
               ? isGroomSide
                 ? '新婚喜宴请柬'
@@ -1392,7 +1487,7 @@ export function LanguageProvider({ children }) {
         setMeta('meta[name="description"]', dynamicDesc);
       }
     }
-  }, [t, language, isGroomSide, location.pathname]);
+  }, [t, language, isGroomSide, location.pathname, location.search]);
 
   const setLanguage = (lang) => {
     if (translations[lang]) {
@@ -1408,12 +1503,44 @@ export function LanguageProvider({ children }) {
     setLanguage(order[nextIdx]);
   };
 
-  const { bride, groom } =
-    language === 'zh'
-      ? chineseCouple
-      : language === 'en'
-        ? englishCouple
-        : weddingConfig;
+  const { bride, groom } = React.useMemo(() => {
+    const baseCouple =
+      language === 'zh'
+        ? chineseCouple
+        : language === 'en'
+          ? englishCouple
+          : weddingConfig;
+
+    const bCms = cms?.bride;
+    const gCms = cms?.groom;
+    const bLoc = language === 'vi' ? bCms : bCms?.i18n?.[language];
+    const gLoc = language === 'vi' ? gCms : gCms?.i18n?.[language];
+
+    return {
+      bride: {
+        ...baseCouple.bride,
+        phone: bCms?.phone || baseCouple.bride.phone,
+        dob: bCms?.dob || baseCouple.bride.dob,
+        ...(bLoc
+          ? {
+              name: bLoc.fullName || baseCouple.bride.name,
+              shortName: bLoc.shortName || baseCouple.bride.shortName,
+            }
+          : {}),
+      },
+      groom: {
+        ...baseCouple.groom,
+        phone: gCms?.phone || baseCouple.groom.phone,
+        dob: gCms?.dob || baseCouple.groom.dob,
+        ...(gLoc
+          ? {
+              name: gLoc.fullName || baseCouple.groom.name,
+              shortName: gLoc.shortName || baseCouple.groom.shortName,
+            }
+          : {}),
+      },
+    };
+  }, [language, cms]);
 
   return (
     <LanguageContext.Provider

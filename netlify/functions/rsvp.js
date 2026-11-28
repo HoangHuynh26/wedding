@@ -37,18 +37,37 @@ exports.handler = async function (event) {
     };
   }
 
-  // 2. Handle GET /api/rsvp
+  // 2. Handle GET /api/rsvp (returns website confirmations strictly WITHOUT guest `message`)
   if (event.httpMethod === 'GET') {
-    const list = Array.from(recentSubmissions.values());
+    const list = Array.from(recentSubmissions.values())
+      .reverse()
+      .map(({ message: _omitted, ...rest }) => rest);
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        note: 'Primary storage is dispatched directly to Make.com -> Excel.',
+        note: 'Website stores attendance confirmations only (no message); full payload dispatched to Make.com.',
         count: list.length,
         recentGuests: list,
       }),
+    };
+  }
+
+  // 2b. Handle DELETE /api/rsvp
+  if (event.httpMethod === 'DELETE') {
+    const targetId = event.queryStringParameters?.id || '';
+    if (targetId) {
+      for (const [k, v] of recentSubmissions.entries()) {
+        if (String(v.id) === String(targetId)) recentSubmissions.delete(k);
+      }
+    } else {
+      recentSubmissions.clear();
+    }
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ success: true, count: recentSubmissions.size }),
     };
   }
 
@@ -172,27 +191,33 @@ exports.handler = async function (event) {
         console.warn('MAKE_WEBHOOK_URL is not set in Netlify environment variables.');
       }
 
-      const guestRecord = {
+      // Website confirmation record — strictly omits `message`
+      const websiteConfirmation = {
+        id: `rsvp_${now.getTime()}_${Math.random().toString(36).slice(2, 7)}`,
         fullName: trimmedName,
         side: trimmedSide,
         invitationType,
         language,
-        message: trimmedMessage,
         attendance: confirmedAttendance,
+        dateFormatted: formattedDate,
         submittedAt,
         deliveredToMake: webhookDelivered,
       };
 
-      recentSubmissions.set(cacheKey, guestRecord);
+      recentSubmissions.set(cacheKey, websiteConfirmation);
 
       return {
         statusCode: 201,
         headers,
         body: JSON.stringify({
           success: true,
-          message: 'RSVP confirmed successfully. Data dispatched to Make.com for Excel.',
-          guest: guestRecord,
-          storage: 'Excel (Make.com)',
+          message: 'RSVP confirmed on website and dispatched to Make.com.',
+          guest: {
+            ...websiteConfirmation,
+            message: trimmedMessage,
+          },
+          confirmation: websiteConfirmation,
+          storage: 'Website Confirmation + Make.com',
           webhookStatus: webhookDelivered ? 'delivered' : 'pending_or_logged',
         }),
       };

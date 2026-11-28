@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './Footer.module.css';
@@ -22,7 +22,6 @@ function Divider() {
 export default function Footer() {
   const { t } = useLanguage();
   const prefersReducedMotion = useReducedMotion();
-  const footerRef = useRef(null);
 
   const line1 =
     t.footer?.line1 ||
@@ -32,25 +31,8 @@ export default function Footer() {
     'Sự hiện diện của Quý khách chính là món quà ý nghĩa nhất dành cho chúng tôi.';
   const thankYou = t.footer?.thankYou || 'Thank you!';
 
-  useEffect(() => {
-    const footer = footerRef.current;
-    const home = footer?.closest('.wedding-home');
-    if (!home || typeof IntersectionObserver === 'undefined') return undefined;
-
-    const visibleRatio = 0.3;
-    const observer = new IntersectionObserver(([entry]) => {
-      home.toggleAttribute('data-footer-in-view', entry.intersectionRatio >= visibleRatio);
-    }, { threshold: visibleRatio });
-    observer.observe(footer);
-
-    return () => {
-      observer.disconnect();
-      home.removeAttribute('data-footer-in-view');
-    };
-  }, []);
-
   return (
-    <footer ref={footerRef} id="footer" className={styles.footer} role="contentinfo">
+    <footer id="footer" className={styles.footer} role="contentinfo">
       <picture className={styles.artwork} aria-hidden="true">
         <source media="(min-width: 768px)" srcSet="/mauve-theme/footer-velvet-wide.webp" />
         <img

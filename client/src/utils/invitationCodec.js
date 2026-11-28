@@ -198,3 +198,112 @@ export function buildAsciiSafeHandoffUrl(href = '') {
     return href;
   }
 }
+
+const INVITATION_PARAM_KEYS = new Set([
+  'to',
+  'to64',
+  'guest',
+  'name',
+  'from',
+  'from64',
+  'inviter',
+  'sender',
+  'music',
+  'song',
+  'track',
+  'lang',
+  'language',
+  'locale',
+  'side',
+  'preview',
+]);
+
+const TRACKING_PARAM_RE =
+  /^(utm_[a-z0-9_]+|fbclid|gclid|wbraid|gbraid|ttclid|twclid|msclkid|li_fat_id|igshid|zarsrc|zdlink|_gl|_ga)$/i;
+const VALID_LANG_PARAM_RE = /^(vi|vn|vietnamese|en|english|eng|zh|cn|chinese|zh-[a-z0-9-]+)$/i;
+const VALID_SIDE_VALUES = new Set(['bride', 'co-dau', 'nha-gai', 'groom', 'chu-re', 'nha-trai']);
+
+function isSingleInvitationParamValid(rawKey, rawVal, validSongIds) {
+  const key = String(rawKey || '').trim().toLowerCase();
+  if (!key) return false;
+  if (TRACKING_PARAM_RE.test(key)) return true;
+  if (!INVITATION_PARAM_KEYS.has(key)) return false;
+
+  const val = String(rawVal || '').trim();
+  if (!val) return false;
+
+  if (key === 'lang' || key === 'language' || key === 'locale') {
+    return VALID_LANG_PARAM_RE.test(val);
+  }
+  if (key === 'side') {
+    return VALID_SIDE_VALUES.has(val.toLowerCase());
+  }
+  if (key === 'preview') {
+    return val === '1' || val === 'true';
+  }
+  if (key === 'music' || key === 'song' || key === 'track') {
+    return validSongIds.size === 0 || validSongIds.has(val.toLowerCase());
+  }
+  if (key === 'to64' || key === 'from64') {
+    return Boolean(decodeUtf8Base64Url(val).trim());
+  }
+  return true;
+}
+
+/**
+ * Strictly validate invitation query parameters so malformed/truncated links
+ * (e.g. `?lang=`, `?music=wrong-id`, `?to64=broken`, unknown params) render 404 NotFound,
+ * while ignoring standard Zalo / Messenger / Google analytics click IDs.
+ */
+export function validateInvitationSearch(search = '', playlist = []) {
+  if (!search || search === '?') return { isValid: true };
+  try {
+    const params = new URLSearchParams(search);
+    const validSongIds = new Set(
+      (playlist || []).map((s) => String(s?.id || '').trim().toLowerCase()).filter(Boolean)
+    );
+
+    for (const [rawKey, rawVal] of params.entries()) {
+      if (!isSingleInvitationParamValid(rawKey, rawVal, validSongIds)) {
+        return { isValid: false, invalidKey: rawKey };
+      }
+    }
+    return { isValid: true };
+  } catch {
+    return { isValid: false, invalidKey: 'malformed_query' };
+  }
+}
+
+/**
+ * Preserve valid personalization when returning from the 404 page.
+ * The return path determines the invitation side and the displayed locale takes precedence.
+ */
+export function sanitizeValidInvitationSearch(search = '', playlist = [], activeLanguage = 'vi') {
+  const cleanParams = new URLSearchParams();
+  let includeLanguage = activeLanguage !== 'vi';
+  try {
+    const rawParams = new URLSearchParams(search);
+    const validSongIds = new Set(
+      (playlist || []).map((s) => String(s?.id || '').trim().toLowerCase()).filter(Boolean)
+    );
+
+    for (const [rawKey, rawVal] of rawParams.entries()) {
+      const key = String(rawKey || '').trim().toLowerCase();
+      if (key === 'side' || key === 'preview' || TRACKING_PARAM_RE.test(key)) continue;
+      if (!isSingleInvitationParamValid(rawKey, rawVal, validSongIds)) continue;
+      if (key === 'lang' || key === 'language' || key === 'locale') {
+        includeLanguage = true;
+        continue;
+      }
+      cleanParams.set(rawKey, String(rawVal).trim());
+    }
+  } catch {
+    // ignore malformed query
+  }
+
+  if (includeLanguage) {
+    cleanParams.set('lang', activeLanguage);
+  }
+
+  return cleanParams.toString();
+}

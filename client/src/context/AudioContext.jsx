@@ -1,14 +1,23 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import weddingConfig from '../config/weddingConfig';
+import { resolveInvitationSide } from './LanguageContext';
+import { useCmsStore } from '../store/cmsStore';
 
 const AudioContext = createContext(null);
 
 export function AudioProvider({ children }) {
   const location = useLocation();
+  const { settings: cms } = useCmsStore();
   const playlist = weddingConfig.playlist || [];
+  const isGroomSide = resolveInvitationSide(location.pathname, location.search) === 'groom';
+  const configuredDefaultId =
+    (isGroomSide ? cms?.music?.groomDefaultSongId : cms?.music?.brideDefaultSongId) ||
+    cms?.music?.defaultSongId ||
+    weddingConfig.music?.id ||
+    'young-and-beautiful';
   const defaultTrack =
-    playlist.find((s) => s.id === weddingConfig.music?.id) || playlist[0] || weddingConfig.music;
+    playlist.find((s) => s.id === configuredDefaultId) || playlist[0] || weddingConfig.music;
 
   // Resolve track from URL or default
   const getTrackFromQuery = useCallback(() => {

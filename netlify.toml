@@ -17,8 +17,24 @@
 
 # Route /api/rsvp requests to Netlify Serverless Function
 [[redirects]]
+  from = "/api/rsvp/*"
+  to = "/.netlify/functions/rsvp"
+  status = 200
+
+[[redirects]]
   from = "/api/rsvp"
   to = "/.netlify/functions/rsvp"
+  status = 200
+
+# Route /api/cms requests to Netlify Serverless Function
+[[redirects]]
+  from = "/api/cms/*"
+  to = "/.netlify/functions/cms"
+  status = 200
+
+[[redirects]]
+  from = "/api/cms"
+  to = "/.netlify/functions/cms"
   status = 200
 
 # Route /api/health requests to Netlify Serverless Function

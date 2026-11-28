@@ -16,8 +16,11 @@ import WeddingEnvelope from '../../components/WeddingEnvelope/WeddingEnvelope';
 import { WRAP_CLEAR_MS } from '../../components/WeddingEnvelope/openingTiming';
 import WeddingHero from '../../components/WeddingHero/WeddingHero';
 import WeddingSchedule from '../../components/WeddingSchedule/WeddingSchedule';
+import { schedulePaper, scheduleVelvet } from '../../components/WeddingSchedule/scheduleCurtains';
 import weddingConfig from '../../config/weddingConfig';
 import { useAudio } from '../../context/AudioContext';
+import { validateInvitationSearch } from '../../utils/invitationCodec';
+import NotFound from '../NotFound/NotFound';
 import './Home.css';
 
 const motionPreference = '(prefers-reduced-motion: reduce)';
@@ -47,8 +50,9 @@ const themeStyle = {
 };
 
 export default function WeddingExperience() {
-  const { pathname, hash } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const { playAudio, getPlaybackTime } = useAudio();
+  const isQueryValid = validateInvitationSearch(search, weddingConfig.playlist).isValid;
   const fragment = hash.slice(1);
   const pathSegments = pathname.replace(/^\/|\/$/g, '').split('/');
   const lastSegment = pathSegments[pathSegments.length - 1] || '';
@@ -58,10 +62,113 @@ export default function WeddingExperience() {
         ? lastSegment
         : '');
 
-  const [phase, setPhase] = useState(() => (destination ? 'open' : 'sealed'));
-  const [belowFoldMounted, setBelowFoldMounted] = useState(() => Boolean(destination));
+  const isPreviewEmbed =
+    typeof window !== 'undefined' &&
+    window.self !== window.top &&
+    new URLSearchParams(search).get('preview') === '1';
+
+  const [phase, setPhase] = useState(() => (destination || isPreviewEmbed ? 'open' : 'sealed'));
+  const [belowFoldMounted, setBelowFoldMounted] = useState(() =>
+    Boolean(destination || isPreviewEmbed)
+  );
   const openedByGuest = useRef(false);
-  const locked = phase !== 'open';
+  const locked = isQueryValid && phase !== 'open';
+  const previewGoalYRef = useRef(null);
+  const previewRafRef = useRef(0);
+
+  // Live Admin Studio Scroll-Sync & Envelope Toggle Bridge (?preview=1 inside Admin iframe)
+  useEffect(() => {
+    if (!isPreviewEmbed) return undefined;
+
+    const stepScroll = () => {
+      const goal = previewGoalYRef.current;
+      if (typeof goal !== 'number') {
+        previewRafRef.current = 0;
+        return;
+      }
+      const current = window.scrollY || window.pageYOffset || 0;
+      const diff = goal - current;
+      if (Math.abs(diff) < 1.2) {
+        window.scrollTo({ top: goal, behavior: 'instant' });
+        previewGoalYRef.current = null;
+        previewRafRef.current = 0;
+        return;
+      }
+      window.scrollTo({ top: current + diff * 0.24, behavior: 'instant' });
+      previewRafRef.current = window.requestAnimationFrame(stepScroll);
+    };
+
+    const handleMessage = (event) => {
+      if (event.origin !== window.location.origin) return;
+      const data = event.data;
+      if (!data || typeof data !== 'object') return;
+
+      if (data.type === 'WEDDING_CMS_PREVIEW_ENVELOPE') {
+        if (data.sealed) {
+          previewGoalYRef.current = null;
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setPhase('sealed');
+        } else {
+          setBelowFoldMounted(true);
+          setPhase('open');
+        }
+        return;
+      }
+
+      if (data.type === 'WEDDING_CMS_SYNC_SCROLL') {
+        setBelowFoldMounted(true);
+        setPhase((prev) => (prev === 'sealed' ? 'open' : prev));
+
+        const sectionId = data.sectionId || 'hero';
+        const progress = Math.max(0, Math.min(1, Number(data.progress) || 0));
+
+        const computeAndDrive = () => {
+          const el = document.getElementById(sectionId);
+          if (!el) return;
+          const vh = window.innerHeight || 600;
+          const topOffset =
+            sectionId === 'hero'
+              ? 0
+              : sectionId === 'schedule'
+                ? 12
+                : Math.min(36, Math.round(vh * 0.06));
+          const rect = el.getBoundingClientRect();
+          const sectionTop = Math.max(0, rect.top + (window.scrollY || 0) - topOffset);
+          const visibleBudget = Math.max(180, vh - topOffset - 20);
+          const scrollableSpan = Math.max(0, el.offsetHeight - visibleBudget);
+          const maxDocScroll = Math.max(
+            0,
+            document.documentElement.scrollHeight - vh
+          );
+          const targetY = Math.min(
+            maxDocScroll,
+            Math.max(0, sectionTop + scrollableSpan * progress)
+          );
+          previewGoalYRef.current = targetY;
+          if (!previewRafRef.current) {
+            previewRafRef.current = window.requestAnimationFrame(stepScroll);
+          }
+        };
+
+        window.requestAnimationFrame(computeAndDrive);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    try {
+      window.parent.postMessage({ type: 'WEDDING_PREVIEW_READY' }, window.location.origin);
+    } catch {
+      // ignore
+    }
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      if (previewRafRef.current) {
+        window.cancelAnimationFrame(previewRafRef.current);
+        previewRafRef.current = 0;
+      }
+    };
+  }, [isPreviewEmbed]);
 
   useEffect(() => {
     if (!locked) return undefined;
@@ -88,9 +195,8 @@ export default function WeddingExperience() {
       weddingConfig.formalPhoto || '/photos/tuan-0992.webp',
       '/mauve-theme/mother-of-pearl.webp',
       '/mauve-theme/jeweled-frame-cutout.webp?v=4',
-      '/mauve-theme/curtain-pleats-matched.webp',
-      '/mauve-theme/curtain-tieback-left.webp',
-      '/mauve-theme/curtain-tieback-right.webp',
+      schedulePaper,
+      scheduleVelvet,
       '/mauve-theme/wax-seal-hh.webp',
     ];
     const imgs = criticalAssets.map((src) => {
@@ -193,6 +299,10 @@ export default function WeddingExperience() {
     setPhase(reducedMotion ? 'open' : 'opening');
   }
 
+  if (!isQueryValid) {
+    return <NotFound />;
+  }
+
   return (
     <main className="wedding-home">
       <div className="wedding-front" style={themeStyle}>
@@ -221,7 +331,7 @@ export default function WeddingExperience() {
           {/* Step 5B: Mother-of-Pearl Interactive Scratch-to-Reveal Couple Portrait (Images 9–11) */}
           <ScratchReveal />
 
-          {/* Step 7: "The Day / Lịch Trình" with 3D Blind-Embossed Draped Curtains & Tassels (Image 13) */}
+          {/* Wedding schedule with scroll-linked velvet curtains */}
           <WeddingSchedule />
 
           {/* Step 6: Pale Mauve-Lilac Location & Directions Section + Villa Etching + Double-Border CTA (Image 12) */}
